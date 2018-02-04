@@ -55,10 +55,11 @@ STATUS game_set_object_location(Game* game, Id id);
    Game interface implementation
 */
 
+// Establece valores iniciales para cada elemento de la estructura Game game,
+// y vacía la tabla de spaces. Siempre devuelve OK.
 STATUS game_create(Game* game)
 {
   int i;
-
   for (i = 0; i < MAX_SPACES; i++)
   {
     game->spaces[i] = NULL;
@@ -73,6 +74,7 @@ STATUS game_create(Game* game)
 
 STATUS game_create_from_file(Game* game, char* filename)
 {
+  // Como game_create nunca devuelve ERROR, nunca se cumple el if.
   if (game_create(game) == ERROR)
     return ERROR;
 
@@ -154,35 +156,33 @@ Space* game_get_space(Game* game, Id id)
 
 STATUS game_set_player_location(Game* game, Id id)
 {
-
   if (id == NO_ID)
   {
     return ERROR;
   }
 
   game->player_location = id;
-
 }
 
 STATUS game_set_object_location(Game* game, Id id)
 {
   int i = 0;
-
   if (id == NO_ID)
   {
     return ERROR;
   }
 
   game->object_location = id;
-
   return OK;
 }
 
+// Devuelve la posicion del jugador
 Id game_get_player_location(Game* game)
 {
   return game->player_location;
 }
 
+// Devuelve la posicion de objeto
 Id game_get_object_location(Game* game)
 {
   return game->object_location;
@@ -216,6 +216,7 @@ void game_print_data(Game* game)
   printf("=> Player location: %d\n", (int) game->player_location);
   printf("prompt:> ");
 }
+
 
 BOOL game_is_over(Game* game)
 {
@@ -289,6 +290,8 @@ void game_callback_previous(Game* game)
   }
 }
 
+// Mediante el archivo de mapa/tablero, inicializa space con el contenido de
+// nombre y coordenadas que lee de cada linea del archivo
 STATUS game_load_spaces(Game* game, char* filename)
 {
   FILE* file = NULL;
@@ -299,19 +302,30 @@ STATUS game_load_spaces(Game* game, char* filename)
   Space* space = NULL;
   STATUS status = OK;
 
+  //Si la cadena es NULL, no se ha introducido correctamente, y devuelve ERROR
   if (!filename)
   {
     return ERROR;
   }
 
+  // Abre el archivo con el mapa o tablero, y comprueba si se abre correctamente
+  // En caso contrario, devuelve ERROR
   file = fopen(filename, "r");
   if (file == NULL)
   {
     return ERROR;
   }
 
+  // Escanea el archivo linea por linea (WORD_SIZE es el maximo y es 1000)
   while (fgets(line, WORD_SIZE, file))
   {
+    // Compara los 3 primeros caracteres de la linea con "#s:", y en caso favorable:
+    //    strtok divide una cadena en elementos con separadores ("|")
+    //    (El separador "|" no queda incluido en los elementos)
+    //    atol (ascii to long) convierte cada elemento separado en un entero long
+    //    y así por cada linea se almacenan un nombre y unas coordenadas
+    //    Se inicializan los elementos de space con space_create para cada linea
+    //    y se sustituyen el nombre y coordenadas por los obtenidos
     if (strncmp("#s:", line, 3) == 0)
     {
       toks = strtok(line + 3, "|");
@@ -327,10 +341,10 @@ STATUS game_load_spaces(Game* game, char* filename)
       toks = strtok(NULL, "|");
       west = atol(toks);
 
-// Solo se compila cuando DEBUG está definido (por ejemplo, con -d). Si no, no.
-#ifdef DEBUG
+      // Solo se compila cuando DEBUG está definido (por ejemplo, con -d)
+      #ifdef DEBUG
       printf("Leido: %ld|%s|%ld|%ld|%ld|%ld\n", id, name, north, east, south, west);
-#endif
+      #endif
 
       space = space_create(id);
       if (space != NULL)
@@ -345,6 +359,8 @@ STATUS game_load_spaces(Game* game, char* filename)
     }
   }
 
+  // ferror checks if the error indicator associated with stream is set
+  // Si hay error, ferror(file) es distinto de 0 y status pasa a ser ERROR
   if (ferror(file))
   {
     status = ERROR;
