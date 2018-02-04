@@ -238,18 +238,23 @@ void game_callback_exit(Game* game)
 void game_callback_following(Game* game)
 {
   int i = 0;
-  Id current_id = NO_ID;
-  Id space_id = NO_ID;
-
+  Id current_id = NO_ID; /*id actual*/
+  Id space_id = NO_ID; /*id del jugador */
+  /*Le da el valor a space_id*/
   space_id = game_get_player_location(game);
+  // Si no ha cambiado space_id tras la sentencia anterior, return
   if (space_id == NO_ID)
   {
     return;
   }
-
+  /*Recorre los espacios*/
+  /*Si coincide con el espacio actual
+  te da la id del sur.  */
   for (i = 0; i < MAX_SPACES && game->spaces[i] != NULL; i++)
   {
     current_id = space_get_id(game->spaces[i]);
+    /*Si coincide con el espacio actual
+    te da la id del sur a current_id.  */
     if (current_id == space_id)
     {
       current_id = space_get_south(game->spaces[i]);
@@ -262,22 +267,27 @@ void game_callback_following(Game* game)
   }
 }
 
+
 void game_callback_previous(Game* game)
 {
   int i = 0;
-  Id current_id = NO_ID;
-  Id space_id = NO_ID;
-
+  Id current_id = NO_ID; /*id actual*/
+  Id space_id = NO_ID; /*id del jugador */
+  /*Le da el valor a space_id*/
   space_id = game_get_player_location(game);
-
+  // Si no ha cambiado space_id tras la sentencia anterior, return
   if (NO_ID == space_id)
   {
     return;
   }
-
+  /*Recorre los espacios*/
+  /*Si coincide con el espacio actual
+  te da la id del norte.  */
   for (i = 0; i < MAX_SPACES && game->spaces[i] != NULL; i++)
   {
     current_id = space_get_id(game->spaces[i]);
+    /*Si coincide con el espacio actual
+    te da la id del norte a current_id.  */
     if (current_id == space_id)
     {
       current_id = space_get_north(game->spaces[i]);
