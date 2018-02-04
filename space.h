@@ -33,6 +33,9 @@ Funcion que devuelve una variable tipo status y cuyo
 argumento es un puntero a Space.
 
 Si la variable introducida es nula devuelve un error(0);
+
+Si no es nula libera el espacio y a la variable introducida le asigna un NULL
+
 */
 STATUS space_destroy(Space* space);
 
