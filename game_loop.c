@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 	}
 
 
-  /*
+        /*
 	Intenta crear el juego a partir de game_data_file, que es el argv[1]
 	Si da error, muestra mensaje y termina (return)
 	*/
