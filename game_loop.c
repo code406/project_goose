@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 
 	/*
 	Si no se invoca el programa correctamente ("./game  game_data_file")
-  porque no se introduce un minimo de 2 argumentos,imprime error y
+        porque no se introduce un minimo de 2 argumentos,imprime error y
  	explica cómo invocar el programa. Termina (return).
 	*/
 	if (argc < 2)
