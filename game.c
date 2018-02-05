@@ -214,7 +214,7 @@ STATUS game_set_player_location(Game* game, Id id) {
   }
 
   game->player_location = id;
-
+  return OK;
 }
 /*
 Funcion que devuelve un STATUS y cuyos argumentos
@@ -223,7 +223,10 @@ Fija game.object_location en la id introducida
 */
 STATUS game_set_object_location(Game* game, Id id) {
 
+/*
+  Este i no se utiliza
   int i = 0;
+*/
 
   if (id == NO_ID) {
     return ERROR;

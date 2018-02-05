@@ -22,6 +22,10 @@ Crea una enumeracion (modo de hacer una variable BOOL)
 False = 0; True = 1;
 */
 
+typedef enum {
+  FALSE, TRUE
+} BOOL;
+
 /*
 Para STATUS ERROR = 0; OK = 1;
 */
