@@ -242,7 +242,7 @@ void game_callback_following(Game* game)
   Id space_id = NO_ID; /*id del jugador */
   /*Le da el valor a space_id*/
   space_id = game_get_player_location(game);
-  // Si no ha cambiado space_id tras la sentencia anterior, return
+  /* Si no ha cambiado space_id tras la sentencia anterior, return */
   if (space_id == NO_ID)
   {
     return;
@@ -300,8 +300,11 @@ void game_callback_previous(Game* game)
   }
 }
 
-// Mediante el archivo de mapa/tablero, inicializa space con el contenido de
-// nombre y coordenadas que lee de cada linea del archivo
+
+/* 
+ * Mediante el archivo de mapa/tablero, inicializa space con el contenido de
+ * nombre y coordenadas que lee de cada linea del archivo
+ */
 STATUS game_load_spaces(Game* game, char* filename)
 {
   FILE* file = NULL;
