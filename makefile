@@ -19,4 +19,5 @@ space.o: space.c
 	$(CC) $(CFLAGS) -c space.c
 
 #Borrar objetos
-clean: rm -f ~*.o
+clean:
+	rm -f *.o
