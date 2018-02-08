@@ -29,9 +29,7 @@ struct _Area{
   char *cursor;
 };
 
-/*Inicializado a NULL para evitar problemas con otra funcion*/
-
-char *__data == NULL;
+char *__data;
 
 /****************************/
 /*     Private functions    */

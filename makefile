@@ -1,8 +1,8 @@
 CC=gcc
 CFLAGS= -g -Wall -ansi -pedantic
-all: main
-main: game.o command.o game_loop.o graphic_engine.o screen.o space.o
-	$(CC) $(CFLAGS) game.o command.o game_loop.o graphic_engine.o screen.o space.o -o main
+all: goose
+goose: game.o command.o game_loop.o graphic_engine.o screen.o space.o
+	$(CC) $(CFLAGS) game.o command.o game_loop.o graphic_engine.o screen.o space.o -o goose
 
 #Objetos
 game.o: game.c
@@ -18,7 +18,6 @@ screen.o: screen.c
 space.o: space.c
 	$(CC) $(CFLAGS) -c space.c
 
-
 #Borrar objetos
-clean: rm -f ~*.o 
-
+clean:
+	rm -f *.o

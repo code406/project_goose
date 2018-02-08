@@ -1,8 +1,7 @@
 /**
  * @brief It defines a space
- *
  * @file space.h
- * @author Profesores PPROG
+ * @author Arturo Morcillo
  * @version 1.0
  * @date 13-01-2015
  * @copyright GNU Public License
