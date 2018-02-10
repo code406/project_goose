@@ -19,7 +19,9 @@ typedef enum enum_Command {
   UNKNOWN,    /* 0 */
   EXIT,       /* 1 */
   FOLLOWING,  /* 2 */
-  PREVIOUS    /* 3 */
+  PREVIOUS,   /* 3 */
+  GET,        /* 4 */
+  DROP        /* 5 */
 } T_Command;
 
 
