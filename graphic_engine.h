@@ -16,39 +16,36 @@
 typedef struct _Graphic_engine Graphic_engine;
 
 
-
-
 /*******************************************************************************
 Funcion: graphic_engine_create
-Descripcion: Inicia el motor gráfico.
+Descripcion: Genera y define cada area de la interfaz de juego
 Argumentos:
   Ninguno
 Return:
-  Puntero a Graphic_engine, que es una estructura de punteros de tipo Area
+  Puntero a la estructura de tipo Graphic_engine inicializada,
+  que contiene a su vez punteros a estructura de tipo Area
 *******************************************************************************/
 Graphic_engine* graphic_engine_create();
 
 
-
-
 /*******************************************************************************
 Funcion: graphic_engine_destroy
-Descripcion: Destruye el motor gráfico, es decir, elimina cada área del juego.
+Descripcion: Destruye (libera memoria) cada area de la interfaz de juego
 Argumentos:
-  ge: Puntero a una estructura de tipo Graphic_engine
+  ge: Puntero a una estructura de tipo Graphic_engine,
+      que contiene a su vez punteros a estructura de tipo Area
 Return:
   Ninguno (void)
 *******************************************************************************/
 void graphic_engine_destroy(Graphic_engine *ge);
 
 
-
-
 /*******************************************************************************
 Funcion: graphic_engine_paint_game
-Descripcion: Dibuja cada área de la interfaz del juego.
+Descripcion: Dibuja cada area de la interfaz del juego
 Argumentos:
-  ge  : Puntero a una estructura de tipo Graphic_engine
+  ge  : Puntero a una estructura de tipo Graphic_engine,
+        que contiene a su vez punteros a estructura de tipo Area
   game: Puntero a una estructura de tipo Game
 Return:
   Ninguno (void)
@@ -56,20 +53,17 @@ Return:
 void graphic_engine_paint_game(Graphic_engine *ge, Game *game);
 
 
-
-
 /*******************************************************************************
 Funcion: graphic_engine_write_command
-Descripcion:
-  OJO!!!! ESTA FUNCIÓN ESTÁ SIN HACER, NO ESTÁ EN NINGÚN MÓDULO (TODO, Function not even coded)
+Descripcion: TODO: De momento sin funcionalidad
 Argumentos:
-  ge : Puntero a una estructura de tipo Graphic_engine
-  str: Puntero a char (cadena de caracteres)
+  ge : Puntero a una estructura de tipo Graphic_engine,
+       que contiene a su vez punteros a estructura de tipo Area
+  str: Cadena de caracteres
 Return:
   Ninguno (void)
 *******************************************************************************/
 void graphic_engine_write_command(Graphic_engine *ge, char *str);
-
 
 
 #endif

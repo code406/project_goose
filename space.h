@@ -11,14 +11,12 @@
 #ifndef SPACE_H
 #define SPACE_H
 
-
 #include "types.h"
 
 typedef struct _Space Space;
 
 #define MAX_SPACES 100
 #define FIRST_SPACE 1
-
 
 
 /*******************************************************************************
@@ -31,8 +29,6 @@ Return:
   Puntero a una estructura de tipo Space (casilla)
 *******************************************************************************/
 Space* space_create(Id id);
-
-
 
 
 /*******************************************************************************
@@ -48,8 +44,6 @@ Return:
 STATUS space_destroy(Space* space);
 
 
-
-
 /*******************************************************************************
 Funcion: space_get_id
 Descripcion: Obtiene el id que identifica una casilla del juego.
@@ -60,8 +54,6 @@ Return:
   En caso de error, devuelve NO_ID.
 *******************************************************************************/
 Id space_get_id(Space* space);
-
-
 
 
 /*******************************************************************************
@@ -76,8 +68,6 @@ Return:
 STATUS space_set_name(Space* space, char* name);
 
 
-
-
 /*******************************************************************************
 Funcion: space_get_name
 Descripcion: Devuelve el nombre asignado a la casilla especificada.
@@ -88,8 +78,6 @@ Return:
   En caso de error, devuelve NO_ID.
 *******************************************************************************/
 const char* space_get_name(Space* space);
-
-
 
 
 /*******************************************************************************
@@ -105,8 +93,6 @@ Return:
 STATUS space_set_north(Space* space, Id id);
 
 
-
-
 /*******************************************************************************
 Funcion: space_get_north
 Descripcion: Devuelve el id de la casilla que se encuentra al norte
@@ -118,8 +104,6 @@ Return:
   En caso de error, devuelve NO_ID.
 *******************************************************************************/
 Id space_get_north(Space* space);
-
-
 
 
 /*******************************************************************************
@@ -135,8 +119,6 @@ Return:
 STATUS space_set_south(Space* space, Id id);
 
 
-
-
 /*******************************************************************************
 Funcion: space_get_south
 Descripcion: Devuelve el id de la casilla que se encuentra al sur
@@ -148,8 +130,6 @@ Return:
   En caso de error, devuelve NO_ID.
 *******************************************************************************/
 Id space_get_south(Space* space);
-
-
 
 
 /*******************************************************************************
@@ -165,8 +145,6 @@ Return:
 STATUS space_set_east(Space* space, Id id);
 
 
-
-
 /*******************************************************************************
 Funcion: space_get_east
 Descripcion: Devuelve el id de la casilla que se encuentra al este
@@ -178,8 +156,6 @@ Return:
   En caso de error, devuelve NO_ID.
 *******************************************************************************/
 Id space_get_east(Space* space);
-
-
 
 
 /*******************************************************************************
@@ -195,8 +171,6 @@ Return:
 STATUS space_set_west(Space* space, Id id);
 
 
-
-
 /*******************************************************************************
 Funcion: space_get_west
 Descripcion: Devuelve el id de la casilla que se encuentra al oeste
@@ -208,8 +182,6 @@ Return:
   En caso de error, devuelve NO_ID.
 *******************************************************************************/
 Id space_get_west(Space* space);
-
-
 
 
 /*******************************************************************************
@@ -225,8 +197,6 @@ Return:
 STATUS space_set_object(Space* space, BOOL value);
 
 
-
-
 /*******************************************************************************
 Funcion: space_get_object
 Descripcion: Indica si en la casilla especificada hay o no un objeto
@@ -239,8 +209,6 @@ Return:
 BOOL space_get_object(Space* space);
 
 
-
-
 /*******************************************************************************
 Funcion: space_print
 Descripcion: Muestra por pantalla la informacion de la casilla especificada:
@@ -251,8 +219,6 @@ Return:
   OK o ERROR, que pertenecen al enum STATUS
 *******************************************************************************/
 STATUS space_print(Space* space);
-
-
 
 
 #endif

@@ -34,7 +34,7 @@ se actualiza
 */
 void  screen_paint();
 /*
-Funcion tipo void cuyo argumento es un puntero a char
+Funcion tipo boid cuyo argumento es un puntero a char
 escribe lo de la macro PROMPT.
 Le da al argumento el valor de COLUMNS.
 Reemplaza el caracter de la nueva linea con 0

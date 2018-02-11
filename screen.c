@@ -1,3 +1,13 @@
+/**
+ * @brief Pantalla
+ *
+ * @file space.c
+ * @author Glenson
+ * @version 1.0
+ * @date 11-02-2018
+ * @copyright GNU Public License
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -22,9 +32,10 @@ lo otro es valor
 #define ACCESS(d, x, y) (d + ((y) * COLUMNS) + (x))
 
 /*
-Estructura con 4 enteros y un puntero a char
+Estructura con 4 enteros que definen la posicion y tamaño de cada area,
+y un puntero a char que TODO: no se que hace cursor
 */
-struct _Area{
+struct _Area {
   int x,
       y,
       width,

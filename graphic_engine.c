@@ -1,13 +1,23 @@
+/**
+ * @brief It defines a textual graphic engine
+ *
+ * @file graphic_engine.h
+ * @author Profesores PPROG
+ * @version 1.0
+ * @date 18-01-2017
+ * @copyright GNU Public License
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
+
 #include "screen.h"
 #include "graphic_engine.h"
 
-/*
-TODO: Comentar que parametros tiene la estructura Area
-*/
-struct _Graphic_engine
-{
+
+/* Estructura que define el Graphic_engine, con punteros a las areas de la interfaz.
+Area es una estructura con posiciones y tamaños de las mismas. */
+struct _Graphic_engine {
   Area *map,
        *descript,
        *banner,
@@ -16,23 +26,25 @@ struct _Graphic_engine
 };
 
 
-
-/*
-Genera el graphic_engine
-Carece de argumentos. Devuelve un puntero a estructura de punteros de tipo Area
-*/
+/*******************************************************************************
+Funcion: graphic_engine_create
+Descripcion: Genera y define cada area de la interfaz de juego
+Argumentos:
+  Ninguno
+Return:
+  Puntero a la estructura de tipo Graphic_engine inicializada,
+  que contiene a su vez punteros a estructura de tipo Area
+*******************************************************************************/
 Graphic_engine *graphic_engine_create()
 {
-  /*
-  Al ser static, conservará el ultimo valor asignado
+  /* Al ser static, conservará el ultimo valor asignado.
   Se comprueba si ya se ha creado el graphic_engine.
-  Si es así, no se vuelve a crear y se devuelve el ge
-  */
+  Si es así, no se vuelve a crear y se devuelve el ge */
   static Graphic_engine *ge = NULL;
   if (ge)
     return ge;
 
-  /* TODO: Comentar cuando tenga screen.c */
+  /* Se inicializa la pantalla y se reserva memoria para el graphic engine */
   screen_init();
   ge = (Graphic_engine *) malloc(sizeof(Graphic_engine));
 
@@ -47,14 +59,22 @@ Graphic_engine *graphic_engine_create()
 }
 
 
-
-/*  Funcion void que destruye cada area de la pantalla  */
+/*******************************************************************************
+Funcion: graphic_engine_destroy
+Descripcion: Destruye (libera memoria) cada area de la interfaz de juego
+Argumentos:
+  ge: Puntero a una estructura de tipo Graphic_engine,
+      que contiene a su vez punteros a estructura de tipo Area
+Return:
+  Ninguno (void)
+*******************************************************************************/
 void graphic_engine_destroy(Graphic_engine *ge)
 {
   /* Si no hace falta destruirlo, return */
   if (!ge)
     return;
 
+  /* Destruye cada area de la pantalla  */
   screen_area_destroy(ge->map);
   screen_area_destroy(ge->descript);
   screen_area_destroy(ge->banner);
@@ -67,8 +87,16 @@ void graphic_engine_destroy(Graphic_engine *ge)
 }
 
 
-
-/* Funcion void que dibuja cada area del juego */
+/*******************************************************************************
+Funcion: graphic_engine_paint_game
+Descripcion: Dibuja cada area de la interfaz del juego
+Argumentos:
+  ge  : Puntero a una estructura de tipo Graphic_engine,
+        que contiene a su vez punteros a estructura de tipo Area
+  game: Puntero a una estructura de tipo Game
+Return:
+  Ninguno (void)
+*******************************************************************************/
 void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 {
   Id id_act = NO_ID, id_back = NO_ID, id_next = NO_ID, obj_loc = NO_ID;
@@ -82,13 +110,15 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   screen_area_clear(ge->map);
   if ((id_act = game_get_player_location(game)) != NO_ID)
   {
-    /* Obtiene la posicion actual, previa y siguiente */
+    /* Obtiene la estructura de tipo Space para id_act (casilla actual),
+    y el id de las casillas anterior y siguiente respecto del jugador */
     space_act = game_get_space(game, id_act);
     id_back = space_get_north(space_act);
     id_next = space_get_south(space_act);
 
-    /*TODO: Comprobar los comentarios como el siguiente (son 3) */
-    /* Dibuja un "*" si la posicion previa coincide con la de un objeto */
+
+    /* Dibuja la casilla anterior.
+    Tendrá un "*" si en la casilla hay un objeto */
     if (game_get_object_location(game) == id_back)
       obj='*';
     else
@@ -106,7 +136,8 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     }
 
 
-    /* Dibuja un "*" si la posicion actual coincide con la de un objeto */
+    /* Dibuja la casilla actual.
+    Tendrá un "*" si en la casilla hay un objeto */
     if (game_get_object_location(game) == id_act)
       obj='*';
     else
@@ -124,7 +155,8 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     }
 
 
-    /* Dibuja un "*" si la posicion siguiente coincide con la de un objeto */
+    /* Dibuja la casilla siguiente.
+    Tendrá un "*" si en la casilla hay un objeto */
     if (game_get_object_location(game) == id_next)
       obj='*';
     else
