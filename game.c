@@ -13,6 +13,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include "game.h"
+#include "game_reader.h"
+#include "player.h"
+#include "object.h"
+
 
 #define N_CALLBACK 4
 
@@ -55,7 +59,7 @@ Funcion que devuelve un id y cuyos argumentos
 son un puntero a game y un entero
 Devuelve la id del espacio asociado a esa posicion (el entero)
 */
-Id     game_get_space_id_at(Game* game, int position);
+Id game_get_space_id_at(Game* game, int position);
 /*
 Funcion que devuelve un STATUS y cuyos argumentos
 son un puntero a game y una id.
@@ -80,15 +84,22 @@ se encarga de inicializar la estructura tipo game tipo game
 introducida, dandole valores de 0 ó -1.
 Si todo va bien devuelve un OK
 */
+/*
+*
+*aqui
+*
+*
+*/
 STATUS game_create(Game* game) {
   int i;
 
   for (i = 0; i < MAX_SPACES; i++) {
     game->spaces[i] = NULL;
   }
-
-  game->player_location = NO_ID;
-  game->object_location = NO_ID;
+  game->player=player_create(NO_ID);
+  game->object=object_create(NO_ID);
+  player_set_location(game->player, NO_ID);
+  object_set_location(game->object, NO_ID);
   game->last_cmd = NO_CMD;
 
   return OK;
@@ -201,19 +212,32 @@ Funcion que devuelve un STATUS y cuyos argumentos
 son un puntero a game y una id.
 Fija game.player_location en la id introducida
 */
+/*
+*
+Revisar si es game->player o game.player
+*
+*/
 STATUS game_set_player_location(Game* game, Id id) {
 
   if (id == NO_ID) {
     return ERROR;
   }
+  if((player_set_location(game->player, id))==ERROR)
+    return ERROR;
 
-  game->player_location = id;
   return OK;
 }
 /*
 Funcion que devuelve un STATUS y cuyos argumentos
 son un puntero a game y una id.
 Fija game.object_location en la id introducida
+*/
+/*
+*
+*
+Tunear cuando tenga object
+*
+*
 */
 STATUS game_set_object_location(Game* game, Id id) {
 
@@ -225,8 +249,9 @@ STATUS game_set_object_location(Game* game, Id id) {
   if (id == NO_ID) {
     return ERROR;
   }
-
-  game->object_location = id;
+/*Filo la id de game object y compruebo que se ha asignado bien*/
+if((object_set_location(game->object, id))==ERROR)
+  return ERROR;
 
   return OK;
 }
@@ -237,14 +262,19 @@ devuelve la player_location
 */
 
 Id game_get_player_location(Game* game) {
-  return game->player_location;
+  Id aux;
+  aux = player_get_location(game->player);
+  return aux;
 }
 /*
 Funcion que devuelve un Id y cuyo argumento es un puntero a GAME
 devuelve la object_location
 */
+
 Id game_get_object_location(Game* game) {
-  return game->object_location;
+  Id aux;
+  aux = object_get_id_location(game->object);
+  return aux;
 }
 
 /*
@@ -274,7 +304,6 @@ y luego te dice la player_location y la object_location
 */
 void game_print_data(Game* game) {
   int i = 0;
-
   printf("\n\n-------------\n\n");
 
   printf("=> Spaces: \n");
@@ -282,8 +311,8 @@ void game_print_data(Game* game) {
     space_print(game->spaces[i]);
   }
 
-  printf("=> Object location: %d\n", (int) game->object_location);
-  printf("=> Player location: %d\n", (int) game->player_location);
+  printf("=> Object location: %d\n", (int) (object_get_id_location(game->object)));
+  printf("=> Player location: %d\n", (int) (player_get_location(game->player)));
   printf("prompt:> ");
 }
 

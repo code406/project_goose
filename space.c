@@ -35,7 +35,7 @@ Space* space_create(Id id) {
     return NULL;
 
     /*Asigna memoria al puntero*/
-  newSpace = (Space *) malloc(sizeof (Space));
+  newSpace = (Space *) calloc(1,sizeof (Space));
   /*Comprueba la asignacion de memoria*/
   if (newSpace == NULL) {
     return NULL;

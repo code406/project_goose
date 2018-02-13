@@ -11,6 +11,7 @@
  #define __GAME_READER_H
 
  #include "command.h"
+ #include "game.h"
  #include "space.h"
 
  /*

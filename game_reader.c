@@ -12,8 +12,7 @@
  #include <stdlib.h>
  #include <string.h>
  #include "game_reader.h"
- #include "game.h" /*Para poder usar la estructura Game.*/
-
+ #include "game.h"
  #include "command.h"/*Vienen en game_reader.h pero*/
  #include "space.h"  /*Las incluyo para facilitar la lectura*/
 

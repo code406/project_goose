@@ -13,7 +13,7 @@
  #include "types.h"
  #include "space.h"
 
-#typedef struct _Player Player;
+typedef struct _Player Player;
 
 /*
 Funcion que devuelve un puntero a Player y cuyo argumento es un ID
@@ -42,7 +42,7 @@ Se encarga de crear un nuevo player.
   Le asigna a player.location la estructura introducida
   como argumento
   */
-  STATUS player_set_location(Player* player, Space location);
+  STATUS player_set_location(Player* player, Id location);
 
   /*
   Funcion que devuelve un STATUS y cuyo argumentos son
@@ -50,7 +50,7 @@ Se encarga de crear un nuevo player.
   Le asigna a player.object la estructura introducida
   como argumento
   */
-  STATUS player_set_object(Player* player, Object object);
+  STATUS player_set_object(Player* player, Id object);
 
   /*
   Devuelve un puntero a char;
@@ -66,7 +66,7 @@ Se encarga de crear un nuevo player.
   Devuelve el id del jugador (player.id)
   Si algo falla devuelve NULL
   */
-  Id player_get_id(player* player);
+  Id player_get_id(Player* player);
 
   /*
   Devuelve una estructura tipo Space;
@@ -74,7 +74,7 @@ Se encarga de crear un nuevo player.
   Devuelve un puntero al espacio del jugador (player.location)
   Si algo falla devuelve NULL
   */
-  Space *player_get_location(player* player);
+  Id player_get_location(Player* player);
 
   /*
   Devuelve una estructura tipo Object;
@@ -82,7 +82,7 @@ Se encarga de crear un nuevo player.
   Devuelve un puntero al objeto del jugador (player.item)
   Si algo falla devuelve NULL
   */
-  Space *player_get_item(player* player);
+  Id player_get_item(Player* player);
 
   /*
   Devuelve un Status (ERROR = 0, OK = 1);

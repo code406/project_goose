@@ -14,12 +14,13 @@
  #include "player.h"
  #include "types.h"
  #include "space.h"
+ #include "object.h"
 
  struct _Player{
-   Id id;
+   Id player_id;
    char name[WORD_SIZE+1];
-   Space location;
-   Object item;
+   Id space_id;
+   Id object_id;
  };
 
 /*
@@ -36,10 +37,10 @@ aasigna la id y lo inicializa a 0 (con calloc).
     /*Asigno memoria para newPlayer, compruebo que se
     ha asignado bien y como uso calloc está inicializada
     a NULL*/
-  if(!(newPlayer = (Player*)calloc(sizeof(Player))))
+  if(!(newPlayer = (Player*)calloc(1,sizeof(Player))))
     return NULL;
 
-  newPlayer->id = id;
+  newPlayer->player_id = id;
 
   return newPlayer;
 
@@ -87,13 +88,12 @@ Si algo falla devuelve ERROR
  Le asigna a player.location la cadena de caracteres introducida
  como argumento
  */
- STATUS player_set_location(Player* player, Space location) {
+ STATUS player_set_location(Player* player, Id location) {
    /*Comprueba los argumentos*/
-   if (!player || !location) {
+   if (!player)
      return ERROR;
-   }
-   player->location = location;
-   }
+
+   player->space_id = location;
    /*Si todo va bien devuelve OK*/
    return OK;
  }
@@ -103,13 +103,13 @@ Si algo falla devuelve ERROR
  Le asigna a player.object la estructura introducida
  como argumento
  */
- STATUS player_set_object(Player* player, Object object) {
+ STATUS player_set_object(Player* player, Id object) {
    /*Comprueba los argumentos*/
-   if (!player || !object) {
+   if (!player) {
      return ERROR;
    }
-   player->item = object;
-   }
+   player->object_id = object;
+
    /*Si todo va bien devuelve OK*/
    return OK;
  }
@@ -133,37 +133,37 @@ Si algo falla devuelve ERROR
  Devuelve el id del jugador (player.id)
  Si algo falla devuelve NULL
  */
- Id player_get_id(player* player) {
+ Id player_get_id(Player* player) {
    if (!player) {
      return NO_ID;
    }
-   return player->id;
+   return player->player_id;
  }
 
  /*
- Devuelve una estructura tipo Space;
+ Devuelve un id;
  Su argumento es un puntero a Player
  Devuelve el espacio del jugador (player.location)
  Si algo falla devuelve NULL
  */
- Space *player_get_location(player* player) {
+ Id player_get_location(Player* player) {
    if (!player) {
-     return NULL;
+     return NO_ID;
    }
-   return player->location;
+   return player->space_id;
  }
 
  /*
- Devuelve una estructura tipo Object;
+ Devuelve un id;
  Su argumento es un puntero a Player
  Devuelve un puntero al objeto del jugador (player.item)
  Si algo falla devuelve NULL
  */
- Space *player_get_item(player* player) {
+ Id player_get_item(Player* player) {
    if (!player) {
-     return NULL;
+     return NO_ID;
    }
-   return player->item;
+   return player->object_id;
  }
 
  /*
@@ -183,9 +183,9 @@ Si algo falla devuelve ERROR
      return ERROR;
    }
 
-   fprintf(stdout, "--> Player (Id: %ld; Name: %s)\n", player->id, player->name);
+   fprintf(stdout, "--> Player (Id: %ld; Name: %s)\n", player->player_id, player->name);
 
-   if (player_get_object(player)) {
+   if (player_get_item(player) != 0) {
      fprintf(stdout, "---> The player has an item.\n");
    } else {
      fprintf(stdout, "---> The player has no item.\n");
