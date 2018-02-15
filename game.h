@@ -94,4 +94,10 @@ Funcion que devuelve un comando y cuyo argumento es un puntero a game
 Devuelve la game.last_cmd
 */
 T_Command game_get_last_command(Game* game);
+
+STATUS game_set_object_location(Game * game, Id space_id);
+
+Id game_get_object_location(Game *game);
+
+
 #endif

@@ -16,7 +16,7 @@ struct _Space {
   Id south;
   Id east;
   Id west;
-  BOOL object;
+  Id object;
 };
 /*
 Funcion space_create que devuelve un puntero a Space (La estructura anterior)
@@ -51,7 +51,7 @@ Space* space_create(Id id) {
   newSpace->east = NO_ID;
   newSpace->west = NO_ID;
 
-  newSpace->object = FALSE;
+  newSpace->object = NO_ID;
 
   /*Devuelve la veriable newSpace creada*/
   return newSpace;
@@ -158,7 +158,7 @@ Sus argumentos son un puntero a Space y un BOOL
 LE asigna al Space introducido el valor de object introducido
 Si algo falla devuelve ERROR y si va bien OK.
 */
-STATUS space_set_object(Space* space, BOOL value) {
+STATUS space_set_object(Space* space, Id value) {
   if (!space) {
     return ERROR;
   }
@@ -254,9 +254,9 @@ Devuelve el valor del object del espacio (space.object)
 Si algo falla devuelve NULL
 */
 
-BOOL space_get_object(Space* space) {
+Id space_get_object(Space* space) {
   if (!space) {
-    return FALSE;
+    return NO_ID;
   }
   return space->object;
 }

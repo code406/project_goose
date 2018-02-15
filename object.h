@@ -76,18 +76,6 @@ Id object_get_id(Object* object);
 
 
 /*******************************************************************************
-Funcion: object_get_id_location
-Descripcion: Devuelve el id de la localizacion de un objeto
-Argumentos:
-  object: Puntero a una estructura de tipo Object
-Return:
-  Variable de tipo Id (long) que identifica al objeto (object->id)
-  Si el argumento introducido no es correcto, devuelve NULL
-*******************************************************************************/
-Id object_get_id_location(Object* object);
-
-
-/*******************************************************************************
 Funcion: object_print
 Descripcion: Muestra por pantalla el id y el nombre del objeto
 Argumentos:
@@ -97,17 +85,7 @@ Return:
 *******************************************************************************/
 STATUS object_print(Object* object);
 
-/*******************************************************************************
-Funcion: object_set_name
-Descripcion: Asigna una localizacion a un objeto
-Argumentos:
-  object: Puntero a una estructura de tipo Object
-  name  : Cadena de caracteres que se guardará en object->name
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
 
-STATUS object_set_location(Object* object, Id location);
 
 
 

@@ -19,6 +19,7 @@
 
 
 #define N_CALLBACK 4
+#define ID_INI 1
 
 /**
    Define el tipo de funcion para las llamdas
@@ -66,12 +67,7 @@ son un puntero a game y una id.
 Fija game.player_location en la id introducida
 */
 STATUS game_set_player_location(Game* game, Id id);
-/*
-Funcion que devuelve un STATUS y cuyos argumentos
-son un puntero a game y una id.
-Fija game.object_location en la id introducida
-*/
-STATUS game_set_object_location(Game* game, Id id);
+
 
 /**
    Implementa la interfaz
@@ -96,10 +92,10 @@ STATUS game_create(Game* game) {
   for (i = 0; i < MAX_SPACES; i++) {
     game->spaces[i] = NULL;
   }
-  game->player=player_create(NO_ID);
-  game->object=object_create(NO_ID);
+  game->player=player_create(ID_INI);
+  game->object=object_create(ID_INI);
   player_set_location(game->player, NO_ID);
-  object_set_location(game->object, NO_ID);
+  game_set_object_location(game, NO_ID);
   game->last_cmd = NO_CMD;
 
   return OK;
@@ -120,9 +116,7 @@ STATUS game_create_from_file(Game* game, char* filename) {
     return ERROR;
   /*la id de player_location = 0*/
   game_set_player_location(game, game_get_space_id_at(game, 0));
-  /*la id de object_location = 0*/
   game_set_object_location(game, game_get_space_id_at(game, 0));
-
   return OK;
 }
 
@@ -227,34 +221,7 @@ STATUS game_set_player_location(Game* game, Id id) {
 
   return OK;
 }
-/*
-Funcion que devuelve un STATUS y cuyos argumentos
-son un puntero a game y una id.
-Fija game.object_location en la id introducida
-*/
-/*
-*
-*
-Tunear cuando tenga object
-*
-*
-*/
-STATUS game_set_object_location(Game* game, Id id) {
 
-/*
-  Este i no se utiliza
-  int i = 0;
-*/
-
-  if (id == NO_ID) {
-    return ERROR;
-  }
-/*Filo la id de game object y compruebo que se ha asignado bien*/
-if((object_set_location(game->object, id))==ERROR)
-  return ERROR;
-
-  return OK;
-}
 
 /*
 Funcion que devuelve un Id y cuyo argumento es un puntero a GAME
@@ -266,16 +233,7 @@ Id game_get_player_location(Game* game) {
   aux = player_get_location(game->player);
   return aux;
 }
-/*
-Funcion que devuelve un Id y cuyo argumento es un puntero a GAME
-devuelve la object_location
-*/
 
-Id game_get_object_location(Game* game) {
-  Id aux;
-  aux = object_get_id_location(game->object);
-  return aux;
-}
 
 /*
 Funcion que devuelve un STATUS y cuyos argumentos son
@@ -300,7 +258,7 @@ T_Command game_get_last_command(Game* game){
 Funcion tipo void cuyo argumento es un puntero a game
 imprime una linea y despues las casillas
 Te imprime la informacion de cada casilla
-y luego te dice la player_location y la object_location
+y luego te dice la player_location
 */
 void game_print_data(Game* game) {
   int i = 0;
@@ -311,7 +269,6 @@ void game_print_data(Game* game) {
     space_print(game->spaces[i]);
   }
 
-  printf("=> Object location: %d\n", (int) (object_get_id_location(game->object)));
   printf("=> Player location: %d\n", (int) (player_get_location(game->player)));
   printf("prompt:> ");
 }
@@ -381,4 +338,62 @@ void game_callback_previous(Game* game) {
       return;
     }
   }
+}
+
+/*******************************************************************************
+Funcion: TODO COMENTAR BIEN
+Descripcion: Devuelve el id de la localizacion de un objeto
+Argumentos:
+  object: Puntero a una estructura de tipo Object
+Return:
+  Variable de tipo Id (long) que identifica al objeto (object->id)
+  Si el argumento introducido no es correcto, devuelve NULL
+*******************************************************************************/
+Id game_get_object_location(Game *game) {
+  int n;
+  Id space_aux,object_aux,object_id_aux;
+
+  if (!game) {
+    return NO_ID;
+  }
+
+  object_aux = object_get_id(game->object);
+  for (n=0;n<MAX_SPACES;n++){
+    space_aux = space_get_object(game->spaces[n]);
+    if (space_aux == object_aux){
+      object_id_aux = object_get_id(game->object);
+      return object_id_aux;
+    }
+  }
+  return NO_ID;
+}
+
+/*******************************************************************************
+Funcion: object_set_name TODO COMENTAR
+Descripcion: Asigna una localizacion a un objeto
+Argumentos:
+  object: Puntero a una estructura de tipo Object
+  name  : Cadena de caracteres que se guardará en object->name
+Return:
+  OK o ERROR, que pertenecen al enum STATUS
+*******************************************************************************/
+STATUS game_set_object_location(Game * game, Id space_id) {
+  int n;
+  Id space_aux,object_id_aux;
+  /* Comprueba los argumentos */
+  if (!game || space_id == NO_ID) {
+    return ERROR;
+  }
+
+  for (n=0;n<MAX_SPACES;n++){
+    space_aux = space_get_id(game->spaces[n]);
+    if (space_aux == space_id){
+      object_id_aux = object_get_id(game->object);
+      space_set_object(game->spaces[n], object_id_aux);
+      return OK;
+    }
+
+}
+  return ERROR;
+
 }

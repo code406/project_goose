@@ -18,7 +18,6 @@
 /* Estructura que define un objeto, con un identificador (id) y un nombre */
 struct _Object{
   Id id;
-  Id object_location;
   char name[WORD_SIZE+1];
 };
 
@@ -126,23 +125,7 @@ Id object_get_id(Object * object) {
   return object->id;
 }
 
-/*******************************************************************************
-Funcion: object_get_id_location
-Descripcion: Devuelve el id de la localizacion de un objeto
-Argumentos:
-  object: Puntero a una estructura de tipo Object
-Return:
-  Variable de tipo Id (long) que identifica al objeto (object->id)
-  Si el argumento introducido no es correcto, devuelve NULL
-*******************************************************************************/
 
-Id object_get_id_location(Object * object) {
-  if (!object)
-  {
-    return NO_ID;
-  }
-  return object->object_location;
-}
 
 
 /*******************************************************************************
@@ -161,27 +144,5 @@ STATUS object_print(Object * object) {
 
   fprintf(stdout, "--> Object (Id: %ld; Name: %s)\n", object->id, object->name);
 
-  return OK;
-}
-
-/*******************************************************************************
-Funcion: object_set_name
-Descripcion: Asigna una localizacion a un objeto
-Argumentos:
-  object: Puntero a una estructura de tipo Object
-  name  : Cadena de caracteres que se guardará en object->name
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
-STATUS object_set_location(Object * object, Id location) {
-  /* Comprueba los argumentos */
-  if (!object) {
-    return ERROR;
-  }
-
-  /* Le asigna a object.name el nombre introducido y lo comprueba  */
-  object->object_location = location;
-
-  /* Si todo va bien devuelve OK */
   return OK;
 }

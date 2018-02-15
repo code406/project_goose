@@ -131,7 +131,7 @@ Sus argumentos son un puntero a Space y un BOOL
 LE asigna al Space introducido el valor de object introducido
 Si algo falla devuelve ERROR y si va bien OK.
 */
-STATUS space_set_object(Space* space, BOOL value);
+STATUS space_set_object(Space* space, Id value);
 
 /*
 Devuelve un BOOL (true = 1, false = 0);
@@ -139,7 +139,7 @@ Su argumento es un puntero a Space
 Devuelve el valor del object del espacio (space.object)
 Si algo falla devuelve NULL
 */
-BOOL space_get_object(Space* space);
+Id space_get_object(Space* space);
 
 /*
 Devuelve un Status (ERROR = 0, OK = 1);
