@@ -18,7 +18,7 @@
 #include "object.h"
 
 
-#define N_CALLBACK 4
+#define N_CALLBACK 6
 #define ID_INI 1
 
 /**
@@ -34,12 +34,17 @@ void game_callback_unknown(Game* game);
 void game_callback_exit(Game* game);
 void game_callback_following(Game* game);
 void game_callback_previous(Game* game);
+void game_callback_get(Game* game);
+void game_callback_drop(Game* game);
 
 static callback_fn game_callback_fn_list[N_CALLBACK]={
   game_callback_unknown,
   game_callback_exit,
   game_callback_following,
-  game_callback_previous};
+  game_callback_previous,
+  game_callback_get,
+  game_callback_drop
+};
 
 /**
    Private functions
@@ -395,5 +400,84 @@ STATUS game_set_object_location(Game * game, Id space_id) {
 
 }
   return ERROR;
+
+}
+
+/*******************************************************************************
+Funcion: game_callback_get
+Descripcion: Implementa la funcionalidad del comando get (coger un objeto)
+Argumentos:
+  game: Puntero a una estructura de tipo Game
+Return:
+  Ninguno (void)
+*******************************************************************************/
+void game_callback_get(Game* game) {
+  /*int i = 0;*/
+  Id current_id = NO_ID;
+  Space * current_space = NULL;
+  /*Player * player = NULL;*/
+  Id object = NO_ID;
+
+  current_id = game_get_player_location(game);
+
+  if (NO_ID == current_id) {
+    return;
+  }
+
+  current_space = game_get_space(game, current_id);
+
+  if (current_space == NULL){
+    return;
+  }
+
+  /* Si el jugador está en una casilla con objeto,
+  lo coge (se le asigna) y desaparece de la casilla */
+  if (space_get_object(current_space) == NO_ID)
+    return;
+
+  object = object_get_id(game->object);
+  player_set_object(game->player, object);
+
+  /* Quitar de la casilla el objeto */
+  space_set_object(current_space, NO_ID);
+  }
+
+
+/*******************************************************************************
+Funcion: game_callback_drop
+Descripcion: Implementa la funcionalidad del comando drop (soltar un objeto)
+Argumentos:
+  game: Puntero a una estructura de tipo Game
+Return:
+  Ninguno (void)
+*******************************************************************************/
+void game_callback_drop(Game* game) {
+  /*int i = 0;*/
+  Id current_id = NO_ID;
+  Space * current_space = NULL;
+  /*Player * player = NULL;*/
+  Id object = NO_ID;
+
+  current_id = game_get_player_location(game);
+
+  if (NO_ID == current_id) {
+    return;
+  }
+
+  current_space = game_get_space(game, current_id);
+
+  if (current_space == NULL){
+    return;
+  }
+
+  /* Si el jugador está en casilla sin objeto,
+  lo deja (se le asigna) y aparece en la casilla */
+  if (space_get_object(current_space) == NO_ID){
+    object = object_get_id(game->object);
+    player_set_object(game->player, NO_ID);
+
+    /* Poner en la casilla el objeto */
+    space_set_object(current_space, object);
+  }
 
 }

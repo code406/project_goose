@@ -13,14 +13,14 @@
 #include "command.h"
 
 #define CMD_LENGHT 30
-#define N_CMD 5
+#define N_CMD 7
 
 /*Tabla de cinco elementos del tipo puntero a char*/
-char *cmd_to_str[N_CMD] = {"No command", "Unknown", "Exit", "Following", "Previous"};
+char *cmd_to_str[N_CMD] = {"No command", "Unknown", "Exit", "Following", "Previous","Get","Drop"};
 
 /*Tabla de cinco elementos del tipo puntero a char*/
 /*Abreviación de la tabla anterior*/
-char *short_cmd_to_str[N_CMD] ={"","","e","f","p"};
+char *short_cmd_to_str[N_CMD] ={"","","e","f","p","g","d"};
 
 /*Definición de la Función, no tiene argumentos*/
 T_Command get_user_input(){
