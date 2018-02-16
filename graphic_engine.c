@@ -4,7 +4,8 @@
 #include "graphic_engine.h"
 
 /*
-TODO: Comentar que parametros tiene la estructura Area
+estructura _Graphic_engine. consta de 5 parametros tipo area que son
+map, descript, banner, help y feedback y todos son punteros
 */
 struct _Graphic_engine
 {
@@ -17,10 +18,15 @@ struct _Graphic_engine
 
 
 
-/*
-Genera el graphic_engine
-Carece de argumentos. Devuelve un puntero a estructura de punteros de tipo Area
-*/
+
+/*******************************************************************************
+Funcion: graphic_engine_create
+Descripcion: Se encarga de destruir y de volverle a asignar al tablero sus componentes.
+Argumentos:
+  Ninguno
+Return:
+  Devuelve un puntero a estructura de punteros de tipo Area
+*******************************************************************************/
 Graphic_engine *graphic_engine_create()
 {
   /*
@@ -32,7 +38,7 @@ Graphic_engine *graphic_engine_create()
   if (ge)
     return ge;
 
-  /* TODO: Comentar cuando tenga screen.c */
+  /*aqui se inicializan los parametros de todas las variables de gr (tipo Graphic_engine)*/
   screen_init();
   ge = (Graphic_engine *) malloc(sizeof(Graphic_engine));
 
@@ -48,7 +54,14 @@ Graphic_engine *graphic_engine_create()
 
 
 
-/*  Funcion void que destruye cada area de la pantalla  */
+/*******************************************************************************
+Funcion: graphic_engine_destroy
+Descripcion: Se encarga de destruir cada area de la pantalla
+Argumentos:
+  un puntero a Graphic_engine (ge)
+Return:
+  nada (tipo void)
+*******************************************************************************/
 void graphic_engine_destroy(Graphic_engine *ge)
 {
   /* Si no hace falta destruirlo, return */
@@ -68,7 +81,14 @@ void graphic_engine_destroy(Graphic_engine *ge)
 
 
 
-/* Funcion void que dibuja cada area del juego */
+/*******************************************************************************
+Funcion: graphic_engine_paint_game
+Descripcion: Se encarga de dibujar cada area del juego.
+Argumentos:
+  un puntero a Graphic_engine (ge) y un puntero a Game (game)
+Return:
+  nada (tipo void)
+*******************************************************************************/
 void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 {
   Id id_act = NO_ID, id_back = NO_ID, id_next = NO_ID, obj_loc = NO_ID;
@@ -157,7 +177,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   screen_area_clear(ge->help);
   sprintf(str, " The commands you can use are:");
   screen_area_puts(ge->help, str);
-  sprintf(str, "     following or f, previous or p, or exit or e");
+  sprintf(str, "     following or f, previous or p, exit or e, get or g, drop or d");
   screen_area_puts(ge->help, str);
 
   /* Dibuja el area de feedback */

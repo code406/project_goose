@@ -14,14 +14,19 @@
 
 #include "command.h"
 #include "space.h"
+#include "player.h"
+#include "object.h"
+/*
+#include "object.h"
+*/
 
 /*Estructura que define el juego*/
 /*Consta de un mapa (101 espacios), unos comandos,
 la id del jugador y la id de los objetos*/
 typedef struct _Game{
   /*Id = long*/
-  Id player_location;
-  Id object_location;
+  Player* player;
+  Object* object;
   Space* spaces[MAX_SPACES + 1];
   T_Command last_cmd;
 } Game;
@@ -63,6 +68,8 @@ Te imprime la informacion de cada casilla
 y luego te dice la player_location y la object_location
 */
 void   game_print_data(Game* game);
+
+STATUS game_add_space(Game* game, Space* space);
 /*
 Funcion que devuelve un puntero a Space y cuyos
 argumentos son un puntero a game y un Id
@@ -87,4 +94,10 @@ Funcion que devuelve un comando y cuyo argumento es un puntero a game
 Devuelve la game.last_cmd
 */
 T_Command game_get_last_command(Game* game);
+
+STATUS game_set_object_location(Game * game, Id space_id);
+
+Id game_get_object_location(Game *game);
+
+
 #endif

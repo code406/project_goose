@@ -2,9 +2,9 @@
  * @brief It defines the game loop
  *
  * @file game_loop.c
- * @author Profesores PPROG
+ * @author Code406
  * @version 1.0
- * @date 13-01-2015
+ * @date 16/02/2018
  * @copyright GNU Public License
  */
 
@@ -58,7 +58,7 @@
  	Mientras usuario no da la orden de EXIT, y el juego no ha terminado,
  	se sigue "pintando" el juego y escaneando la introducción de comandos
  	*/
- 	while ( (command != EXIT) && !game_is_over(&game) )
+ 	while ((command != EXIT) && !game_is_over(&game))
  	{
  		graphic_engine_paint_game(gengine, &game);
  		command = get_user_input();
@@ -73,5 +73,4 @@
  	game_destroy(&game);
  	graphic_engine_destroy(gengine);
  	return 0;
-
  }
