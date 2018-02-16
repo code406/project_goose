@@ -16,18 +16,31 @@
 
 typedef long Id;
 
-typedef enum
-{
+
+/*
+Crea una enumeracion (modo de hacer una variable BOOL)
+False = 0; True = 1;
+*/
+
+typedef enum {
   FALSE, TRUE
 } BOOL;
 
-typedef enum
-{
+/*
+Para STATUS ERROR = 0; OK = 1;
+*/
+
+typedef enum {
   ERROR, OK
 } STATUS;
 
-typedef enum
-{
+/*
+Para DIRECTION
+N = 0; S = 1; E = 2; W = 3
+
+*/
+
+typedef enum {
   N, S, E, W
 } DIRECTION;
 
