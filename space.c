@@ -1,7 +1,7 @@
 /**
  * @brief Implementa una casilla
  * @file space.c
- * @author Pareja
+ * @author Arturo Morcillo, David Palomo
  * @version 1.0.E
  * @date 18/02/2018
  * @copyright GNU Public License

@@ -2,7 +2,7 @@
  * @brief Define la interfaz de game_reader.c
  *
  * @file game_reader.h
- * @author Pareja
+ * @author Arturo Morcillo, David Palomo
  * @version 1.0.E
  * @date 16-02-2018
  * @copyright GNU Public License

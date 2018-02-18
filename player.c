@@ -2,8 +2,8 @@
  * @artiimor Se encarga de definir a un jugador y las
  *funciones asociadas a los jugadores.
  * @file player.c
- * @author Arturo Morcillo
- * @version 1.0
+ * @author Arturo Morcillo, David Palomo
+ * @version 1.0.E
  * @date 08-02-2018
  * @copyright GNU Public License
  */

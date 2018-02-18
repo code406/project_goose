@@ -2,7 +2,7 @@
  * @brief Define el motor grafico
  *
  * @file graphic_engine.h
- * @author Pareja
+ * @author Arturo Morcillo, David Palomo
  * @version 1.0.E
  * @date 17-02-2017
  * @copyright GNU Public License

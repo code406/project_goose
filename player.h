@@ -1,7 +1,7 @@
 /**
  * @artiimor Define la interfaz de player.c
  * @file player.h
- * @author Pareja
+ * @author Arturo Morcillo, David Palomo
  * @version 1.0.E
  * @date 08-02-2018
  * @copyright GNU Public License

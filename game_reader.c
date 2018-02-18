@@ -2,7 +2,7 @@
  * @brief Funcionalidades para la carga de espacios
  *
  * @file game_reader.c
- * @author Pareja
+ * @author Arturo Morcillo, David Palomo
  * @version 1.0.E
  * @date 16-02-2018
  * @copyright GNU Public License

@@ -2,7 +2,7 @@
  * @brief Implementa la interfaz y las llamadas para cada comando
  *
  * @file game.c
- * @author Pareja
+ * @author Arturo Morcillo, David Palomo
  * @version 1.0.E
  * @date 16/02/2018
  * @copyright GNU Public License

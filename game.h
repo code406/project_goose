@@ -2,7 +2,7 @@
  * @brief Define la interfaz y las llamadas para cada comando
  *
  * @file game.h
- * @author Pareja
+ * @author Arturo Morcillo, David Palomo
  * @version 1.0.E
  * @date 17/02/2018
  * @copyright GNU Public License

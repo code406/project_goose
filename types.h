@@ -2,7 +2,7 @@
  * @brief Define varios tipos
  *
  * @file types.h
- * @author Pareja
+ * @author Arturo Morcillo, David Palomo
  * @version 1.0.E
  * @date 18/02/2018
  * @copyright GNU Public License

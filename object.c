@@ -2,7 +2,7 @@
  * @brief Define un objeto y las funciones asociadas a objetos
  *
  * @file object.c
- * @author Pareja
+ * @author Arturo Morcillo, David Palomo
  * @version 1.0.E
  * @date 10-02-2018
  * @copyright GNU Public License

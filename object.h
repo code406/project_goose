@@ -1,7 +1,7 @@
 /**
  * @brief Define object.c
  * @file object.h
- * @author Pareja
+ * @author Arturo Morcillo, David Palomo
  * @version 1.0.E
  * @date 10-02-2018
  * @copyright GNU Public License
