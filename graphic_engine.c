@@ -1,11 +1,23 @@
+/**
+ * @brief Motor grafico (interfaz de juego)
+ *
+ * @file graphic_engine.h
+ * @author Pareja
+ * @version 1.0.E
+ * @date 17-02-2017
+ * @copyright GNU Public License
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include "screen.h"
 #include "graphic_engine.h"
 
+
 /*
-estructura _Graphic_engine. consta de 5 parametros tipo area que son
-map, descript, banner, help y feedback y todos son punteros
+Estructura que define el Graphic_engine, con punteros a las areas de la interfaz.
+Cada parametro es un puntero a estructura de tipo Area, que contiene
+posiciones y tamaños de areas de la interfaz.
 */
 struct _Graphic_engine
 {
@@ -17,28 +29,26 @@ struct _Graphic_engine
 };
 
 
-
-
 /*******************************************************************************
 Funcion: graphic_engine_create
-Descripcion: Se encarga de destruir y de volverle a asignar al tablero sus componentes.
+Autor: David Palomo
+Descripcion: Genera y define cada area de la interfaz de juego
 Argumentos:
   Ninguno
 Return:
-  Devuelve un puntero a estructura de punteros de tipo Area
+  Puntero a la estructura de tipo Graphic_engine inicializada,
+  que contiene a su vez punteros a estructura de tipo Area
 *******************************************************************************/
 Graphic_engine *graphic_engine_create()
 {
-  /*
-  Al ser static, conservará el ultimo valor asignado
+  /* Al ser static, conservará el ultimo valor asignado.
   Se comprueba si ya se ha creado el graphic_engine.
-  Si es así, no se vuelve a crear y se devuelve el ge
-  */
+  Si es así, no se vuelve a crear y se devuelve el ge */
   static Graphic_engine *ge = NULL;
   if (ge)
     return ge;
 
-  /*aqui se inicializan los parametros de todas las variables de gr (tipo Graphic_engine)*/
+  /* Se inicializa la pantalla y se reserva memoria para el graphic engine */
   screen_init();
   ge = (Graphic_engine *) malloc(sizeof(Graphic_engine));
 
@@ -53,14 +63,15 @@ Graphic_engine *graphic_engine_create()
 }
 
 
-
 /*******************************************************************************
 Funcion: graphic_engine_destroy
-Descripcion: Se encarga de destruir cada area de la pantalla
+Autor: David Palomo
+Descripcion: Destruye (libera memoria) cada area de la interfaz de juego
 Argumentos:
-  un puntero a Graphic_engine (ge)
+  ge: Puntero a una estructura de tipo Graphic_engine,
+      que contiene a su vez punteros a estructura de tipo Area
 Return:
-  nada (tipo void)
+  Ninguno (void)
 *******************************************************************************/
 void graphic_engine_destroy(Graphic_engine *ge)
 {
@@ -68,26 +79,29 @@ void graphic_engine_destroy(Graphic_engine *ge)
   if (!ge)
     return;
 
+  /* Libera la memoria reservada para cada area de la pantalla  */
   screen_area_destroy(ge->map);
   screen_area_destroy(ge->descript);
   screen_area_destroy(ge->banner);
   screen_area_destroy(ge->help);
   screen_area_destroy(ge->feedback);
 
-  /* Libera la memoria */
+  /* Libera la memoria de screen y del graphic_engine */
   screen_destroy();
   free(ge);
 }
 
 
-
 /*******************************************************************************
 Funcion: graphic_engine_paint_game
-Descripcion: Se encarga de dibujar cada area del juego.
+Autor: David Palomo
+Descripcion: Dibuja cada area de la interfaz del juego
 Argumentos:
-  un puntero a Graphic_engine (ge) y un puntero a Game (game)
+  ge  : Puntero a una estructura de tipo Graphic_engine,
+        que contiene a su vez punteros a estructura de tipo Area
+  game: Puntero a una estructura de tipo Game
 Return:
-  nada (tipo void)
+  Ninguno (void)
 *******************************************************************************/
 void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 {
@@ -102,13 +116,15 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   screen_area_clear(ge->map);
   if ((id_act = game_get_player_location(game)) != NO_ID)
   {
-    /* Obtiene la posicion actual, previa y siguiente */
+    /* Obtiene la estructura de tipo Space para id_act (casilla actual),
+    y el id de las casillas anterior y siguiente respecto del jugador */
     space_act = game_get_space(game, id_act);
     id_back = space_get_north(space_act);
     id_next = space_get_south(space_act);
 
-    /*TODO: Comprobar los comentarios como el siguiente (son 3) */
-    /* Dibuja un "*" si la posicion previa coincide con la de un objeto */
+
+    /* Dibuja la casilla anterior.
+    Tendrá un "*" si en la casilla hay un objeto */
     if (game_get_object_location(game) == id_back)
       obj='*';
     else
@@ -126,7 +142,8 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     }
 
 
-    /* Dibuja un "*" si la posicion actual coincide con la de un objeto */
+    /* Dibuja la casilla actual.
+    Tendrá un "*" si en la casilla hay un objeto */
     if (game_get_object_location(game) == id_act)
       obj='*';
     else
@@ -144,7 +161,8 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     }
 
 
-    /* Dibuja un "*" si la posicion siguiente coincide con la de un objeto */
+    /* Dibuja la casilla siguiente.
+    Tendrá un "*" si en la casilla hay un objeto */
     if (game_get_object_location(game) == id_next)
       obj='*';
     else
@@ -177,7 +195,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   screen_area_clear(ge->help);
   sprintf(str, " The commands you can use are:");
   screen_area_puts(ge->help, str);
-  sprintf(str, "     following or f, previous or p, exit or e, get or g, drop or d");
+  sprintf(str, "     following or f, previous or p, or exit or e, get or g, drop or d");
   screen_area_puts(ge->help, str);
 
   /* Dibuja el area de feedback */
@@ -185,7 +203,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   sprintf(str, " %s", cmd_to_str[last_cmd-NO_CMD]);
   screen_area_puts(ge->feedback, str);
 
-  /* Dump to the terminal */
+  /* Pasa a la terminal */
   screen_paint();
   printf("prompt:> ");
 }

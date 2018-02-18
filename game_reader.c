@@ -1,9 +1,9 @@
 /**
- * @brief Implementa las funcionalidades necesarias para la
- *        carga de espacios
+ * @brief Funcionalidades para la carga de espacios
+ *
  * @file game_reader.c
- * @author Arturo Morcillo
- * @version 1.0
+ * @author Pareja
+ * @version 1.0.E
  * @date 16-02-2018
  * @copyright GNU Public License
  */
@@ -19,6 +19,7 @@
 
 /*******************************************************************************
 Funcion: game_load_spaces
+Autor: Arturo Morcillo
 Descripcion: Lee el archivo y carga los datos en la estructura Space de game
 Argumentos:
  game: Puntero a una estructura de tipo Game
@@ -88,7 +89,8 @@ STATUS game_load_spaces(Game* game, char* filename)
       space = space_create(id);
 
       /* Si ese espacio no esta vacio le asigna los valores leidos */
-      if (space != NULL) {
+      if (space != NULL)
+      {
         space_set_name(space, name);
         space_set_north(space, north);
         space_set_east(space, east);

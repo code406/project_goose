@@ -1,10 +1,10 @@
 /**
- * @brief It defines a textual graphic engine
+ * @brief Define el motor grafico
  *
  * @file graphic_engine.h
- * @author Profesores PPROG
- * @version 1.0
- * @date 18-01-2017
+ * @author Pareja
+ * @version 1.0.E
+ * @date 17-02-2017
  * @copyright GNU Public License
  */
 
@@ -12,42 +12,68 @@
 #define __GRAPHIC_ENGINE__
 
 #include "game.h"
+
+
 /*
-estructura _Graphic_engine. consta de 5 parametros tipo area que son
-map, descript, banner, help y feedback y todos son punteros
+Estructura que define el Graphic_engine, con punteros a las areas de la interfaz.
+Cada parametro es un puntero a estructura de tipo Area, que contiene
+posiciones y tamaños de areas de la interfaz.
 */
 typedef struct _Graphic_engine Graphic_engine;
 
+
 /*******************************************************************************
 Funcion: graphic_engine_create
-Descripcion: Se encarga de destruir y de volverle a asignar al tablero sus componentes.
+Autor: David Palomo
+Descripcion: Genera y define cada area de la interfaz de juego
 Argumentos:
   Ninguno
 Return:
-  Devuelve un puntero a estructura de punteros de tipo Area
+  Puntero a la estructura de tipo Graphic_engine inicializada,
+  que contiene a su vez punteros a estructura de tipo Area
 *******************************************************************************/
-
 Graphic_engine* graphic_engine_create();
+
 
 /*******************************************************************************
 Funcion: graphic_engine_destroy
-Descripcion: Se encarga de destruir cada area de la pantalla
+Autor: David Palomo
+Descripcion: Destruye (libera memoria) cada area de la interfaz de juego
 Argumentos:
-  un puntero a Graphic_engine (ge)
+  ge: Puntero a una estructura de tipo Graphic_engine,
+      que contiene a su vez punteros a estructura de tipo Area
 Return:
-  nada (tipo void)
+  Ninguno (void)
 *******************************************************************************/
 void graphic_engine_destroy(Graphic_engine *ge);
 
+
 /*******************************************************************************
 Funcion: graphic_engine_paint_game
-Descripcion: Se encarga de dibujar cada area del juego.
+Autor: David Palomo
+Descripcion: Dibuja cada area de la interfaz del juego
 Argumentos:
-  un puntero a Graphic_engine (ge) y un puntero a Game (game)
+  ge  : Puntero a una estructura de tipo Graphic_engine,
+        que contiene a su vez punteros a estructura de tipo Area
+  game: Puntero a una estructura de tipo Game
 Return:
-  nada (tipo void)
+  Ninguno (void)
 *******************************************************************************/
 void graphic_engine_paint_game(Graphic_engine *ge, Game *game);
+
+
+/*******************************************************************************
+Funcion: graphic_engine_write_command
+Autor: David Palomo
+Descripcion: De momento sin funcionalidad
+Argumentos:
+ge : Puntero a una estructura de tipo Graphic_engine,
+     que contiene a su vez punteros a estructura de tipo Area
+str: Cadena de caracteres
+Return:
+  Ninguno (void)
+*******************************************************************************/
 void graphic_engine_write_command(Graphic_engine *ge, char *str);
+
 
 #endif

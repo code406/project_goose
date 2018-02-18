@@ -1,10 +1,10 @@
 /**
- * @brief It defines a screen
+ * @brief Defines la pantalla en terminal
  *
  * @file screen.h
- * @author Profesores PPROG
- * @version 1.0
- * @date 11-01-2017
+ * @author Pareja
+ * @version 1.0.E
+ * @date 17-02-2017
  * @copyright GNU Public License
  */
 
@@ -12,113 +12,124 @@
 #define __SCREEN__
 
 #define SCREEN_MAX_STR 80
-/*Estructura con 4 enteros y un puntero a char*/
+
+/* Estructura que define una zona de pantalla */
 typedef struct _Area Area;
 
 
 /*******************************************************************************
 Funcion: screen_init
-Descripcion: libera la memoria de data por si ya esta reservada, luego
-la reserva y pone todos sus caracteres como BG_CHAR
+Autor: David Palomo
+Descripcion: Inicializa la zona de memoria de la pantalla y la rellena con
+  color de fondo (rellena con un caracter que luego se detecta en screen_paint)
 Argumentos:
-  ninguno
+  Ninguno
 Return:
-  nada (tipo void)
+  Ninguno (void)
 *******************************************************************************/
-
 void  screen_init();
+
 
 /*******************************************************************************
 Funcion: screen_destroy
-Descripcion: funcion tipo coid que libera la memoria de __data (variable)
+Autor: Arturo Morcillo
+Descripcion: Libera la memoria reservada para __data
 Argumentos:
-  ninguno
+  Ninguno
 Return:
-  nada (tipo void)
+  Ninguno (void)
 *******************************************************************************/
-
-
 void  screen_destroy();
+
 
 /*******************************************************************************
 Funcion: screen_paint
+Autor: Arturo Morcillo
 Descripcion: Se encarga de limpiar la terminal y volver a dibujar la pantalla.
-Si la terminal tiene el tamaño correcto da la sensacion de que se actualiza
+  Si la terminal tiene el tamaño correcto da la sensacion de que se actualiza
 Argumentos:
-  ninguno
+  Ninguno
 Return:
-  nada (tipo void)
+  Ninguno (void)
 *******************************************************************************/
-
 void  screen_paint();
+
 
 /*******************************************************************************
 Funcion: screen_gets
-Descripcion: Escribe lo de la macro PROMPT y le da al argumento el valor de COLUMNS
+Autor: David Palomo
+Descripcion: Imprime "prompt:>" en terminal y escanea la introducción de comando.
+  Por el momento, no se utiliza.
 Argumentos:
-  puntero a chat (str)
+  str: Cadena de caracteres
 Return:
-  nada (tipo void)
+  Ninguno (void)
 *******************************************************************************/
-
 void  screen_gets(char *str);
+
 
 /*******************************************************************************
 Funcion: screen_area_init
-Descripcion: Hace reserva dinamica de memoria para un area y luego le asigna los
-valores introducidos como argumenro.
-area.cursor tendra tantos ceros como indique el valor de area.height
+Autor: Arturo Morcillo
+Descripcion: Reserva memoria para un area y le asigna los valores argumento.
+  area.cursor tendra tantos ceros como indique el valor de area.height
 Argumentos:
-  cuatro enteros (x, y, width, height)
+  x     : Variable de tipo entero (int)
+  y     : Variable de tipo entero (int)
+  width : Variable de tipo entero (int)
+  height: Variable de tipo entero (int)
 Return:
-  un puntero a Area
+  Puntero a estructura de tipo Area
 *******************************************************************************/
-
 Area* screen_area_init(int x, int y, int width, int height);
+
 
 /*******************************************************************************
 Funcion: screen_area_destroy
+Autor: Arturo Morcillo
 Descripcion: Libera la memoria del area introducida como argumento
 Argumentos:
-  un puntero a area
+  area: Puntero a estructura de tipo Area
 Return:
-  nada (tipo void)
+  Ninguno (void)
 *******************************************************************************/
-
 void  screen_area_destroy(Area* area);
+
 
 /*******************************************************************************
 Funcion: screen_area_clear
-Descripcion: resetea el valor del area la funcion screen_area_reset_cursor
-Tambien pone tantos ceros a area.cursor como indique area.height
+Autor: Arturo Morcillo
+Descripcion: Resetea el valor del area con screen_area_reset_cursor
+  Tambien pone tantos ceros a area.cursor como indique area.height
 Argumentos:
-  un puntero a Area (area)
+  area: Puntero a estructura de tipo Area
 Return:
-  nada (tipo void)
+  Ninguno (void)
 *******************************************************************************/
-
 void  screen_area_clear(Area* area);
+
 
 /*******************************************************************************
 Funcion: screen_area_reset_cursor
-Descripcion: Funcion tipo void que devuelve el valor del area.cursor
-empleando la macro ACCESS
+Autor: Arturo Morcillo
+Descripcion: Resetea el valor del cursor al origen empleando la macro ACCESS
 Argumentos:
-  un puntero a Area (area)
+  area: Puntero a estructura de tipo Area
 Return:
-  nada (tipo void)
+  Ninguno (void)
 *******************************************************************************/
-
 void  screen_area_reset_cursor(Area* area);
+
 
 /*******************************************************************************
 Funcion: screen_area_puts
-Descripcion: Realiza llamadas a la macro y a otras funciones
-de esta forma termina de fijar el area
+Autor: Arturo Morcillo
+Descripcion: Copia en el area pasada como argumento los datos pasados en str.
 Argumentos:
-  un puntero a Area (area) y un puntero a char (str)
+  area: Puntero a estructura de tipo Area
+  str : Cadena de caracteres
 Return:
-  nada (tipo void)
+  Ninguno (void)
 *******************************************************************************/
 void  screen_area_puts(Area* area, char *str);
 

@@ -1,3 +1,13 @@
+/**
+ * @brief Implementa la pantalla en terminal
+ *
+ * @file screen.c
+ * @author Pareja
+ * @version 1.0.E
+ * @date 17-02-2017
+ * @copyright GNU Public License
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -10,209 +20,260 @@
 #define COLUMNS 80
 #define TOTAL_DATA (ROWS * COLUMNS) + 1
 
+/* Caracteres que se utilizan para pintar los colores de la interfaz */
 #define BG_CHAR '~'
 #define FG_CHAR ' '
+
 #define PROMPT " prompt:> "
 
-/*
-define tipo funcion.
-(d,x,y) son argumentos
-lo otro es valor
-*/
-#define ACCESS(d, x, y) (d + ((y) * COLUMNS) + (x))
 
 /*
-Estructure con 4 enteros y un puntero a char
+Estructura que define una zona de pantalla, con su posición u origen de
+coordenadas (x,y), su tamaño (width, height), y un puntero a su primera
+posicion en memoria.
 */
-struct _Area{
-  int x, y, width, height;
+struct _Area
+{
+  int x,
+      y,
+      width,
+      height;
   char *cursor;
 };
 
+
+/* __data es una cadena de caracteres que guarda memoria de forma contigua,
+y la pantalla maneja coordenadas bidimensionales */
 char *__data;
 
-/****************************/
-/*     Private functions    */
-/****************************/
+/*
+La macro ACCESS sirve para, pasando los parámetros de coordenadas x e y,
+acceder a la posicion de memoria que les corresponde.
+"d" se utitilizará como origen de coordenadas.
+El desplazamiento desde el origen es  "y * (número de columnas) + x".
+*/
+#define ACCESS(d, x, y) (d + ((y) * COLUMNS) + (x))
+
+
+
+/*************** Prototipo de funciones privadas ******************************/
 int  screen_area_cursor_is_out_of_bounds(Area* area);
 void screen_area_scroll_up(Area* area);
 void screen_utils_replaces_special_chars(char* str);
+/******************************************************************************/
 
-/****************************/
-/* Functions implementation */
-/****************************/
 
 /*******************************************************************************
 Funcion: screen_init
-Descripcion: libera la memoria de data por si ya esta reservada, luego
-la reserva y pone todos sus caracteres como BG_CHAR
+Autor: David Palomo
+Descripcion: Inicializa la zona de memoria de la pantalla y la rellena con
+  color de fondo (rellena con un caracter que luego se detecta en screen_paint)
 Argumentos:
-  ninguno
+  Ninguno
 Return:
-  nada (tipo void)
+  Ninguno (void)
 *******************************************************************************/
-
-void screen_init(){
+void screen_init()
+{
   /*libera la memoria de __data*/
-  screen_destroy(); /* Dispose if previously initialized */
+  screen_destroy();
   /*Reserva memoria para __data*/
   __data = (char *) malloc(sizeof(char) * TOTAL_DATA);
   /*copia BG_CHAR en los todos los caracteres de __data*/
-  if (__data){
-    memset(__data, (int) BG_CHAR, TOTAL_DATA); /*Fill the background*/
-    *(__data + TOTAL_DATA - 1) = '\0';         /*NULL-terminated string*/
+  if (__data)
+  {
+    memset(__data, (int) BG_CHAR, TOTAL_DATA); /* Rellena con color de fondo */
+    *(__data + TOTAL_DATA - 1) = '\0';         /* Termina __data en '\0'     */
   }
 }
+
+
 /*******************************************************************************
 Funcion: screen_destroy
-Descripcion: funcion tipo coid que libera la memoria de __data (variable)
+Autor: Arturo Morcillo
+Descripcion: Libera la memoria reservada para __data
 Argumentos:
-  ninguno
+  Ninguno
 Return:
-  nada (tipo void)
+  Ninguno (void)
 *******************************************************************************/
-void screen_destroy(){
+void screen_destroy()
+{
   if (__data)
     free(__data);
 }
+
+
 /*******************************************************************************
 Funcion: screen_paint
+Autor: Arturo Morcillo
 Descripcion: Se encarga de limpiar la terminal y volver a dibujar la pantalla.
-Si la terminal tiene el tamaño correcto da la sensacion de que se actualiza
+  Si la terminal tiene el tamaño correcto da la sensacion de que se actualiza
 Argumentos:
-  ninguno
+  Ninguno
 Return:
-  nada (tipo void)
+  Ninguno (void)
 *******************************************************************************/
-
-void screen_paint(){
-  /*Crea un puntero a char*/
+void screen_paint()
+{
   char *src = NULL;
-  /*crea una cadena de caracteres*/
   char dest[COLUMNS + 1];
   int i=0;
-  /*Todos los caracteres de dest son 0*/
+
+  /* Rellena con 0 los caracteres de dest */
   memset(dest, 0, COLUMNS + 1);
 
-  if (__data){
+  if (__data)
+  {
     /* puts(__data); */ /*Dump data directly to the terminal*/
     /*It works fine if the terminal window has the right size*/
 
-    puts("\033[2J"); /*Clear the terminal*/
-    for (src=__data; src < (__data + TOTAL_DATA - 1); src+=COLUMNS){
+    puts("\033[2J"); /* Limpia la terminal (clear) */
+    for (src=__data; src < (__data + TOTAL_DATA - 1); src+=COLUMNS)
+    {
+      /* Parece que funcionaría usando src sin copiar a dest (no lo modifica) */
       memcpy(dest, src, COLUMNS);
       /* printf("%s\n", dest); */
-      for (i=0; i<COLUMNS; i++){
-	if (dest[i] == BG_CHAR){
-	  printf("\033[0;34;44m%c\033[0m", dest[i]); /* fg:blue(34);bg:blue(44) */
-	}else{
-	  printf("\033[0;30;47m%c\033[0m", dest[i]); /* fg:black(30);bg:white(47)*/
-	}
+      for (i=0; i<COLUMNS; i++)
+      {
+      	if (dest[i] == BG_CHAR)
+        {
+      	  printf("\033[0;34;44m%c\033[0m", dest[i]); /* fg:blue(34);bg:blue(44) */
+      	}
+        else
+        {
+      	  printf("\033[0;30;47m%c\033[0m", dest[i]); /* fg:black(30);bg:white(47)*/
+      	}
       }
       printf("\n");
     }
   }
 }
+
+
 /*******************************************************************************
 Funcion: screen_gets
-Descripcion: Escribe lo de la macro PROMPT y le da al argumento el valor de COLUMNS
+Autor: David Palomo
+Descripcion: Imprime "prompt:>" en terminal y escanea la introducción de comando.
+  Por el momento, no se utiliza.
 Argumentos:
-  puntero a chat (str)
+  str: Cadena de caracteres
 Return:
-  nada (tipo void)
+  Ninguno (void)
 *******************************************************************************/
-
-void screen_gets(char *str){
+void screen_gets(char *str)
+{
   fprintf(stdout, PROMPT);
   if (fgets(str, COLUMNS, stdin))
-    *(str + strlen(str) - 1) = 0; /* Replaces newline character with '\0' */
+  {
+    /* Reemplaza el salto de línea introducido tras el comando por '\0' */
+    *(str + strlen(str) - 1) = 0;
+  }
 }
+
 
 /*******************************************************************************
 Funcion: screen_area_init
-Descripcion: Hace reserva dinamica de memoria para un area y luego le asigna los
-valores introducidos como argumenro.
-area.cursor tendra tantos ceros como indique el valor de area.height
+Autor: Arturo Morcillo
+Descripcion: Reserva memoria para un area y le asigna los valores argumento.
+  area.cursor tendra tantos ceros como indique el valor de area.height
 Argumentos:
-  cuatro enteros (x, y, width, height)
+  x     : Variable de tipo entero (int)
+  y     : Variable de tipo entero (int)
+  width : Variable de tipo entero (int)
+  height: Variable de tipo entero (int)
 Return:
-  un puntero a Area
+  Puntero a estructura de tipo Area
 *******************************************************************************/
-
-
-Area* screen_area_init(int x, int y, int width, int height){
+Area* screen_area_init(int x, int y, int width, int height)
+{
   int i = 0;
   Area* area = NULL;
-  if ( (area  = (Area*) malloc (sizeof(struct _Area))) ){
+
+  if ( (area  = (Area*) malloc (sizeof(struct _Area))) )
+  {
     *area = (struct _Area) {x, y, width, height, ACCESS(__data, x, y)};
     /*copia en los i primeros caracteres de area.cursor el numero 0*/
     for (i=0; i < area->height; i++)
+    {
       memset(ACCESS(area->cursor, 0, i), (int) FG_CHAR, (size_t) area->width);
+    }
   }
 
   return area;
 }
 
+
 /*******************************************************************************
 Funcion: screen_area_destroy
+Autor: Arturo Morcillo
 Descripcion: Libera la memoria del area introducida como argumento
 Argumentos:
-  un puntero a area
+  area: Puntero a estructura de tipo Area
 Return:
-  nada (tipo void)
+  Ninguno (void)
 *******************************************************************************/
-
-void screen_area_destroy(Area* area){
+void screen_area_destroy(Area* area)
+{
   if(area)
     free(area);
 }
+
+
 /*******************************************************************************
 Funcion: screen_area_clear
-Descripcion: resetea el valor del area la funcion screen_area_reset_cursor
-Tambien pone tantos ceros a area.cursor como indique area.height
+Autor: Arturo Morcillo
+Descripcion: Resetea el valor del area con screen_area_reset_cursor
+  Tambien pone tantos ceros a area.cursor como indique area.height
 Argumentos:
-  un puntero a Area (area)
+  area: Puntero a estructura de tipo Area
 Return:
-  nada (tipo void)
+  Ninguno (void)
 *******************************************************************************/
-
-void screen_area_clear(Area* area){
+void screen_area_clear(Area* area)
+{
   int i = 0;
 
-  if (area){
+  if (area)
+  {
     screen_area_reset_cursor(area);
 
     for (i=0; i < area->height; i++)
+    {
       memset(ACCESS(area->cursor, 0, i), (int) FG_CHAR, (size_t) area->width);
+    }
   }
 }
 
+
 /*******************************************************************************
 Funcion: screen_area_reset_cursor
-Descripcion: Funcion tipo void que devuelve el valor del area.cursor
-empleando la macro ACCESS
+Autor: Arturo Morcillo
+Descripcion: Resetea el valor del cursor al origen empleando la macro ACCESS
 Argumentos:
-  un puntero a Area (area)
+  area: Puntero a estructura de tipo Area
 Return:
-  nada (tipo void)
+  Ninguno (void)
 *******************************************************************************/
-
-void screen_area_reset_cursor(Area* area){
+void screen_area_reset_cursor(Area* area)
+{
   if (area)
     area->cursor = ACCESS(__data, area->x, area->y);
 }
 
+
 /*******************************************************************************
 Funcion: screen_area_puts
-Descripcion: Realiza llamadas a la macro y a otras funciones
-de esta forma termina de fijar el area
+Autor: Arturo Morcillo
+Descripcion: Copia en el area pasada como argumento los datos pasados en str.
 Argumentos:
-  un puntero a Area (area) y un puntero a char (str)
+  area: Puntero a estructura de tipo Area
+  str : Cadena de caracteres
 Return:
-  nada (tipo void)
+  Ninguno (void)
 *******************************************************************************/
-
-void screen_area_puts(Area* area, char *str){
+void screen_area_puts(Area* area, char *str)
+{
   int len = 0;
   char *ptr = NULL;
 
@@ -221,38 +282,73 @@ void screen_area_puts(Area* area, char *str){
 
   screen_utils_replaces_special_chars(str);
 
-  for (ptr = str; ptr < (str + strlen(str)); ptr+=area->width){
+  for (ptr = str; ptr < (str + strlen(str)); ptr+=area->width)
+  {
     memset(area->cursor, FG_CHAR, area->width);
+    /* resul = (condicion)? resultrue : resulfalse
+    Asigna strlen(ptr) si (strlen(ptr) < area->width). Si no, asigna area->width
+    Sirve para copiar solo lo necesario */
     len = (strlen(ptr) < area->width)? strlen(ptr) : area->width;
     memcpy(area->cursor, ptr, len);
     area->cursor += COLUMNS;
   }
 }
 
-/*
-Funcion que devuelve un int y cuyo argumento es puntero a Area
-devuelve 1 si la area.cursor es mayor que la funcion ACCESS(__data, area->x + area->width, area->y + area->height - 1)
-*/
 
-int screen_area_cursor_is_out_of_bounds(Area* area){
+/*******************************************************************************
+Funcion: screen_area_cursor_is_out_of_bounds
+Autor: Arturo Morcillo
+Descripcion: Indica si el cursor está fuera de limites
+Argumentos:
+  area: Puntero a estructura de tipo Area
+Return:
+  1 si el cursor está fuera de límites, y 0 si no.
+*******************************************************************************/
+int screen_area_cursor_is_out_of_bounds(Area* area)
+{
   return area->cursor > ACCESS(__data, area->x + area->width, area->y + area->height - 1);
 }
 
-/*
-Funcion tipo void cuyo argumento es un puntero a Area
-*/
-void screen_area_scroll_up(Area* area){
+
+/*******************************************************************************
+Funcion: screen_area_scroll_up
+Autor: David Palomo
+Descripcion: Hace scroll de un area una fila hacia arriba, sobreescribiendo
+  cada fila con la siguiente
+Argumentos:
+  area: Puntero a estructura de tipo Area
+Return:
+  Ninguno (void)
+*******************************************************************************/
+void screen_area_scroll_up(Area* area)
+{
   for(area->cursor = ACCESS(__data, area->x, area->y);
       area->cursor < ACCESS(__data, area->x + area->width, area->y + area->height - 2);
-      area->cursor += COLUMNS){
+      area->cursor += COLUMNS)
+  {
+    /* Copia de origen (puntero) a destino (puntero) tantos bytes como indica tamaño */
+    /* memcpy(destino, origen, tamaño) */
+    /* Copia cada fila siguiente del area en la fila anterior */
     memcpy(area->cursor, area->cursor+COLUMNS, area->width);
   }
 }
-/*Revisa caracteres como tildes para que no haya problemas*/
-void screen_utils_replaces_special_chars(char* str){
+
+
+/*******************************************************************************
+Funcion: screen_utils_replaces_special_chars
+Autor: Arturo Morcillo
+Descripcion: Reemplaza los caracteres especiales para que no haya problemas
+Argumentos:
+  str: Cadena de caracteres
+Return:
+  Ninguno (void)
+*******************************************************************************/
+void screen_utils_replaces_special_chars(char* str)
+{
   char *pch = NULL;
 
-  /* Replaces acutes and tilde with '??' */
+  /* Reemplaza caracteres especiales por '??' */
+  /* strpbrk devuelve un puntero al primer caracter de str de la lista */
   while ((pch = strpbrk (str, "ÁÉÍÓÚÑáéíóúñ")))
     memcpy(pch, "??", 2);
 }

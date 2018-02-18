@@ -2,8 +2,8 @@
  * @brief Interprete de comandos
  *
  * @file command.h
- * @author Code406
- * @version 1.0
+ * @author Pareja
+ * @version 1.0.E
  * @date 16-02-2018
  * @copyright GNU Public License
  */
@@ -27,6 +27,7 @@ typedef enum enum_Command
 
 /*******************************************************************************
 Funcion: get_user_input
+Autor: David Palomo
 Descripcion: Escanea el comando escrito por el usuario y lo transforma
   a un valor numérico definido en la enumeración T_Command.
 Argumentos:
