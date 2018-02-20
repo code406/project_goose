@@ -2,8 +2,8 @@
  * @brief Interprete de comandos
  *
  * @file command.c
- * @author Code406
- * @version 1.0
+ * @author Arturo Morcillo, David Palomo
+ * @version 1.0.E
  * @date 16-02-2018
  * @copyright GNU Public License
  */
@@ -12,7 +12,9 @@
 #include <strings.h>
 #include "command.h"
 
-#define CMD_LENGHT 30
+/* Tamaño máximo para la introducción de comando.
+ Deberíamos cambiar a screen_gets la funcion de input */
+#define CMD_LENGHT 256
 #define N_CMD 7
 
 /* Tabla de comandos que el usuario introduce (completos) */
@@ -25,6 +27,7 @@ char *short_cmd_to_str[N_CMD] ={"","","e","f","p","g","d"};
 
 /*******************************************************************************
 Funcion: get_user_input
+Autor: David Palomo
 Descripcion: Escanea el comando escrito por el usuario y lo transforma
   a un valor numérico definido en la enumeración T_Command.
 Argumentos:

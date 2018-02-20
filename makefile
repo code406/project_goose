@@ -27,3 +27,5 @@ object.o: object.c
 #Borrar objetos
 clean:
 	rm -f *.o
+tar:
+	tar -czvf goose.tar.gz game.c command.c game_loop.c graphic_engine.c screen.c space.c game_reader.c player.c object.c goose

@@ -1,9 +1,9 @@
 /**
- * @brief Implementa la interfaz y las llamadas
-          para cada comando
+ * @brief Implementa la interfaz y las llamadas para cada comando
+ *
  * @file game.c
- * @author Code406
- * @version 1.0
+ * @author Arturo Morcillo, David Palomo
+ * @version 1.0.E
  * @date 16/02/2018
  * @copyright GNU Public License
  */
@@ -36,8 +36,10 @@ void game_callback_previous(Game* game);
 void game_callback_get(Game* game);
 void game_callback_drop(Game* game);
 
+
 /*******************************************************************************
 Tabla: game_callback_fn_list
+Autor: David Palomo
 Descripcion: Tabla con las funciones de llamada de cada comando.
 Util: Si el usuario introduce un comando, invoco a la función de este, que
   tiene un índice en la tabla. Así, se puede reducir el código con bucles.
@@ -57,22 +59,9 @@ static callback_fn game_callback_fn_list[N_CALLBACK] =
 
 /*------------------------  Funciones privadas  ------------------------------*/
 
-
-/*******************************************************************************
-Funcion: game_add_space
-Descripcion: Crea una casilla. Al último elemento "vacío" (= NULL) de la
-  tabla de tipo Space de game se le asigna el Space introducido como argumento.
-Argumentos:
-  game : Puntero a una estructura de tipo Game
-  space: Puntero a una estructura de tipo Space (casilla)
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
-STATUS game_add_space(Game* game, Space* space);
-
-
 /*******************************************************************************
 Funcion: game_get_space_id_at
+Autor: Arturo Morcillo
 Descripcion: Devuelve la id de la casilla asociada a una posicion
 Argumentos:
   game    : Puntero a una estructura de tipo Game
@@ -85,6 +74,7 @@ Id     game_get_space_id_at(Game* game, int position);
 
 /*******************************************************************************
 Funcion: game_set_player_location
+Autor: Arturo Morcillo
 Descripcion: Asigna la posicion del jugador a un id introducido que
   identifica una casilla
 Argumentos:
@@ -98,6 +88,7 @@ STATUS game_set_player_location(Game* game, Id id);
 
 /*******************************************************************************
 Funcion: game_set_object_location
+Autor: David Palomo
 Descripcion: Asigna la posicion del objeto a un id introducido que
   identifica una casilla
 Argumentos:
@@ -108,13 +99,13 @@ Return:
 *******************************************************************************/
 STATUS game_set_object_location(Game* game, Id id);
 
-
-/*----------------------  End of funciones privadas  -------------------------*/
+/*----------------------  Fin de funciones privadas  -------------------------*/
 
 
 
 /*******************************************************************************
 Funcion: game_create
+Autor: David Palomo
 Descripcion: Inicializa la estructura de tipo Game
 Argumentos:
   game: Puntero a una estructura de tipo Game
@@ -144,6 +135,7 @@ STATUS game_create(Game* game)
 
 /*******************************************************************************
 Funcion: game_create_from_file
+Autor: David Palomo
 Descripcion: Crea el game, carga las casillas del archivo y coloca player
   y object en posicion inicial
 Argumentos:
@@ -169,7 +161,8 @@ STATUS game_create_from_file(Game* game, char* filename)
 
 /*******************************************************************************
 Funcion: game_destroy
-Descripcion: Elimina todas las casillas del Game
+Autor: Arturo Morcillo
+Descripcion: Elimina todas las casillas del Game, y libera la memoria reservada
 Argumentos:
   game: Puntero a una estructura de tipo Game
 Return:
@@ -181,6 +174,7 @@ STATUS game_destroy(Game* game)
   /* Recorre las casillas del spaces de la estructura game, y las vacía */
   for (i = 0; (i < MAX_SPACES) && (game->spaces[i] != NULL); i++)
   {
+    /* Libera memoria y pone a NULL el puntero correspondiente a cada casilla */
     space_destroy(game->spaces[i]);
   }
 
@@ -190,6 +184,7 @@ STATUS game_destroy(Game* game)
 
 /*******************************************************************************
 Funcion: game_add_space
+Autor: Arturo Morcillo
 Descripcion: Crea una casilla. Al último elemento "vacío" (= NULL) de la
   tabla de tipo Space de game se le asigna el Space introducido como argumento.
 Argumentos:
@@ -225,6 +220,7 @@ STATUS game_add_space(Game* game, Space* space)
 
 /*******************************************************************************
 Funcion: game_get_space_id_at
+Autor: Arturo Morcillo
 Descripcion: Devuelve la id de la casilla asociada a una posicion
 Argumentos:
   game    : Puntero a una estructura de tipo Game
@@ -246,6 +242,7 @@ Id game_get_space_id_at(Game* game, int position)
 
 /*******************************************************************************
 Funcion: game_get_space
+Autor: Arturo Morcillo
 Descripcion: Devuelve la casilla de game que coincide con el id introducido
 Argumentos:
   game: Puntero a una estructura de tipo Game
@@ -278,6 +275,7 @@ Space* game_get_space(Game* game, Id id)
 
 /*******************************************************************************
 Funcion: game_set_player_location
+Autor: Arturo Morcillo
 Descripcion: Fija la posición del jugador en la id introducida.
   Posiblemente quede obsoleta en futuras iteraciones,
   es válida porque solo hay un jugador.
@@ -306,6 +304,7 @@ STATUS game_set_player_location(Game* game, Id id)
 
 /*******************************************************************************
 Funcion: game_get_player_location
+Autor: Arturo Morcillo
 Descripcion: Devuelve la posición del jugador de la estructura game.
   Posiblemente quede obsoleta en futuras iteraciones,
   es válida porque solo hay un jugador.
@@ -322,6 +321,7 @@ Id game_get_player_location(Game* game)
 
 /*******************************************************************************
 Funcion: game_set_object_location
+Autor: Arturo Morcillo
 Descripcion: Fija la posición del objeto en la id introducida.
   Posiblemente quede obsoleta en futuras iteraciones,
   es válida porque solo hay un objeto.
@@ -362,6 +362,7 @@ STATUS game_set_object_location(Game* game, Id space_id)
 
 /*******************************************************************************
 Funcion: game_get_object_location
+Autor: David Palomo
 Descripcion: Devuelve la posición del objeto de la estructura game.
   Posiblemente quede obsoleta en futuras iteraciones,
   es válida porque solo hay un objeto.
@@ -400,6 +401,7 @@ Id game_get_object_location(Game* game)
 
 /*******************************************************************************
 Funcion: game_update
+Autor: David Palomo
 Descripcion: Actualiza el panel de comandos introducidos para mostrar
   el último comando introducido
 Argumentos:
@@ -419,6 +421,7 @@ STATUS game_update(Game* game, T_Command cmd)
 
 /*******************************************************************************
 Funcion: game_get_last_command
+Autor: David Palomo
 Descripcion: Devuelve el último comando introducido
 Argumentos:
   game: Puntero a una estructura de tipo Game
@@ -433,6 +436,7 @@ T_Command game_get_last_command(Game* game)
 
 /*******************************************************************************
 Funcion: game_print_data
+Autor: David Palomo
 Descripcion: Imprime informacion de cada casilla, y la posicion del jugador
   y del objeto. Posiblemente quede obsoleta en futuras iteraciones.
   Por el momento es válida porque solo hay un jugador y un objeto.
@@ -463,6 +467,7 @@ void game_print_data(Game* game)
 
 /*******************************************************************************
 Funcion: game_is_over
+Autor: Arturo Morcillo
 Descripcion: Termina el juego. De momento sin funcionalidad
 Argumentos:
   game: Puntero a una estructura de tipo Game
@@ -480,6 +485,7 @@ BOOL game_is_over(Game* game)
 
 /*******************************************************************************
 Funcion: game_callback_unknown
+Autor: David Palomo
 Descripcion: Implementa la funcionalidad del comando unknown (introducir un
   comando no contemplado en la lista). No ocurre nada.
 Argumentos:
@@ -494,6 +500,7 @@ void game_callback_unknown(Game* game)
 
 /*******************************************************************************
 Funcion: game_callback_exit
+Autor: David Palomo
 Descripcion: Implementa la funcionalidad del comando exit (salir del juego).
   No ocurre nada.
 Argumentos:
@@ -508,6 +515,7 @@ void game_callback_exit(Game* game)
 
 /*******************************************************************************
 Funcion: game_callback_following
+Autor: Arturo Morcillo
 Descripcion: Implementa la funcionalidad del comando following (avanzar)
 Argumentos:
   game: Puntero a una estructura de tipo Game
@@ -547,6 +555,7 @@ void game_callback_following(Game* game)
 
 /*******************************************************************************
 Funcion: game_callback_previous
+Autor: Arturo Morcillo
 Descripcion: Implementa la funcionalidad del comando previous (retroceder)
 Argumentos:
   game: Puntero a una estructura de tipo Game
@@ -586,6 +595,7 @@ void game_callback_previous(Game* game)
 
 /*******************************************************************************
 Funcion: game_callback_get
+Autor: David Palomo
 Descripcion: Implementa la funcionalidad del comando get (coger un objeto)
 Argumentos:
   game: Puntero a una estructura de tipo Game
@@ -629,6 +639,7 @@ void game_callback_get(Game* game)
 
 /*******************************************************************************
 Funcion: game_callback_drop
+Autor: David Palomo
 Descripcion: Implementa la funcionalidad del comando drop (soltar un objeto)
 Argumentos:
   game: Puntero a una estructura de tipo Game
