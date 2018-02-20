@@ -66,7 +66,7 @@ Return:
   Cadena de caracteres con el nombre del objeto (object->name)
   Si el argumento introducido no es correcto, devuelve NULL
 *******************************************************************************/
-const char * object_get_name(Object* object);
+char * object_get_name(Object* object);
 
 
 /*******************************************************************************

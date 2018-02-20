@@ -82,7 +82,7 @@ Return:
   Cadena de caracteres (nombre de la casilla)
   En caso de error, devuelve NULL.
 *******************************************************************************/
-const char* space_get_name(Space* space);
+char* space_get_name(Space* space);
 
 
 /*******************************************************************************
@@ -234,17 +234,6 @@ Return:
   OK o ERROR, que pertenecen al enum STATUS
 *******************************************************************************/
 STATUS space_print(Space* space);
-
-/*******************************************************************************
-Funcion: space_copy
-Autor: Arturo Morcillo
-Descripcion: Devuelve una copia del puntero introducido como argumento
-Argumentos:
-  ps: puntero a una estructura de tipo Space (casilla)
-Return:
-  Un puntero a la copia
-*******************************************************************************/
-Space *space_copy (Space *ps){
 
 
 #endif

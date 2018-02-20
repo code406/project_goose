@@ -162,7 +162,7 @@ Return:
   Cadena de caracteres con el nombre del jugador (player->name)
   Si el argumento introducido no es correcto, devuelve NULL
 *******************************************************************************/
-const char * player_get_name(Player* player)
+char * player_get_name(Player* player)
 {
   if (!player)
   {
@@ -263,6 +263,7 @@ STATUS player_print(Player* player)
 
   return OK;
 }
+
 /*******************************************************************************
 Funcion: player_copy
 Autor: Arturo Morcillo
@@ -274,26 +275,33 @@ Return:
 *******************************************************************************/
 
 Player *player_copy (Player *pc){
-  Player aux;
+  Player *aux;
+  Id id_aux;
+  char *nombre;
   if (pc == NULL)
     return NULL;
 
   aux = player_create(pc->player_id);
-  if(aux ==NO_ID)
+  if(aux == NULL)
     return NULL;
 
-  aux->name = player_get_name(pc);
-  if((aux->name == NULL)
-    return NULL;
-  aux->space_id = player_get_id(pc);
-  if((aux->space_id == NO_ID)
+  nombre = player_get_name(pc);
+  player_set_name(pc, nombre);
+  if(aux->name == NULL)
     return NULL;
 
-  aux->object_id = player_get_item(pc);
-  if((aux->object_id ==NO_ID)
+  id_aux = player_get_location(pc);
+  player_set_location(aux, id_aux);
+  if(aux->space_id == NO_ID)
+    return NULL;
+
+  id_aux = NO_ID;
+
+
+  id_aux = player_get_item(pc);
+  player_set_object(aux, id_aux);
+  if(aux->object_id == NO_ID)
       return NULL;
 
   return aux;
-
-
 }

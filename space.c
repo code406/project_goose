@@ -248,7 +248,7 @@ Return:
   Cadena de caracteres (nombre de la casilla)
   En caso de error, devuelve NULL.
 *******************************************************************************/
-const char * space_get_name(Space* space)
+char * space_get_name(Space* space)
 {
   if (!space)
   {
@@ -468,36 +468,48 @@ Return:
 *******************************************************************************/
 
 Space *space_copy (Space *ps){
-  Space aux;
+  Space *aux;
+  Id id_aux;
+  char *nombre;
   if (ps == NULL)
     return NULL;
 
   aux = space_create(ps->id);
-  if(aux == NO_ID)
+  if(aux == NULL)
     return NULL;
 
-  aux->name = space_get_name(ps);
-  if((aux->name == NULL)
+  nombre = space_get_name(ps);
+  space_set_name(aux, nombre);
+  if(aux->name == NULL)
     return NULL;
 
-  aux->north = space_get_north(ps);
-  if((aux->north == NO_ID)
+  id_aux = space_get_north(ps);
+  space_set_north (aux,id_aux);
+  if(aux->north == NO_ID)
     return NULL;
+  id_aux = NO_ID;
 
-  aux->south = space_get_south(ps);
-  if((aux->south == NO_ID)
+  id_aux = space_get_south(ps);
+  space_set_south (aux,id_aux);
+  if(aux->south == NO_ID)
     return NULL;
+  id_aux = NO_ID;
 
-  aux->west = space_get_west(ps);
-  if((aux->west == NO_ID)
+  id_aux = space_get_west(ps);
+  space_set_west (aux,id_aux);
+  if(aux->west == NO_ID)
     return NULL;
+  id_aux = NO_ID;
 
-  aux->east = space_get_east(ps);
-  if((aux->east == NO_ID)
+  id_aux = space_get_east(ps);
+  space_set_east(aux,id_aux);
+  if(aux->east == NO_ID)
     return NULL;
+  id_aux = NO_ID;
 
-  aux->object = space_get_object(ps);
-  if((aux->object == NO_ID)
+  id_aux = space_get_object(ps);
+  space_set_object(aux,id_aux);
+  if(aux->object == NO_ID)
     return NULL;
 
   return aux;
