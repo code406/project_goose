@@ -1,11 +1,10 @@
 /**
- * @brief Define la interfaz y las llamadas
-          para cada comando
+ * @brief Define la interfaz y las llamadas para cada comando
  *
  * @file game.h
- * @author Profesores PPROG
- * @version 1.0
- * @date 13-01-2015
+ * @author Arturo Morcillo, David Palomo
+ * @version 1.0.E
+ * @date 17/02/2018
  * @copyright GNU Public License
  */
 
@@ -16,88 +15,212 @@
 #include "space.h"
 #include "player.h"
 #include "object.h"
-/*
-#include "object.h"
-*/
 
-/*Estructura que define el juego*/
-/*Consta de un mapa (101 espacios), unos comandos,
-la id del jugador y la id de los objetos*/
-typedef struct _Game{
-  /*Id = long*/
+
+/*
+Estructura que define el juego
+Consta de un mapa de casillas,
+una variable que almacena el ultimo comando introducido,
+un puntero a la estructura que define al jugador y
+otro a la estructura que define un objeto.
+*/
+typedef struct _Game
+{
   Player* player;
   Object* object;
   Space* spaces[MAX_SPACES + 1];
   T_Command last_cmd;
 } Game;
 
-/*
-Funcion que devuelve un STATUS y cuyo argumento
-es una variable (estructura) tipo game
-se encarga de inicializar la estructura tipo game tipo game
-introducida, dandole valores de 0 ó -1.
-Si todo va bien devuelve un OK
-*/
+
+/*******************************************************************************
+Funcion: game_create
+Autor: David Palomo
+Descripcion: Inicializa la estructura de tipo Game
+Argumentos:
+  game: Puntero a una estructura de tipo Game
+Return:
+  OK o ERROR, que pertenecen al enum STATUS
+*******************************************************************************/
 STATUS game_create(Game* game);
-/*
-Funcion que devuelve un STATUS y cuyos argumentos
-son un puntero a game y un filename
-Crea el game, lo inicializa, carga los espacios del filename,
-y fija la id del player y object a 0.
-Si todo va bien devuelve un OK
-*/
+
+
+/*******************************************************************************
+Funcion: game_create_from_file
+Autor: David Palomo
+Descripcion: Crea el game, carga las casillas del archivo y coloca player
+  y object en posicion inicial
+Argumentos:
+  game    : Puntero a una estructura de tipo Game
+  filename: Archivo del que se lee la disposicion de las casillas
+Return:
+  OK o ERROR, que pertenecen al enum STATUS
+*******************************************************************************/
 STATUS game_create_from_file(Game* game, char* filename);
 
+
+/*******************************************************************************
+Funcion: game_update
+Autor: David Palomo
+Descripcion: Actualiza el panel de comandos introducidos para mostrar
+  el último comando introducido
+Argumentos:
+  game     : Puntero a una estructura de tipo Game
+  T_Command: Enumeración que identifica cada comando con un número
+Return:
+  OK o ERROR, que pertenecen al enum STATUS
+*******************************************************************************/
 STATUS game_update(Game* game, T_Command cmd);
-/*
-Funcion que devuelve una variable tipo STATUS (ERROR ó OK)
-Se encarga de eliminar todos los espacion en el Game introducido
-como argumento
-*/
+
+
+/*******************************************************************************
+Funcion: game_destroy
+Autor: Arturo Morcillo
+Descripcion: Elimina todas las casillas del Game, y libera la memoria reservada
+Argumentos:
+  game: Puntero a una estructura de tipo Game
+Return:
+  OK o ERROR, que pertenecen al enum STATUS
+*******************************************************************************/
 STATUS game_destroy(Game* game);
-/*
-Funcion que devuelve un BOOl y cuyo argumento es un puntero a GAME.
-Devuelve siempre FALSE
-*/
+
+
+/*******************************************************************************
+Funcion: game_is_over
+Autor: Arturo Morcillo
+Descripcion: Termina el juego. De momento sin funcionalidad
+Argumentos:
+  game: Puntero a una estructura de tipo Game
+Return:
+  Variable de tipo BOOL (TRUE o FALSE)
+  Por el momento siempre devuelve FALSE
+*******************************************************************************/
 BOOL   game_is_over(Game* game);
-void   game_print_screen(Game* game);
-/*
-Funcion tipo void cuyo argumento es un puntero a game
-imprime una linea y despues las casillas
-Te imprime la informacion de cada casilla
-y luego te dice la player_location y la object_location
-*/
+
+
+/*******************************************************************************
+Funcion: game_print_screen
+Autor: David Palomo
+Descripcion: De momento sin funcionalidad
+Argumentos:
+  game: Puntero a una estructura de tipo Game
+Return:
+  Ninguno (void)
+*******************************************************************************/
+void game_print_screen(Game* game);
+
+
+/*******************************************************************************
+Funcion: game_print_data
+Autor: David Palomo
+Descripcion: Imprime informacion de cada casilla, y la posicion del jugador
+  y del objeto. Posiblemente quede obsoleta en futuras iteraciones.
+  Por el momento es válida porque solo hay un jugador y un objeto.
+Argumentos:
+  game: Puntero a una estructura de tipo Game
+Return:
+  Ninguno (void)
+*******************************************************************************/
 void   game_print_data(Game* game);
 
+
+/*******************************************************************************
+Funcion: game_add_space
+Autor: Arturo Morcillo
+Descripcion: Crea una casilla. Al último elemento "vacío" (= NULL) de la
+  tabla de tipo Space de game se le asigna el Space introducido como argumento.
+Argumentos:
+  game : Puntero a una estructura de tipo Game
+  space: Puntero a una estructura de tipo Space (casilla)
+Return:
+  OK o ERROR, que pertenecen al enum STATUS
+*******************************************************************************/
 STATUS game_add_space(Game* game, Space* space);
-/*
-Funcion que devuelve un puntero a Space y cuyos
-argumentos son un puntero a game y un Id
-Si no se introduce un id devuelve NULL
-Recorre los games.spaces y si el id de alguno
-coindice con el introducido te lo devuelve. Si no
-encuentra nada devuelve NULL
-*/
+
+
+/*******************************************************************************
+Funcion: game_get_space
+Autor: Arturo Morcillo
+Descripcion: Devuelve la casilla de game que coincide con el id introducido
+Argumentos:
+  game: Puntero a una estructura de tipo Game
+  id  : Entero de tipo Id (long)
+Return:
+  Puntero a la estructura de tipo Space (casilla)
+  Si no se introduce un id, o no encuentra una casilla que corresponda
+  al id, devuelve NULL
+*******************************************************************************/
 Space* game_get_space(Game* game, Id id);
-/*
-Funcion que devuelve un Id y cuyo argumento es un puntero a GAME
-devuelve la player_location
-*/
-Id     game_get_player_location(Game* game);
-/*
-Funcion que devuelve un Id y cuyo argumento es un puntero a GAME
-devuelve la object_location
-*/
-Id     game_get_object_location(Game* game);
-/*
-Funcion que devuelve un comando y cuyo argumento es un puntero a game
-Devuelve la game.last_cmd
-*/
+
+
+/*******************************************************************************
+Funcion: game_get_player_location
+Autor: Arturo Morcillo
+Descripcion: Devuelve la posición del jugador de la estructura game.
+  Posiblemente quede obsoleta en futuras iteraciones,
+  es válida porque solo hay un jugador.
+Argumentos:
+  game: Puntero a una estructura de tipo Game
+Return:
+  Entero de tipo Id (long) que identifica una casilla
+*******************************************************************************/
+Id game_get_player_location(Game* game);
+
+
+/*******************************************************************************
+Funcion: game_set_player_location
+Autor: Arturo Morcillo
+Descripcion: Fija la posición del jugador en la id introducida.
+  Posiblemente quede obsoleta en futuras iteraciones,
+  es válida porque solo hay un jugador.
+Argumentos:
+  game: Puntero a una estructura de tipo Game
+  id  : Entero de tipo Id (long)
+Return:
+  OK o ERROR, que pertenecen al enum STATUS
+*******************************************************************************/
+STATUS game_set_player_location(Game* game, Id id);
+
+
+/*******************************************************************************
+Funcion: game_set_object_location
+Autor: Arturo Morcillo
+Descripcion: Fija la posición del objeto en la id introducida.
+  Posiblemente quede obsoleta en futuras iteraciones,
+  es válida porque solo hay un objeto.
+Argumentos:
+  object: Puntero a una estructura de tipo Object
+  name  : Cadena de caracteres que se guardará en object->name
+Return:
+  OK o ERROR, que pertenecen al enum STATUS
+*******************************************************************************/
+STATUS game_set_object_location(Game* game, Id space_id);
+
+
+/*******************************************************************************
+Funcion: game_get_object_location
+Autor: David Palomo
+Descripcion: Devuelve la posición del objeto de la estructura game.
+  Posiblemente quede obsoleta en futuras iteraciones,
+  es válida porque solo hay un objeto.
+Argumentos:
+  game: Puntero a una estructura de tipo Game
+Return:
+  Entero de tipo Id (long) que identifica una casilla
+*******************************************************************************/
+Id game_get_object_location(Game* game);
+
+
+/*******************************************************************************
+Funcion: game_get_last_command
+Autor: David Palomo
+Descripcion: Devuelve el último comando introducido
+Argumentos:
+  game: Puntero a una estructura de tipo Game
+Return:
+  Valor numérico de la enumeración T_Command que identifica a cada comando
+*******************************************************************************/
 T_Command game_get_last_command(Game* game);
-
-STATUS game_set_object_location(Game * game, Id space_id);
-
-Id game_get_object_location(Game *game);
 
 
 #endif
