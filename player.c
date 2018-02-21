@@ -17,18 +17,6 @@
 #include "object.h"
 
 
-/*
-Estructura que define un jugador, con un identificador (id) y un nombre,
-un id que indica en qué casilla se encuentra, y otro que indica qué objeto porta
-*/
-struct _Player
-{
-  Id player_id;
-  char name[WORD_SIZE+1];
-  Id space_id;
-  Id object_id;
-};
-
 
 /*******************************************************************************
 Funcion: player_create

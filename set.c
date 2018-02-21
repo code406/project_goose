@@ -7,30 +7,16 @@
  * @date 10-02-2018
  * @copyright GNU Public License
  */
-/*
-Estructura que almacena los jugadores
-Consta de un array de punteros a Player y un entero para recorrerlo
-*/
- struct Players{
-   Player* player[MAX_PLAYERS];
-   int tope; /*Para recorrer el array*/
- }
- /*
- Estructura que almacena los objetos
- Consta de un array de punteros a Object y un entero para recorrerlo
- */
- struct Objects{
-   Object *object[MAX_OBJECTS];
-   int tope; /*Para recorrer el array*/
- }
- /*
- Estructura que almacena los espacios
- Consta de un array de punteros a Space y un entero para recorrerlo
- */
- struct Spaces{
-   Space *space[MAX_SPACES];
-   int tope; /*Para recorrer el array*/
- }
+
+ #include <stdio.h>
+ #include <stdlib.h>
+
+ #include "set.h"
+ #include "object.h"
+ #include "player.h"
+ #include "space.h"
+
+
  /*******************************************************************************
  Funcion: players_create
  Autor: Arturo Morcillo
@@ -41,7 +27,7 @@ Consta de un array de punteros a Player y un entero para recorrerlo
  Return:
    Puntero a estructura de tipo Players
  *******************************************************************************/
- Players * players_create() {
+ Players *players_create() {
     Players *p;
     int i;
     p = (Players*)calloc(1,sizeof(Players));
@@ -85,7 +71,7 @@ Argumentos:
 Return:
   Un Status que indica si la funcion ha ido bien o no
 *******************************************************************************/
-STATUS players_add(Players *p, const Player *player) {
+STATUS players_add(Players *p, Player *player) {
     if (p==NULL || player==NULL)
       return ERROR;
     if ( p->tope == MAX_PLAYERS-1)
@@ -107,7 +93,7 @@ STATUS players_add(Players *p, const Player *player) {
  Return:
    BOOL que nos indica si esta vacia o no
  *******************************************************************************/
- BOOL players_isempty(const Players *p) {
+ BOOL players_isempty(Players *p) {
     if (p==NULL)
       return TRUE;
     if (p->tope==0)
@@ -148,13 +134,13 @@ Argumentos:
 Return:
   Nada (tipo void)
 *******************************************************************************/
-void players_print(const Players *p) {
+void players_print(Players *p) {
     int n;
    /*compruebo los argumentos*/
    if (p == NULL || p->player == NULL || p->tope == 0)
-    return 0;
+    return;
   for (n=(p->tope-1);n>=0;n++){
-    player_print(s->player[n]);
+    player_print(p->player[n]);
   }
 }
 
@@ -212,14 +198,14 @@ Argumentos:
 Return:
   Un Status que indica si la funcion ha ido bien o no
 *******************************************************************************/
-STATUS objects_add(Objects *o, const Object *object) {
+STATUS objects_add(Objects *o, Object *object) {
     if (o==NULL || object==NULL)
       return ERROR;
     if ( o->tope == MAX_OBJECTS-1)
       return ERROR;
 
-    p->object[o->tope] = object_copy(object);
-    if (o->object[p->tope]==NULL)
+    o->object[o->tope] = object_copy(object);
+    if (o->object[o->tope]==NULL)
       return ERROR;
 
     o->tope++;
@@ -234,7 +220,7 @@ STATUS objects_add(Objects *o, const Object *object) {
  Return:
    BOOL que nos indica si esta vacia o no
  *******************************************************************************/
- BOOL objects_isempty(const Objects *o) {
+ BOOL objects_isempty(Objects *o) {
     if (o==NULL)
       return TRUE;
     if (o->tope==0)
@@ -275,13 +261,16 @@ Argumentos:
 Return:
   Nada (tipo void)
 *******************************************************************************/
-void objects_print(const Object *o) {
+void objects_print(Objects *o) {
     int n;
+    Object *aux;
+
    /*compruebo los argumentos*/
-   if (o == NULL || o->object == NULL || o->tope == 0)
+   if (objects_isempty(o) == TRUE)
     return;
   for (n=(o->tope-1);n>=0;n++){
-    object_print(s->player[n]);
+    aux = object_copy (o->object[n]);
+    object_print(aux);
   }
 }
 
@@ -306,7 +295,8 @@ Spaces * spaces_create() {
 
    for (i=0; i<MAX_PLAYERS; i++)
        s->space[i] = NULL;
-   return p;
+
+   return s;
 }
 /*******************************************************************************
 Funcion: spaces_destroy
@@ -341,13 +331,13 @@ Argumentos:
 Return:
   Un Status que indica si la funcion ha ido bien o no
 *******************************************************************************/
-STATUS spaces_add(Spaces *s, const Space *space) {
+STATUS spaces_add(Spaces *s, Space *space) {
    if (s==NULL || space==NULL)
      return ERROR;
    if ( s->tope == MAX_SPACES-1)
      return ERROR;
 
-   s->space[p->tope] = space_copy(space);
+   s->space[s->tope] = space_copy(space);
    if (s->space[s->tope]==NULL)
      return ERROR;
 
@@ -364,7 +354,7 @@ Return:
   BOOL que nos indica si esta vacia o no
 *******************************************************************************/
 
-BOOL spaces_isempty(const Spaces *s) {
+BOOL spaces_isempty(Spaces *s) {
    if (s==NULL)
      return TRUE;
    if (s->tope==0)
@@ -405,12 +395,12 @@ Argumentos:
 Return:
   Nada (tipo void)
 *******************************************************************************/
-void spaces_print(const Spaces *s) {
+void spaces_print(Spaces *s) {
    int n;
   /*compruebo los argumentos*/
   if (s == NULL || s->space == NULL || s->tope == 0)
    return;
  for (n=(s->tope-1);n>=0;n++){
-   space_print(s->player[n]);
+   space_print(s->space[n]);
  }
 }

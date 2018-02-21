@@ -235,5 +235,17 @@ Return:
 *******************************************************************************/
 STATUS space_print(Space* space);
 
+/*******************************************************************************
+Funcion: space_copy
+Autor: Arturo Morcillo
+Descripcion: Devuelve una copia del puntero introducido como argumento
+Argumentos:
+  ps: puntero a una estructura de tipo Space (casilla)
+Return:
+  Un puntero a la copia
+*******************************************************************************/
+
+Space *space_copy (Space *ps);
+
 
 #endif

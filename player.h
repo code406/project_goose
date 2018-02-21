@@ -14,8 +14,16 @@
 #include "space.h"
 
 
-/* Estructura que define un jugador */
-typedef struct _Player Player;
+/*
+Estructura que define un jugador, con un identificador (id) y un nombre,
+un id que indica en qué casilla se encuentra, y otro que indica qué objeto porta
+*/
+typedef struct _Player{
+  Id player_id;
+  char name[WORD_SIZE+1];
+  Id space_id;
+  Id object_id;
+} Player;
 
 
 /*******************************************************************************

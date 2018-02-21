@@ -1,8 +1,8 @@
 CC=gcc
 CFLAGS= -g -Wall -ansi -pedantic
 all: goose
-goose: game.o command.o game_loop.o graphic_engine.o screen.o space.o game_reader.o player.o object.o
-	$(CC) $(CFLAGS) game.o command.o game_loop.o graphic_engine.o screen.o space.o game_reader.o player.o object.o -o goose
+goose: game.o command.o game_loop.o graphic_engine.o screen.o space.o game_reader.o player.o object.o set.o
+	$(CC) $(CFLAGS) game.o command.o game_loop.o graphic_engine.o screen.o space.o game_reader.o player.o object.o set.o -o goose
 
 #Objetos
 game.o: game.c
@@ -23,6 +23,9 @@ player.o: player.c
 	$(CC) $(CFLAGS) -c player.c
 object.o: object.c
 	$(CC) $(CFLAGS) -c object.c
+set.o: set.c
+	$(CC) $(CFLAGS) -c set.c
+
 
 #Borrar objetos
 clean:

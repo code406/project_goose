@@ -15,7 +15,10 @@
 
 
 /* Estructura que define un objeto */
-typedef struct _Object Object;
+typedef struct _Object{
+  Id id;
+  char name[WORD_SIZE+1];
+} Object;
 
 
 /*******************************************************************************

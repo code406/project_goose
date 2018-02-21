@@ -15,22 +15,30 @@
 
 #define MAX_PLAYERS 10
 #define MAX_OBJECTS 10
-#define MAX_SPACES 40
 /*
 Estructura que almacena los jugadores
 Consta de un array de punteros a Player y un entero para recorrerlo
 */
-typedef struct _Players Players;
+typedef struct _Players{
+  Player* player[MAX_PLAYERS];
+  int tope; /*Para recorrer el array*/
+} Players;
 /*
 Estructura que almacena los objetos
 Consta de un array de punteros a Object y un entero para recorrerlo
 */
-typedef struct _Objects Objects;
+typedef struct _Objects{
+  Object *object[MAX_OBJECTS];
+  int tope; /*Para recorrer el array*/
+} Objects;
 /*
 Estructura que almacena los espacios
 Consta de un array de punteros a Space y un entero para recorrerlo
 */
-typedef struct _Spaces Spaces;
+typedef struct _Spaces{
+  Space *space[MAX_SPACES];
+  int tope; /*Para recorrer el array*/
+} Spaces;
 
 /*******************************************************************************
 Funcion: players_create
@@ -66,7 +74,7 @@ Argumentos:
 Return:
   Un Status que indica si la funcion ha ido bien o no
 *******************************************************************************/
-STATUS players_add(Players *p, const Player *player);
+STATUS players_add(Players *p, Player *player);
 
 /*******************************************************************************
 Funcion: players_isempty
@@ -77,7 +85,7 @@ Argumentos:
 Return:
   BOOL que nos indica si esta vacia o no
 *******************************************************************************/
-BOOL players_isempty(const Players *p);
+BOOL players_isempty(Players *p);
 
 /*******************************************************************************
 Funcion: players_pop
@@ -99,7 +107,7 @@ Argumentos:
 Return:
   Nada (tipo void)
 *******************************************************************************/
-void players_print(const Players *p);
+void players_print(Players *p);
 
 /*******************************************************************************
 Funcion: objects_create
@@ -135,7 +143,7 @@ Argumentos:
 Return:
   Un Status que indica si la funcion ha ido bien o no
 *******************************************************************************/
-STATUS objects_add(Objects *o, const Object *object);
+STATUS objects_add(Objects *o,   Object *object);
 
 /*******************************************************************************
 Funcion: objects_isempty
@@ -146,7 +154,7 @@ Argumentos:
 Return:
   BOOL que nos indica si esta vacia o no
 *******************************************************************************/
-BOOL objects_isempty(const Objects *o);
+BOOL objects_isempty(  Objects *o);
 
 /*******************************************************************************
 Funcion: players_pop
@@ -168,7 +176,7 @@ Argumentos:
 Return:
   Nada (tipo void)
 *******************************************************************************/
-void objects_print(const Object *o);
+void objects_print(Objects *o);
 
 /*******************************************************************************
 Funcion: spaces_create
@@ -205,7 +213,7 @@ Argumentos:
 Return:
   Un Status que indica si la funcion ha ido bien o no
 *******************************************************************************/
-STATUS spaces_add(Spaces *s, const Space *space);
+STATUS spaces_add(Spaces *s,   Space *space);
 
 /*******************************************************************************
 Funcion: players_isempty
@@ -217,7 +225,7 @@ Return:
   BOOL que nos indica si esta vacia o no
 *******************************************************************************/
 
-BOOL spaces_isempty(const Spaces *s);
+BOOL spaces_isempty(  Spaces *s);
 
 /*******************************************************************************
 Funcion: spaces_pop
@@ -239,4 +247,4 @@ Argumentos:
 Return:
   Nada (tipo void)
 *******************************************************************************/
-void spaces_print(const Spaces *s);
+void spaces_print(  Spaces *s);
