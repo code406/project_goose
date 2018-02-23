@@ -97,18 +97,21 @@ la cantidad de Ids que hay almacenadas. Donde estaba la eliminada ahora hay NO_I
 Argumentos:
   Un puntero a Set (ps)
 Return:
-  Un STATUS. Devuelve ERROR si ago falla
+  una Id (La eliminada). Devuelve NO_ID si algo falla
 *******************************************************************************/
 
-STATUS set_del (Set *ps){
+Id set_del (Set *ps){
+  Id id_aux;
   if (ps == NULL)
-    return ERROR;
+    return NO_ID;
+
+  id_aux = ps->id[ps->cantidad];
 
   ps->id[ps->cantidad] = NO_ID;
 
   ps->cantidad--;
 
-  return OK;
+  return id_aux;
 
 }
 
@@ -137,3 +140,23 @@ STATUS set_print(Set *ps){
   return OK;
 
   }
+
+/*******************************************************************************
+Funcion: set_isempty
+Autor: Arturo Morcillo
+Descripcion: Comprueba si el Set introducido no tiene ninguna id almacenada
+Argumentos:
+  Un puntero a Set (ps)
+Return:
+  Un BOOL. TRUE si esta vacia, FALSE si tiene alguna ID.
+*******************************************************************************/
+
+BOOL set_isempty(Set *ps)
+{
+  if (ps == NULL)
+    return TRUE;
+  if (ps->cantidad == 0 || ps->id[0] == NO_ID)
+    return TRUE;
+
+  return FALSE;
+}
