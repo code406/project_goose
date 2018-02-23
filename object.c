@@ -152,32 +152,3 @@ STATUS object_print(Object * object)
 
   return OK;
 }
-
-/*******************************************************************************
-Funcion: object_copy
-Autor: Arturo Morcillo
-Descripcion: Devuelve una copia del puntero introducido como argumento
-Argumentos:
-  po: puntero a una estructura de tipo Object
-Return:
-  Un puntero a la copia
-*******************************************************************************/
-
-Object *object_copy (Object *po){
-  Object *aux;
-  char *nombre;
-  if (po == NULL)
-    return NULL;
-
-  aux = object_create(po->id);
-  if(aux == NULL || aux->id != po->id)
-    return NULL;
-
-  nombre = (object_get_name(po));
-  object_set_name(aux, nombre);
-  if(aux->name == NULL)
-    return NULL;
-
-
-  return aux;
-}

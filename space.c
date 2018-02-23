@@ -12,6 +12,7 @@
 #include <string.h>
 #include "types.h"
 #include "space.h"
+#include "set.h"
 
 
 /* Estructura que define una casilla del juego, con un id que la identifica,
@@ -455,62 +456,4 @@ STATUS space_print(Space* space)
   }
 
   return OK;
-}
-
-/*******************************************************************************
-Funcion: space_copy
-Autor: Arturo Morcillo
-Descripcion: Devuelve una copia del puntero introducido como argumento
-Argumentos:
-  ps: puntero a una estructura de tipo Space (casilla)
-Return:
-  Un puntero a la copia
-*******************************************************************************/
-
-Space *space_copy (Space *ps){
-  Space *aux;
-  Id id_aux;
-  char *nombre;
-  if (ps == NULL)
-    return NULL;
-
-  aux = space_create(ps->id);
-  if(aux == NULL)
-    return NULL;
-
-  nombre = space_get_name(ps);
-  space_set_name(aux, nombre);
-  if(aux->name == NULL)
-    return NULL;
-
-  id_aux = space_get_north(ps);
-  space_set_north (aux,id_aux);
-  if(aux->north == NO_ID)
-    return NULL;
-  id_aux = NO_ID;
-
-  id_aux = space_get_south(ps);
-  space_set_south (aux,id_aux);
-  if(aux->south == NO_ID)
-    return NULL;
-  id_aux = NO_ID;
-
-  id_aux = space_get_west(ps);
-  space_set_west (aux,id_aux);
-  if(aux->west == NO_ID)
-    return NULL;
-  id_aux = NO_ID;
-
-  id_aux = space_get_east(ps);
-  space_set_east(aux,id_aux);
-  if(aux->east == NO_ID)
-    return NULL;
-  id_aux = NO_ID;
-
-  id_aux = space_get_object(ps);
-  space_set_object(aux,id_aux);
-  if(aux->object == NO_ID)
-    return NULL;
-
-  return aux;
 }
