@@ -25,7 +25,7 @@ Argumentos:
 Return:
   OK o ERROR, que pertenecen al enum STATUS
 *******************************************************************************/
-STATUS game_load_spaces(Game* game, char* filename);
+STATUS game_load(Game* game, char* filename);
 
 
 #endif

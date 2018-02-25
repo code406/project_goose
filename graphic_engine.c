@@ -111,6 +111,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   char str[255];
   T_Command last_cmd = UNKNOWN;
   extern char *cmd_to_str[];
+  int i;
 
   /* Resetea el mapa y dibuja el area interior del mapa */
   screen_area_clear(ge->map);
@@ -125,10 +126,13 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
     /* Dibuja la casilla anterior.
     Tendrá un "*" si en la casilla hay un objeto */
-    if (game_get_object_location(game) == id_back)
-      obj='*';
-    else
-      obj=' ';
+    for (i=0;i<MAX_OBJECTS;i++){
+      if (game_get_object_location(game,game->object[i]) == id_back)
+        obj='*';
+      else
+        obj=' ';
+    }
+
 
     if (id_back != NO_ID) {
       sprintf(str, "  |         %2d|",(int) id_back);
@@ -144,10 +148,13 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
     /* Dibuja la casilla actual.
     Tendrá un "*" si en la casilla hay un objeto */
-    if (game_get_object_location(game) == id_act)
-      obj='*';
-    else
-      obj=' ';
+    for (i=0;i<MAX_OBJECTS;i++){
+      if (game_get_object_location(game,game->object[i]) == id_act)
+        obj='*';
+      else
+        obj=' ';
+    }
+
 
     if (id_act != NO_ID) {
       sprintf(str, "  +-----------+");
@@ -163,10 +170,13 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
     /* Dibuja la casilla siguiente.
     Tendrá un "*" si en la casilla hay un objeto */
-    if (game_get_object_location(game) == id_next)
-      obj='*';
-    else
-      obj=' ';
+    for (i=0;i<MAX_OBJECTS;i++){
+      if (game_get_object_location(game,game->object[i]) == id_next)
+        obj='*';
+      else
+        obj=' ';
+    }
+
 
     if (id_next != NO_ID) {
       sprintf(str, "        v");
@@ -183,10 +193,14 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
   /* Dibuja el area de descripcion (description) */
   screen_area_clear(ge->descript);
-  if ((obj_loc = game_get_object_location(game)) != NO_ID){
-    sprintf(str, "  Object location:%d", (int)obj_loc);
-    screen_area_puts(ge->descript, str);
+  for (i=0;i<MAX_OBJECTS;i++){
+    if ((obj_loc = game_get_object_location(game,game->object[i])) != NO_ID){
+      sprintf(str, "  Object location:%d", (int)obj_loc);
+      screen_area_puts(ge->descript, str);
+    }
   }
+
+
 
   /* Dibuja el area del banner */
   screen_area_puts(ge->banner, " The game of the Goose ");

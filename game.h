@@ -16,6 +16,7 @@
 #include "player.h"
 #include "object.h"
 
+#define MAX_OBJECTS 4
 
 /*
 Estructura que define el juego
@@ -27,7 +28,7 @@ otro a la estructura que define un objeto.
 typedef struct _Game
 {
   Player* player;
-  Object* object;
+  Object* object[MAX_OBJECTS];
   Space* spaces[MAX_SPACES + 1];
   T_Command last_cmd;
 } Game;
@@ -186,29 +187,41 @@ STATUS game_set_player_location(Game* game, Id id);
 Funcion: game_set_object_location
 Autor: Arturo Morcillo
 Descripcion: Fija la posición del objeto en la id introducida.
-  Posiblemente quede obsoleta en futuras iteraciones,
-  es válida porque solo hay un objeto.
 Argumentos:
   object: Puntero a una estructura de tipo Object
-  name  : Cadena de caracteres que se guardará en object->name
+  game  : Necesario para recorrer los espacios
+  space_id: Id del espacio en que se almacenara el objeto
 Return:
   OK o ERROR, que pertenecen al enum STATUS
 *******************************************************************************/
-STATUS game_set_object_location(Game* game, Id space_id);
+STATUS game_set_object_location(Game *game, Object *object, Id space_id);
 
 
 /*******************************************************************************
 Funcion: game_get_object_location
 Autor: David Palomo
 Descripcion: Devuelve la posición del objeto de la estructura game.
-  Posiblemente quede obsoleta en futuras iteraciones,
-  es válida porque solo hay un objeto.
+
 Argumentos:
   game: Puntero a una estructura de tipo Game
+  object: Puntero del objeto cuya direccion queremos conocer
 Return:
   Entero de tipo Id (long) que identifica una casilla
 *******************************************************************************/
-Id game_get_object_location(Game* game);
+Id game_get_object_location(Game *game ,Object* object);
+
+/*******************************************************************************
+Funcion: game_add_object
+Autor: Arturo Morcillo
+Descripcion: crea un objeto. Al último elemento "vacío" (= NULL) de la
+  tabla de tipo Object de game se le asigna el Object introducido como argumento.
+Argumentos:
+  game : Puntero a una estructura de tipo Game
+  space: Puntero a una estructura de tipo Object (objeto)
+Return:
+  OK o ERROR, que pertenecen al enum STATUS
+*******************************************************************************/
+STATUS game_add_object(Game* game, Object* object);
 
 
 /*******************************************************************************
@@ -221,6 +234,18 @@ Return:
   Valor numérico de la enumeración T_Command que identifica a cada comando
 *******************************************************************************/
 T_Command game_get_last_command(Game* game);
+
+/*******************************************************************************
+Funcion: game_get_space_id_at
+Autor: Arturo Morcillo
+Descripcion: Devuelve la id de la casilla asociada a una posicion
+Argumentos:
+  game    : Puntero a una estructura de tipo Game
+  position: Entero (int)
+Return:
+  Entero de tipo Id (long) que identifica la casilla asociada a una posicion
+*******************************************************************************/
+Id game_get_space_id_at(Game* game, int position);
 
 
 #endif

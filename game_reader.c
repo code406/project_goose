@@ -33,15 +33,17 @@ cargar espacios y las otras funciones de game deberian funcionar perfectamente.
 En otras iteraciones habría que añadir lectores de jugadores y objetos,
 pero ahora solo necesito poner esta funcionalidad.
 */
-STATUS game_load_spaces(Game* game, char* filename)
+STATUS game_load(Game* game, char* filename)
 {
   /* Declara variables y las inicializa */
   FILE* file = NULL;
   char line[WORD_SIZE] = "";
   char name[WORD_SIZE] = "";
   char* toks = NULL;
-  Id id = NO_ID, north = NO_ID, east = NO_ID, south = NO_ID, west = NO_ID;
+  Id id = NO_ID, space_id = NO_ID, north = NO_ID, east = NO_ID, south = NO_ID, west = NO_ID;
+  int space_pos;
   Space* space = NULL;
+  Object* object = NULL;
 
   /* Suponemos que la fucion devolverá OK */
   STATUS status = OK;
@@ -62,6 +64,7 @@ STATUS game_load_spaces(Game* game, char* filename)
   /* Escanea el archivo por lineas (WORD_SIZE es el maximo) y las almacena en line */
   while (fgets(line, WORD_SIZE, file))
   {
+    /*Primero leemos los espacios*/
     /* Si los 3 primeros caracteres de la linea leida son "#s:" */
     if (strncmp("#s:", line, 3) == 0)
     {
@@ -100,6 +103,44 @@ STATUS game_load_spaces(Game* game, char* filename)
         game_add_space(game, space);
       }
     }
+
+
+
+    /*Luego leemos los objetos*/
+    /* Si los 3 primeros caracteres de la linea leida son "#o:" */
+
+    if (strncmp("#o:", line, 3) == 0)
+    {
+      /* strtok divide una cadena en elementos con separadores ("|") */
+      /* Se asigna a las variables el valor leido desde el archivo (con enteros long)*/
+      toks = strtok(line + 3, "|");
+      id = atol(toks);
+      toks = strtok(NULL, "|");
+      strcpy(name, toks);
+      toks = strtok(NULL, "|");
+      space_pos = atoi(toks);
+
+      /* Solo se compila cuando DEBUG está definido */
+      #ifdef DEBUG
+        printf("Leido: %ld|%s|%i|\n", id, name,space_pos);
+      #endif
+
+      /*Crea un objeto*/
+      object = object_create(id);
+
+      /* Si ese objeto se ha creado bien le asigna los valores leidos */
+      if (object != NULL)
+      {
+        object_set_name(object, name);
+        /*Tras eso añade ese objeto a game*/
+        /*No lo destruyo porque lo he asignado*/
+        game_add_object(game, object);
+        space_id = game_get_space_id_at(game, space_pos);
+        game_set_object_location(game, object,space_id);
+
+      }
+    }
+
   }
 
   /* Si hay error con el archivo, status pasa a ser ERROR */

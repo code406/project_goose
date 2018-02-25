@@ -95,6 +95,17 @@ Return:
 
 STATUS set_print(Set *ps);
 
+/*******************************************************************************
+Funcion: set_get_id
+Autor: Arturo Morcillo
+Descripcion:  devuelve la id del set en la posicion especificada
+Argumentos:
+  Un puntero a Set (ps) y un entero (pos)
+Return:
+  EL id o NO_ID si falla algo
+*******************************************************************************/
+Id set_get_id (Set *ps, int pos);
+
 
 
 #endif
