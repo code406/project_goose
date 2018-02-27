@@ -114,3 +114,22 @@ STATUS die_print (Die * die)
 
   return OK;
 }
+
+
+/*******************************************************************************
+Funcion: die_get_last_roll
+Autor: David Palomo
+Descripcion: Devuelve el último valor generado por el dado
+Argumentos:
+  die: Puntero a una estructura de tipo Die
+Return:
+  Entero (int) con el último valor generado por el dado
+*******************************************************************************/
+STATUS die_get_last_roll (Die * die)
+{
+  if (!die)
+    return NO_ROLL;
+
+  /* Imprime id y último valor aleatorio generado por el dado */
+  return die->last_roll;
+}

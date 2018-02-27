@@ -11,7 +11,7 @@ command.o: command.c command.h
 	$(CC) $(CFLAGS) -c command.c
 game_loop.o: game_loop.c graphic_engine.h
 	$(CC) $(CFLAGS) -c game_loop.c
-graphic_engine.o: graphic_engine.c graphic_engine.h screen.h
+graphic_engine.o: graphic_engine.c graphic_engine.h screen.h die.h
 	$(CC) $(CFLAGS) -c graphic_engine.c
 screen.o: screen.c screen.h
 	$(CC) $(CFLAGS) -c screen.c
