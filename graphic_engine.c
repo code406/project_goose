@@ -126,11 +126,11 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
     /* Dibuja la casilla anterior.
     Tendrá un "*" si en la casilla hay un objeto */
-    for (i=0;i<MAX_OBJECTS;i++){
-      if (game_get_object_location(game,game->object[i]) == id_back)
+    /*Tengo que comprobar todos los objetos*/
+    for (i=0,obj=' ';i<MAX_ID && game->object[i]!= NULL && obj==' ';i++){
+      if (game_get_object_location(game,game->object[i]) == id_back){
         obj='*';
-      else
-        obj=' ';
+      }
     }
 
 
@@ -148,11 +148,10 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
     /* Dibuja la casilla actual.
     Tendrá un "*" si en la casilla hay un objeto */
-    for (i=0;i<MAX_OBJECTS;i++){
-      if (game_get_object_location(game,game->object[i]) == id_act)
+    for (i=0,obj=' ';i<MAX_ID && game->object[i]!= NULL && obj==' ';i++){
+      if (game_get_object_location(game,game->object[i]) == id_act){
         obj='*';
-      else
-        obj=' ';
+      }
     }
 
 
@@ -170,11 +169,10 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
     /* Dibuja la casilla siguiente.
     Tendrá un "*" si en la casilla hay un objeto */
-    for (i=0;i<MAX_OBJECTS;i++){
-      if (game_get_object_location(game,game->object[i]) == id_next)
+    for (i=0,obj=' ';i<MAX_ID && game->object[i]!= NULL && obj==' ';i++){
+      if (game_get_object_location(game,game->object[i]) == id_next){
         obj='*';
-      else
-        obj=' ';
+      }
     }
 
 
@@ -193,13 +191,12 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
   /* Dibuja el area de descripcion (description) */
   screen_area_clear(ge->descript);
-  for (i=0;i<MAX_OBJECTS;i++){
+  for (i=0;i<MAX_ID && game->object[i]!= NULL;i++){
     if ((obj_loc = game_get_object_location(game,game->object[i])) != NO_ID){
-      sprintf(str, "  Object location:%d", (int)obj_loc);
+      sprintf(str, "  %s location:%d",object_get_name(game->object[i]), (int)obj_loc);
       screen_area_puts(ge->descript, str);
     }
   }
-
 
 
   /* Dibuja el area del banner */

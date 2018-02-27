@@ -409,22 +409,14 @@ Return:
 *******************************************************************************/
 Set *space_get_objects(Space* space)
 {
-  Set *aux;
   if (!space || space->objects == NULL)
   {
     return NULL;
   }
 
-  aux = space_get_objects (space);
-
-  if (set_isempty(aux) == TRUE){
-    set_destroy(aux);
-    aux = NULL;
-    return NULL;
-  }
 
 
-  return aux;
+  return space->objects;
 }
 
 /*******************************************************************************

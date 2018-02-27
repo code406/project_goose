@@ -15,7 +15,6 @@
 #include "types.h"
 
 
-#define MAX_ID 256
 
 typedef struct _Set Set;
 
@@ -96,16 +95,28 @@ Return:
 STATUS set_print(Set *ps);
 
 /*******************************************************************************
-Funcion: set_get_id
+Funcion: get_id_pos
 Autor: Arturo Morcillo
-Descripcion:  devuelve la id del set en la posicion especificada
+Descripcion: Te devuelve el id de Set en la posicion introducida
 Argumentos:
   Un puntero a Set (ps) y un entero (pos)
 Return:
-  EL id o NO_ID si falla algo
+  Un id o NO_ID si falla algo
 *******************************************************************************/
-Id set_get_id (Set *ps, int pos);
 
+Id get_id_pos (Set *ps, int pos);
+
+/*******************************************************************************
+Funcion: get_set_tope
+Autor: Arturo Morcillo
+Descripcion: Devuelve la cantidad de ids que hay en un set
+Argumentos:
+  Un puntero a Set (ps).
+Return:
+  Un entero. si falla un 0.
+*******************************************************************************/
+
+int get_set_tope(Set *ps);
 
 
 #endif

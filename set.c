@@ -105,7 +105,7 @@ Id set_del (Set *ps){
   if (ps == NULL)
     return NO_ID;
 
-  id_aux = ps->id[ps->cantidad];
+  id_aux = ps->id[(ps->cantidad - 1)];
 
   ps->id[ps->cantidad] = NO_ID;
 
@@ -155,23 +155,51 @@ BOOL set_isempty(Set *ps)
 {
   if (ps == NULL)
     return TRUE;
-  if (ps->cantidad == 0 || ps->id[0] == NO_ID)
+  if (ps->cantidad == 0)
     return TRUE;
 
   return FALSE;
 }
+
 /*******************************************************************************
-Funcion: set_get_id
+Funcion: get_id_pos
 Autor: Arturo Morcillo
-Descripcion:  devuelve la id del set en la posicion especificada
+Descripcion: Te devuelve el id de Set en la posicion introducida
 Argumentos:
   Un puntero a Set (ps) y un entero (pos)
 Return:
-  EL id o NO_ID si falla algo
+  Un id o NO_ID si falla algo
 *******************************************************************************/
-Id set_get_id (Set *ps, int pos){
-  if (ps == NULL || pos<0 || pos >= MAX_ID)
+
+Id get_id_pos (Set *ps, int pos){
+  Id id_aux;
+
+  if (ps == NULL || pos < 0 || pos > ps->cantidad || set_isempty (ps) == TRUE)
     return NO_ID;
 
-  return ps->id[pos];
+  id_aux = ps->id[pos];
+
+  return id_aux;
+}
+
+/*******************************************************************************
+Funcion: get_set_tope
+Autor: Arturo Morcillo
+Descripcion: Devuelve la cantidad de ids que hay en un set
+Argumentos:
+  Un puntero a Set (ps).
+Return:
+  Un entero. si falla un 0.
+*******************************************************************************/
+
+int get_set_tope(Set *ps){
+  int pos;
+
+  if (ps == NULL)
+    return 0;
+
+  pos = ps->cantidad;
+
+
+  return pos;
 }
