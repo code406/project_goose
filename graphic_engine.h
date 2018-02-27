@@ -1,10 +1,10 @@
 /**
- * @brief It defines a textual graphic engine
+ * @brief Define el motor grafico
  *
  * @file graphic_engine.h
- * @author Profesores PPROG
- * @version 1.0
- * @date 18-01-2017
+ * @author Arturo Morcillo, David Palomo
+ * @version 1.0.E
+ * @date 17-02-2017
  * @copyright GNU Public License
  */
 
@@ -13,11 +13,18 @@
 
 #include "game.h"
 
+
+/*
+Estructura que define el Graphic_engine, con punteros a las areas de la interfaz.
+Cada parametro es un puntero a estructura de tipo Area, que contiene
+posiciones y tamaños de areas de la interfaz.
+*/
 typedef struct _Graphic_engine Graphic_engine;
 
 
 /*******************************************************************************
 Funcion: graphic_engine_create
+Autor: David Palomo
 Descripcion: Genera y define cada area de la interfaz de juego
 Argumentos:
   Ninguno
@@ -30,6 +37,7 @@ Graphic_engine* graphic_engine_create();
 
 /*******************************************************************************
 Funcion: graphic_engine_destroy
+Autor: David Palomo
 Descripcion: Destruye (libera memoria) cada area de la interfaz de juego
 Argumentos:
   ge: Puntero a una estructura de tipo Graphic_engine,
@@ -42,6 +50,7 @@ void graphic_engine_destroy(Graphic_engine *ge);
 
 /*******************************************************************************
 Funcion: graphic_engine_paint_game
+Autor: David Palomo
 Descripcion: Dibuja cada area de la interfaz del juego
 Argumentos:
   ge  : Puntero a una estructura de tipo Graphic_engine,
@@ -55,11 +64,12 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game);
 
 /*******************************************************************************
 Funcion: graphic_engine_write_command
-Descripcion: TODO: De momento sin funcionalidad
+Autor: David Palomo
+Descripcion: De momento sin funcionalidad
 Argumentos:
-  ge : Puntero a una estructura de tipo Graphic_engine,
-       que contiene a su vez punteros a estructura de tipo Area
-  str: Cadena de caracteres
+ge : Puntero a una estructura de tipo Graphic_engine,
+     que contiene a su vez punteros a estructura de tipo Area
+str: Cadena de caracteres
 Return:
   Ninguno (void)
 *******************************************************************************/

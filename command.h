@@ -2,9 +2,9 @@
  * @brief Interprete de comandos
  *
  * @file command.h
- * @author Profesores PPROG
- * @version 1.0
- * @date 19-12-2014
+ * @author Arturo Morcillo, David Palomo
+ * @version 1.0.E
+ * @date 16-02-2018
  * @copyright GNU Public License
  */
 
@@ -13,7 +13,8 @@
 
 
 /* Enumeración que define para cada comando del usuario un valor numérico */
-typedef enum enum_Command {
+typedef enum enum_Command
+{
   NO_CMD =      -1,
   UNKNOWN,    /* 0 */
   EXIT,       /* 1 */
@@ -26,6 +27,7 @@ typedef enum enum_Command {
 
 /*******************************************************************************
 Funcion: get_user_input
+Autor: David Palomo
 Descripcion: Escanea el comando escrito por el usuario y lo transforma
   a un valor numérico definido en la enumeración T_Command.
 Argumentos:

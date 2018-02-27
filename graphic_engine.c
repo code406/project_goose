@@ -1,23 +1,26 @@
 /**
- * @brief It defines a textual graphic engine
+ * @brief Motor grafico (interfaz de juego)
  *
  * @file graphic_engine.h
- * @author Profesores PPROG
- * @version 1.0
- * @date 18-01-2017
+ * @author Arturo Morcillo, David Palomo
+ * @version 1.0.E
+ * @date 17-02-2017
  * @copyright GNU Public License
  */
 
 #include <stdlib.h>
 #include <stdio.h>
-
 #include "screen.h"
 #include "graphic_engine.h"
 
 
-/* Estructura que define el Graphic_engine, con punteros a las areas de la interfaz.
-Area es una estructura con posiciones y tamaños de las mismas. */
-struct _Graphic_engine {
+/*
+Estructura que define el Graphic_engine, con punteros a las areas de la interfaz.
+Cada parametro es un puntero a estructura de tipo Area, que contiene
+posiciones y tamaños de areas de la interfaz.
+*/
+struct _Graphic_engine
+{
   Area *map,
        *descript,
        *banner,
@@ -28,6 +31,7 @@ struct _Graphic_engine {
 
 /*******************************************************************************
 Funcion: graphic_engine_create
+Autor: David Palomo
 Descripcion: Genera y define cada area de la interfaz de juego
 Argumentos:
   Ninguno
@@ -61,6 +65,7 @@ Graphic_engine *graphic_engine_create()
 
 /*******************************************************************************
 Funcion: graphic_engine_destroy
+Autor: David Palomo
 Descripcion: Destruye (libera memoria) cada area de la interfaz de juego
 Argumentos:
   ge: Puntero a una estructura de tipo Graphic_engine,
@@ -74,14 +79,14 @@ void graphic_engine_destroy(Graphic_engine *ge)
   if (!ge)
     return;
 
-  /* Destruye cada area de la pantalla  */
+  /* Libera la memoria reservada para cada area de la pantalla  */
   screen_area_destroy(ge->map);
   screen_area_destroy(ge->descript);
   screen_area_destroy(ge->banner);
   screen_area_destroy(ge->help);
   screen_area_destroy(ge->feedback);
 
-  /* Libera la memoria */
+  /* Libera la memoria de screen y del graphic_engine */
   screen_destroy();
   free(ge);
 }
@@ -89,6 +94,7 @@ void graphic_engine_destroy(Graphic_engine *ge)
 
 /*******************************************************************************
 Funcion: graphic_engine_paint_game
+Autor: David Palomo
 Descripcion: Dibuja cada area de la interfaz del juego
 Argumentos:
   ge  : Puntero a una estructura de tipo Graphic_engine,
@@ -189,7 +195,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   screen_area_clear(ge->help);
   sprintf(str, " The commands you can use are:");
   screen_area_puts(ge->help, str);
-  sprintf(str, "     following or f, previous or p, or exit or e");
+  sprintf(str, "     following or f, previous or p, or exit or e, get or g, drop or d");
   screen_area_puts(ge->help, str);
 
   /* Dibuja el area de feedback */
@@ -197,7 +203,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   sprintf(str, " %s", cmd_to_str[last_cmd-NO_CMD]);
   screen_area_puts(ge->feedback, str);
 
-  /* Dump to the terminal */
+  /* Pasa a la terminal */
   screen_paint();
   printf("prompt:> ");
 }

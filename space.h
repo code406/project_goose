@@ -1,10 +1,9 @@
 /**
- * @brief It defines a space
- *
+ * @brief Define una casilla
  * @file space.h
- * @author Profesores PPROG
- * @version 1.0
- * @date 13-01-2015
+ * @author Arturo Morcillo, David Palomo
+ * @version 1.0.E
+ * @date 18/02/2018
  * @copyright GNU Public License
  */
 
@@ -12,7 +11,10 @@
 #define SPACE_H
 
 #include "types.h"
+#include "set.h"
 
+
+/* Estructura que define una casilla del juego */
 typedef struct _Space Space;
 
 #define MAX_SPACES 100
@@ -21,6 +23,7 @@ typedef struct _Space Space;
 
 /*******************************************************************************
 Funcion: space_create
+Autor: David Palomo
 Descripcion: Reserva memoria para una estructura de tipo Space,
   que representa una casilla del juego.
 Argumentos:
@@ -33,6 +36,7 @@ Space* space_create(Id id);
 
 /*******************************************************************************
 Funcion: space_destroy
+Autor: David Palomo
 Descripcion: Libera la memoria reservada previamente para una estructura
   de tipo Space (que representa una casilla del juego) y asigna NULL al
   puntero a Space pasado como argumento.
@@ -46,6 +50,7 @@ STATUS space_destroy(Space* space);
 
 /*******************************************************************************
 Funcion: space_get_id
+Autor: Arturo Morcillo
 Descripcion: Obtiene el id que identifica una casilla del juego.
 Argumentos:
   space: puntero a una estructura de tipo Space (casilla)
@@ -58,6 +63,7 @@ Id space_get_id(Space* space);
 
 /*******************************************************************************
 Funcion: space_set_name
+Autor: Arturo Morcillo
 Descripcion: Asigna a la casilla especificada el nombre introducido.
 Argumentos:
   space: puntero a una estructura de tipo Space (casilla)
@@ -70,18 +76,20 @@ STATUS space_set_name(Space* space, char* name);
 
 /*******************************************************************************
 Funcion: space_get_name
+Autor: Arturo Morcillo
 Descripcion: Devuelve el nombre asignado a la casilla especificada.
 Argumentos:
   space: puntero a una estructura de tipo Space (casilla)
 Return:
   Cadena de caracteres (nombre de la casilla)
-  En caso de error, devuelve NO_ID.
+  En caso de error, devuelve NULL.
 *******************************************************************************/
-const char* space_get_name(Space* space);
+char* space_get_name(Space* space);
 
 
 /*******************************************************************************
 Funcion: space_set_north
+Autor: David Palomo
 Descripcion: Asigna a la casilla que se encuentra al norte de la introducida
   un id que la identifica.
 Argumentos:
@@ -95,6 +103,7 @@ STATUS space_set_north(Space* space, Id id);
 
 /*******************************************************************************
 Funcion: space_get_north
+Autor: David Palomo
 Descripcion: Devuelve el id de la casilla que se encuentra al norte
   de la introducida
 Argumentos:
@@ -108,6 +117,7 @@ Id space_get_north(Space* space);
 
 /*******************************************************************************
 Funcion: space_set_south
+Autor: David Palomo
 Descripcion: Asigna a la casilla que se encuentra al sur de la introducida
   un id que la identifica.
 Argumentos:
@@ -121,6 +131,7 @@ STATUS space_set_south(Space* space, Id id);
 
 /*******************************************************************************
 Funcion: space_get_south
+Autor: David Palomo
 Descripcion: Devuelve el id de la casilla que se encuentra al sur
   de la introducida
 Argumentos:
@@ -134,6 +145,7 @@ Id space_get_south(Space* space);
 
 /*******************************************************************************
 Funcion: space_set_east
+Autor: David Palomo
 Descripcion: Asigna a la casilla que se encuentra al este de la introducida
   un id que la identifica.
 Argumentos:
@@ -147,6 +159,7 @@ STATUS space_set_east(Space* space, Id id);
 
 /*******************************************************************************
 Funcion: space_get_east
+Autor: David Palomo
 Descripcion: Devuelve el id de la casilla que se encuentra al este
   de la introducida
 Argumentos:
@@ -160,6 +173,7 @@ Id space_get_east(Space* space);
 
 /*******************************************************************************
 Funcion: space_set_west
+Autor: David Palomo
 Descripcion: Asigna a la casilla que se encuentra al oeste de la introducida
   un id que la identifica.
 Argumentos:
@@ -173,6 +187,7 @@ STATUS space_set_west(Space* space, Id id);
 
 /*******************************************************************************
 Funcion: space_get_west
+Autor: David Palomo
 Descripcion: Devuelve el id de la casilla que se encuentra al oeste
   de la introducida
 Argumentos:
@@ -185,34 +200,49 @@ Id space_get_west(Space* space);
 
 
 /*******************************************************************************
-Funcion: space_set_object
+Funcion: space_add_object
+Autor: Arturo Morcillo
 Descripcion: Coloca en la casilla especificada un objeto, o lo quita.
 Argumentos:
   space: puntero a una estructura de tipo Space (casilla)
-  value: variable de tipo BOOL  (FALSE: casilla sin objeto,
-                                  TRUE: casilla con objeto)
+  value: Entero de tipo id (long) que identifica un objeto
 Return:
   OK o ERROR, que pertenecen al enum STATUS
 *******************************************************************************/
-STATUS space_set_object(Space* space, BOOL value);
+
+STATUS space_add_object(Space* space, Id value);
 
 
 /*******************************************************************************
-Funcion: space_get_object
-Descripcion: Indica si en la casilla especificada hay o no un objeto
+Funcion: space_get_objects
+Autor: Arturo Morcillo
+Descripcion: Devuelve la estructura objects (tipo set) del espacio introducido
 Argumentos:
   space: puntero a una estructura de tipo Space (casilla)
 Return:
-  Variable de tipo BOOL (FALSE, TRUE)
-  En caso de error, devuelve FALSE.
+  Una estructura tipo Set.
+  En caso de error, o de que no haya objetos, devuelve NULL.
 *******************************************************************************/
-BOOL space_get_object(Space* space);
+Set *space_get_objects(Space* space);
+
+/*******************************************************************************
+Funcion: check_object
+Autor: Arturo Morcillo
+Descripcion:  comprueba si un objeto se encuentra en el Space introducido
+Argumentos:
+  Un puntero a Space (ps) y el id del objeto (object_id)
+Return:
+  Un BOOL: TRUE si se encuentra y FALSE si no
+*******************************************************************************/
+
+BOOL check_object (Space *ps, Id object_id);
 
 
 /*******************************************************************************
 Funcion: space_print
+Autor: David Palomo
 Descripcion: Muestra por pantalla la informacion de la casilla especificada:
-  su nombre e id, los id de las casillas contiguas, y si hay algún objeto.
+  su id y nombre, los id de las casillas contiguas, y qué objeto hay en ella.
 Argumentos:
   space: puntero a una estructura de tipo Space (casilla)
 Return:
