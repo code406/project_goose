@@ -11,6 +11,8 @@
 #define SPACE_H
 
 #include "types.h"
+#include "set.h"
+
 
 /* Estructura que define una casilla del juego */
 typedef struct _Space Space;
@@ -82,7 +84,7 @@ Return:
   Cadena de caracteres (nombre de la casilla)
   En caso de error, devuelve NULL.
 *******************************************************************************/
-const char* space_get_name(Space* space);
+char* space_get_name(Space* space);
 
 
 /*******************************************************************************
@@ -198,7 +200,7 @@ Id space_get_west(Space* space);
 
 
 /*******************************************************************************
-Funcion: space_set_object
+Funcion: space_add_object
 Autor: Arturo Morcillo
 Descripcion: Coloca en la casilla especificada un objeto, o lo quita.
 Argumentos:
@@ -207,20 +209,33 @@ Argumentos:
 Return:
   OK o ERROR, que pertenecen al enum STATUS
 *******************************************************************************/
-STATUS space_set_object(Space* space, Id value);
+
+STATUS space_add_object(Space* space, Id value);
 
 
 /*******************************************************************************
-Funcion: space_get_object
+Funcion: space_get_objects
 Autor: Arturo Morcillo
-Descripcion: Indica el id del objeto que hay en la casilla especificada
+Descripcion: Devuelve la estructura objects (tipo set) del espacio introducido
 Argumentos:
   space: puntero a una estructura de tipo Space (casilla)
 Return:
-  Entero de tipo Id (long) que identifica un objeto.
-  En caso de error, o de que no haya un objeto, devuelve NO_ID.
+  Una estructura tipo Set.
+  En caso de error, o de que no haya objetos, devuelve NULL.
 *******************************************************************************/
-Id space_get_object(Space* space);
+Set *space_get_objects(Space* space);
+
+/*******************************************************************************
+Funcion: check_object
+Autor: Arturo Morcillo
+Descripcion:  comprueba si un objeto se encuentra en el Space introducido
+Argumentos:
+  Un puntero a Space (ps) y el id del objeto (object_id)
+Return:
+  Un BOOL: TRUE si se encuentra y FALSE si no
+*******************************************************************************/
+
+BOOL check_object (Space *ps, Id object_id);
 
 
 /*******************************************************************************

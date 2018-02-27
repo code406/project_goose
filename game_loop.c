@@ -22,11 +22,11 @@
  	/* Si no se invoca el programa correctamente ("./game  game_data_file")
   porque no se introduce un minimo de 2 argumentos,imprime error y
   explica cómo invocar el programa. Termina (return). */
- 	if (argc < 2)
- 	{
- 		fprintf(stderr, "Use: %s <game_data_file>\n", argv[0]);
- 		return 1;
- 	}
+  if (argc < 2)
+{
+  fprintf(stderr, "Use: %s <game_data_file>\n", argv[0]);
+  return 1;
+}
 
   /* Intenta crear el juego a partir de game_data_file, que es el argv[1]
  	Si da error, muestra mensaje y termina (return). */

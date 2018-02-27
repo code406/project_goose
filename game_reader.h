@@ -21,11 +21,25 @@ Funcion: game_load_spaces
 Autor: Arturo Morcillo
 Descripcion: Lee el archivo y carga los datos en la estructura Space de game
 Argumentos:
-  game: Puntero a una estructura de tipo Game
+ game: Puntero a una estructura de tipo Game
 Return:
-  OK o ERROR, que pertenecen al enum STATUS
+ OK o ERROR, que pertenecen al enum STATUS
 *******************************************************************************/
+
 STATUS game_load_spaces(Game* game, char* filename);
 
+/*******************************************************************************
+Funcion: game_load_objects
+Autor: Arturo Morcillo
+Descripcion: Lee el archivo y carga los datos en la estructura Object de game
+Argumentos:
+game: Puntero a una estructura de tipo Game
+Return:
+OK o ERROR, que pertenecen al enum STATUS
+*******************************************************************************/
+/*
+Similar a la de cargar espacios
+*/
+STATUS game_load_objects(Game* game, char* filename);
 
 #endif

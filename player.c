@@ -17,18 +17,6 @@
 #include "object.h"
 
 
-/*
-Estructura que define un jugador, con un identificador (id) y un nombre,
-un id que indica en qué casilla se encuentra, y otro que indica qué objeto porta
-*/
-struct _Player
-{
-  Id player_id;
-  char name[WORD_SIZE+1];
-  Id space_id;
-  Id object_id;
-};
-
 
 /*******************************************************************************
 Funcion: player_create
@@ -162,7 +150,7 @@ Return:
   Cadena de caracteres con el nombre del jugador (player->name)
   Si el argumento introducido no es correcto, devuelve NULL
 *******************************************************************************/
-const char * player_get_name(Player* player)
+char * player_get_name(Player* player)
 {
   if (!player)
   {
@@ -262,4 +250,46 @@ STATUS player_print(Player* player)
   }
 
   return OK;
+}
+
+/*******************************************************************************
+Funcion: player_copy
+Autor: Arturo Morcillo
+Descripcion: Devuelve una copia del puntero introducido como argumento
+Argumentos:
+  pc: puntero a una estructura de tipo Player
+Return:
+  Un puntero a la copia
+*******************************************************************************/
+
+Player *player_copy (Player *pc){
+  Player *aux;
+  Id id_aux;
+  char *nombre;
+  if (pc == NULL)
+    return NULL;
+
+  aux = player_create(pc->player_id);
+  if(aux == NULL)
+    return NULL;
+
+  nombre = player_get_name(pc);
+  player_set_name(pc, nombre);
+  if(aux->name == NULL)
+    return NULL;
+
+  id_aux = player_get_location(pc);
+  player_set_location(aux, id_aux);
+  if(aux->space_id == NO_ID)
+    return NULL;
+
+  id_aux = NO_ID;
+
+
+  id_aux = player_get_item(pc);
+  player_set_object(aux, id_aux);
+  if(aux->object_id == NO_ID)
+      return NULL;
+
+  return aux;
 }

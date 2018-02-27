@@ -14,8 +14,16 @@
 #include "space.h"
 
 
-/* Estructura que define un jugador */
-typedef struct _Player Player;
+/*
+Estructura que define un jugador, con un identificador (id) y un nombre,
+un id que indica en qué casilla se encuentra, y otro que indica qué objeto porta
+*/
+typedef struct _Player{
+  Id player_id;
+  char name[WORD_SIZE+1];
+  Id space_id;
+  Id object_id;
+} Player;
 
 
 /*******************************************************************************
@@ -92,7 +100,7 @@ Return:
   Cadena de caracteres con el nombre del jugador (player->name)
   Si el argumento introducido no es correcto, devuelve NULL
 *******************************************************************************/
-const char * player_get_name(Player* player);
+char * player_get_name(Player* player);
 
 
 /*******************************************************************************
@@ -146,6 +154,18 @@ Return:
   OK o ERROR, que pertenecen al enum STATUS
 *******************************************************************************/
 STATUS player_print(Player* player);
+
+/*******************************************************************************
+Funcion: player_copy
+Autor: Arturo Morcillo
+Descripcion: Devuelve una copia del puntero introducido como argumento
+Argumentos:
+  pc: puntero a una estructura de tipo Player
+Return:
+  Un puntero a la copia
+*******************************************************************************/
+
+Player *player_copy (Player *pc);
 
 
 #endif

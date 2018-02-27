@@ -13,6 +13,7 @@
 
  #define WORD_SIZE 1000
  #define NO_ID -1
+ #define MAX_ID 20
 
 
  /* Define el tipo Id (identificador numérico de una casilla). Es entero long */

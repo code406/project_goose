@@ -12,6 +12,7 @@
 #include <string.h>
 #include "types.h"
 #include "space.h"
+#include "set.h"
 
 
 /* Estructura que define una casilla del juego, con un id que la identifica,
@@ -25,7 +26,7 @@ struct _Space
   Id south;
   Id east;
   Id west;
-  Id object;
+  Set *objects;
 };
 
 
@@ -65,8 +66,8 @@ Space* space_create(Id id)
   newSpace->south = NO_ID;
   newSpace->east = NO_ID;
   newSpace->west = NO_ID;
-
-  newSpace->object = NO_ID;
+  /*Se inicializan todas las Ids a NO_ID*/
+  newSpace->objects = set_create();
 
   /* Devuelve la veriable newSpace creada */
   return newSpace;
@@ -90,6 +91,9 @@ STATUS space_destroy(Space* space)
   {
     return ERROR;
   }
+
+  set_destroy (space->objects);
+  space->objects = NULL;
 
   free(space);
   space = NULL;
@@ -217,7 +221,29 @@ STATUS space_set_west(Space* space, Id id)
 
 
 /*******************************************************************************
-Funcion: space_set_object
+Funcion: space_del_object
+Autor: Arturo Morcillo
+Descripcion: Quita el ultimo objeto de una casilla
+Argumentos:
+  space: puntero a una estructura de tipo Space (casilla)
+Return:
+  OK o ERROR, que pertenecen al enum STATUS
+*******************************************************************************/
+STATUS space_del_object(Space* space)
+{
+  if (!space)
+  {
+    return ERROR;
+  }
+
+  if((set_del (space->objects))==ERROR)
+    return ERROR;
+
+  return OK;
+}
+
+/*******************************************************************************
+Funcion: space_add_object
 Autor: Arturo Morcillo
 Descripcion: Coloca en la casilla especificada un objeto, o lo quita.
 Argumentos:
@@ -226,14 +252,17 @@ Argumentos:
 Return:
   OK o ERROR, que pertenecen al enum STATUS
 *******************************************************************************/
-STATUS space_set_object(Space* space, Id value)
+
+STATUS space_add_object(Space* space, Id value)
 {
   if (!space)
   {
     return ERROR;
   }
 
-  space->object = value;
+  if((set_add (space->objects, value))==ERROR)
+    return ERROR;
+
   return OK;
 }
 
@@ -248,7 +277,7 @@ Return:
   Cadena de caracteres (nombre de la casilla)
   En caso de error, devuelve NULL.
 *******************************************************************************/
-const char * space_get_name(Space* space)
+char * space_get_name(Space* space)
 {
   if (!space)
   {
@@ -369,23 +398,61 @@ Id space_get_west(Space* space)
 
 
 /*******************************************************************************
-Funcion: space_get_object
+Funcion: space_get_objects
 Autor: Arturo Morcillo
-Descripcion: Indica el id del objeto que hay en la casilla especificada
+Descripcion: Devuelve la estructura objects (tipo set) del espacio introducido
 Argumentos:
   space: puntero a una estructura de tipo Space (casilla)
 Return:
-  Entero de tipo Id (long) que identifica un objeto.
-  En caso de error, o de que no haya un objeto, devuelve NO_ID.
+  Una estructura tipo Set.
+  En caso de error, o de que no haya objetos, devuelve NULL.
 *******************************************************************************/
-Id space_get_object(Space* space)
+Set *space_get_objects(Space* space)
 {
-  if (!space)
+  if (!space || space->objects == NULL)
   {
-    return NO_ID;
+    return NULL;
   }
 
-  return space->object;
+
+
+  return space->objects;
+}
+
+/*******************************************************************************
+Funcion: check_object
+Autor: Arturo Morcillo
+Descripcion:  comprueba si un objeto se encuentra en el Space introducido
+Argumentos:
+  Un puntero a Space (ps) y el id del objeto (object_id)
+Return:
+  Un BOOL: TRUE si se encuentra y FALSE si no
+*******************************************************************************/
+
+BOOL check_object (Space *ps, Id object_id)
+{
+  Set *aux;
+  Id id_aux;
+
+  if (ps == NULL || object_id == NO_ID)
+    return FALSE;
+
+  aux = space_get_objects (ps);
+  if (aux == NULL)
+    return FALSE;
+
+  while ((id_aux=set_del(aux)) != NO_ID){
+    if (id_aux == object_id){
+      set_destroy (aux);
+      aux = NULL;
+      return TRUE;
+    }
+  }
+  set_destroy (aux);
+  aux = NULL;
+
+  return FALSE;
+
 }
 
 
@@ -401,6 +468,7 @@ Return:
 *******************************************************************************/
 STATUS space_print(Space* space)
 {
+  Set *aux;
   Id idaux = NO_ID;
 
   if (!space)
@@ -445,13 +513,17 @@ STATUS space_print(Space* space)
   }
 
   /* Imprime si hay o no un objeto en la casilla, y cuál es su id */
-  if (space_get_object(space) != NO_ID)
+  if ((aux = space_get_objects(space)) != NULL)
   {
-    fprintf(stdout, "---> Object in the space. Id: %ld\n", space->object);
+    set_print(aux);
+    set_destroy(aux);
+    aux = NULL;
   }
   else
   {
     fprintf(stdout, "---> No object in the space.\n");
+    set_destroy(aux);
+    aux = NULL;
   }
 
   return OK;
