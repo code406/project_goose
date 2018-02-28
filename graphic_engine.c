@@ -202,8 +202,20 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
       screen_area_puts(ge->descript, str);
     }
   }
+  sprintf(str, " Player items:");
+  screen_area_puts(ge->descript, str);
+  for (i=0;i<MAX_ID && game->object[i]!= NULL;i++)
+  {
+    if ((obj_loc = game_get_object_player(game, game->object[i])) != FALSE)
+    {
+      sprintf(str, "    %s",object_get_name(game->object[i]));
+      screen_area_puts(ge->descript, str);
+    }
+  }
+
   sprintf(str, " Last die value: %d", die_get_last_roll(game->die));
   screen_area_puts(ge->descript, str);
+
 
 
   /* Dibuja el area del banner */

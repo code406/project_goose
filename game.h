@@ -230,6 +230,20 @@ Id game_get_object_location(Game* game, Object *object);
 
 
 /*******************************************************************************
+Funcion: game_get_object_player
+Autor: David Palomo
+Descripcion: Devuelve si el objeto es portado por un jugador.
+  Posiblemente quede obsoleta en futuras iteraciones,
+  es válida porque solo hay un jugador.
+Argumentos:
+  game: Puntero a una estructura de tipo Game
+Return:
+  BOOL, es decir, TRUE o FALSE
+*******************************************************************************/
+BOOL game_get_object_player(Game* game, Object *object);
+
+
+/*******************************************************************************
 Funcion: game_get_last_command
 Autor: David Palomo
 Descripcion: Devuelve el último comando introducido

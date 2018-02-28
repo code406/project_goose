@@ -13,7 +13,6 @@
 #include "types.h"
 #include "space.h"
 
-#define MAX_BAG 32
 
 /* Estructura que define un jugador */
 typedef struct _Player Player;
@@ -69,6 +68,29 @@ Return:
 *******************************************************************************/
 STATUS player_set_location(Player* player, Id location);
 
+/*******************************************************************************
+Funcion: player_del_object
+Autor: Arturo Morcillo
+Descripcion: Quita el ultimo objeto de un jugador
+Argumentos:
+  space: puntero a una estructura de tipo Player (jugador)
+Return:
+  OK o ERROR, que pertenecen al enum STATUS
+*******************************************************************************/
+STATUS player_del_object(Player* player);
+
+/*******************************************************************************
+Funcion: player_add_object
+Autor: Arturo Morcillo
+Descripcion: Coloca en la player especificado un objeto.
+Argumentos:
+  player: puntero a una estructura de tipo Player (jugador)
+  value: Entero de tipo id (long) que identifica un objeto
+Return:
+  OK o ERROR, que pertenecen al enum STATUS
+*******************************************************************************/
+
+STATUS player_add_object(Player* player, Id value);
 
 /*******************************************************************************
 Funcion: player_set_object
@@ -124,17 +146,16 @@ Id player_get_location(Player* player);
 
 
 /*******************************************************************************
-Funcion: player_get_item
+Funcion: player_get_objects
 Autor: Arturo Morcillo
-Descripcion: Devuelve el id del objeto que porta un jugador
+Descripcion: Devuelve la estructura objects (tipo set) del jugador introducido
 Argumentos:
-  player: Puntero a una estructura de tipo Player
+  player: puntero a una estructura de tipo Player (jugador)
 Return:
-  Entero de tipo Id (long) que identifica un objeto
-  Si el argumento introducido no es correcto, devuelve NO_ID
+  Una estructura tipo Set.
+  En caso de error, o de que no haya objetos, devuelve NULL.
 *******************************************************************************/
-Id player_get_item(Player* player);
-
+Set *player_get_objects(Player* player);
 
 /*******************************************************************************
 Funcion: player_print

@@ -119,7 +119,7 @@ STATUS game_create(Game* game)
 
   /* Crea el dado y fija la última tirada a NO_ID */
   game->die = die_create(ID_D);
-  
+
   return OK;
 }
 
@@ -403,7 +403,8 @@ Descripcion: Devuelve la posición del objeto de la estructura game.
   Posiblemente quede obsoleta en futuras iteraciones,
   es válida porque solo hay un objeto.
 Argumentos:
-  game: Puntero a una estructura de tipo Game
+  game  : Puntero a una estructura de tipo Game
+  object: Puntero a estructura de tipo Object
 Return:
   Entero de tipo Id (long) que identifica una casilla
 *******************************************************************************/
@@ -442,6 +443,49 @@ Id game_get_object_location(Game* game, Object *object)
   }
   /*Si llegamos hasta aqui quiere decir que no hemos encontrado el objeto en ningun espacio*/
   return NO_ID;
+}
+
+
+/*******************************************************************************
+Funcion: game_get_object_player
+Autor: David Palomo
+Descripcion: Devuelve si el objeto es portado por un jugador.
+  Posiblemente quede obsoleta en futuras iteraciones,
+  es válida porque solo hay un jugador.
+Argumentos:
+  game: Puntero a una estructura de tipo Game
+Return:
+  BOOL, es decir, TRUE o FALSE
+*******************************************************************************/
+BOOL game_get_object_player(Game* game, Object *object)
+{
+  int i;
+  Id player_id_aux, object_id_aux;
+  Set *set_aux;
+
+  if (!game || !object)
+  {
+    return FALSE;
+  }
+
+  /* Obtengo el id del objeto cuya localizacion quiero saber */
+  object_id_aux = object_get_id(object);
+  /*Recorro todos los espacios*/
+    /*Obtengo todos los objetos de cada espacio*/
+    set_aux = player_get_objects (game->player);
+    /*  */
+    for (i=0; i<get_set_tope(set_aux) ;i++){
+      player_id_aux = get_id_pos (set_aux, i);
+      /* Si el id del objeto coincide con el id del objeto que hay en la casilla */
+      if (player_id_aux == object_id_aux)
+      {
+        /* Devuelve TRUE si el objeto lo lleva un jugador */
+        return TRUE;
+      }
+    }
+
+  /*Si llegamos hasta aqui quiere decir que no hemos encontrado el objeto en ningun espacio*/
+  return FALSE;
 }
 
 
@@ -659,6 +703,7 @@ void game_callback_get(Game* game)
   Id object = NO_ID;
   Set *set_aux = NULL;
 
+
   /* Obtiene el id de la casilla en que se encuentra el jugador */
   current_id = game_get_player_location(game);
 
@@ -682,7 +727,9 @@ void game_callback_get(Game* game)
     return;
 
   object = set_del (set_aux);
-  player_set_object(game->player, object);
+  player_add_object(game->player, object);
+
+
 }
 
 
@@ -702,7 +749,13 @@ void game_callback_drop(Game* game)
   Space * current_space = NULL;
   Id object_id = NO_ID;
   Set *set_aux = NULL;
+  Set *player_set = NULL;
   Object *object;
+
+
+  player_set = player_get_objects(game->player);
+  if (get_set_tope(player_set) == 0)
+    return;
 
 
   /* Obtiene el id de la casilla en que se encuentra el jugador */
@@ -729,8 +782,7 @@ void game_callback_drop(Game* game)
     return;
   }
 
-
-  object_id = player_get_item(game->player);
+  object_id = player_del_object(game->player);
 
   if (object_id == NO_ID){
     return;
@@ -743,11 +795,6 @@ void game_callback_drop(Game* game)
 
   /* Pone en la casilla el objeto */
   game_set_object_location(game, object ,current_id);
-
-  player_set_object(game->player, NO_ID);
-
-
-  player_print(game->player);
 
 }
 

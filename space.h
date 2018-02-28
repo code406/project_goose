@@ -202,7 +202,7 @@ Id space_get_west(Space* space);
 /*******************************************************************************
 Funcion: space_add_object
 Autor: Arturo Morcillo
-Descripcion: Coloca en la casilla especificada un objeto, o lo quita.
+Descripcion: Coloca en la casilla especificada un objeto.
 Argumentos:
   space: puntero a una estructura de tipo Space (casilla)
   value: Entero de tipo id (long) que identifica un objeto
