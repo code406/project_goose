@@ -16,6 +16,14 @@
 #include "space.h"
 
 
+/* Estructura que define un objeto, con un identificador (id) y un nombre */
+struct _Object
+{
+  Id id;
+  char name[WORD_SIZE+1];
+};
+
+
 /*******************************************************************************
 Funcion: object_create
 Autor: David Palomo
