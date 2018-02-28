@@ -110,7 +110,7 @@ Return:
   Cadena de caracteres con el nombre del objeto (object->name)
   Si el argumento introducido no es correcto, devuelve NULL
 *******************************************************************************/
-const char * object_get_name(Object * object)
+char * object_get_name(Object * object)
 {
   if (!object)
   {
@@ -159,30 +159,4 @@ STATUS object_print(Object * object)
   fprintf(stdout, "--> Object (Id: %ld; Name: %s)\n", object->id, object->name);
 
   return OK;
-}
-/*******************************************************************************
-Funcion: object_copy
-Autor: Arturo Morcillo
-Descripcion: Devuelve una copia del puntero introducido como argumento
-Argumentos:
-  po: puntero a una estructura de tipo Object
-Return:
-  Un puntero a la copia
-*******************************************************************************/
-
-Object *object_copy (Object *po){
-  Object aux;
-  if (po == NULL)
-    return NULL;
-
-  aux = object_create(po->id);
-  if(aux ==NO_ID)
-    return NULL;
-
-  aux->name = object_get_name(pc);
-  if((aux->name == NULL)
-    return NULL;
-
-
-  return aux;
 }

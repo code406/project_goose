@@ -15,6 +15,7 @@
 #include "space.h"
 #include "player.h"
 #include "object.h"
+#include "die.h"
 
 
 /*
@@ -22,15 +23,19 @@ Estructura que define el juego
 Consta de un mapa de casillas,
 una variable que almacena el ultimo comando introducido,
 un puntero a la estructura que define al jugador y
-otro a la estructura que define un objeto.
+un conjunto de punteros a la estructura que define un objeto.
+También incluye un dado.
 */
 typedef struct _Game
 {
   Player* player;
-  Object* object;
+  Object* object[MAX_ID];
   Space* spaces[MAX_SPACES + 1];
   T_Command last_cmd;
+  Die* die;
 } Game;
+
+
 
 
 /*******************************************************************************
@@ -137,6 +142,19 @@ Return:
 *******************************************************************************/
 STATUS game_add_space(Game* game, Space* space);
 
+/*******************************************************************************
+Funcion: game_add_object
+Autor: Arturo Morcillo
+Descripcion: Crea un objeto. Al último elemento "vacío" (= NULL) de la
+  tabla de tipo Object de game se le asigna el Object introducido como argumento.
+Argumentos:
+  game : Puntero a una estructura de tipo Game
+  space: Puntero a una estructura de tipo Space (casilla)
+Return:
+  OK o ERROR, que pertenecen al enum STATUS
+*******************************************************************************/
+STATUS game_add_object(Game* game, Object* object);
+
 
 /*******************************************************************************
 Funcion: game_get_space
@@ -194,7 +212,7 @@ Argumentos:
 Return:
   OK o ERROR, que pertenecen al enum STATUS
 *******************************************************************************/
-STATUS game_set_object_location(Game* game, Id space_id);
+STATUS game_set_object_location(Game* game,Object *object ,Id space_id);
 
 
 /*******************************************************************************
@@ -208,7 +226,7 @@ Argumentos:
 Return:
   Entero de tipo Id (long) que identifica una casilla
 *******************************************************************************/
-Id game_get_object_location(Game* game);
+Id game_get_object_location(Game* game, Object *object);
 
 
 /*******************************************************************************

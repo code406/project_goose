@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "die.h"
+#include "types.h"
 
 /* Estructura que define un dado, con un id que lo identifica y un entero que
 guarda el último valor aleatorio generado al tirar el dado. */
@@ -43,6 +44,7 @@ Die * die_create(Id id)
 
   /* Inicializa su id al especificado como argumento */
   newDie->id = id;
+  newDie->last_roll = NO_ROLL;
 
   return newDie;
 }
@@ -87,7 +89,7 @@ STATUS die_roll (Die * die)
   srand((unsigned)time(NULL));
 
   /* Asigna a last_roll un aleatorio entre 1 y 6 */
-  die->last_roll = rand() % 6 + 1
+  die->last_roll = rand() % 6 + 1;
 
   return OK;
 }
@@ -111,4 +113,23 @@ STATUS die_print (Die * die)
   fprintf(stdout, "--> Die (Id: %ld; Last roll: %d)\n", die->id, die->last_roll);
 
   return OK;
+}
+
+
+/*******************************************************************************
+Funcion: die_get_last_roll
+Autor: David Palomo
+Descripcion: Devuelve el último valor generado por el dado
+Argumentos:
+  die: Puntero a una estructura de tipo Die
+Return:
+  Entero (int) con el último valor generado por el dado
+*******************************************************************************/
+STATUS die_get_last_roll (Die * die)
+{
+  if (!die)
+    return NO_ROLL;
+
+  /* Imprime id y último valor aleatorio generado por el dado */
+  return die->last_roll;
 }

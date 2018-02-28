@@ -7,410 +7,199 @@
  * @date 10-02-2018
  * @copyright GNU Public License
  */
-/*
-Estructura que almacena los jugadores
-Consta de un array de punteros a Player y un entero para recorrerlo
-*/
- struct Players{
-   Player* player[MAX_PLAYERS];
-   int tope; /*Para recorrer el array*/
- }
- /*
- Estructura que almacena los objetos
- Consta de un array de punteros a Object y un entero para recorrerlo
- */
- struct Objects{
-   Object *object[MAX_OBJECTS];
-   int tope; /*Para recorrer el array*/
- }
- /*
- Estructura que almacena los espacios
- Consta de un array de punteros a Space y un entero para recorrerlo
- */
- struct Spaces{
-   Space *space[MAX_SPACES];
-   int tope; /*Para recorrer el array*/
- }
- /*******************************************************************************
- Funcion: players_create
- Autor: Arturo Morcillo
- Descripcion: Reserva memoria (vacía por calloc) para un una estructura Players,
-   e inicializa sus campos a NULL
- Argumentos:
-   Ninguno
- Return:
-   Puntero a estructura de tipo Players
- *******************************************************************************/
- Players * players_create() {
-    Players *p;
-    int i;
-    p = (Players*)calloc(1,sizeof(Players));
-    if (p==NULL)
-      return NULL;
 
-    p->tope = 0;
+ #include <stdio.h>
+ #include <stdlib.h>
 
-    for (i=0; i<MAX_PLAYERS; i++)
-        p->player[i] = NULL;
-    return p;
-}
-/*******************************************************************************
-Funcion: players_destroy
-Autor: Arturo Morcillo
-Descripcion: Libera la memoria de la estructura introducida como argumenro
-y la pone a NULL
-Argumentos:
-  p: Puntero a estructura tipo Players
-Return:
-  Nada (tipo void)
-*******************************************************************************/
-void players_destroy(Players *p) {
-    int i;
-    if (p==NULL)
-      return;
+#include "set.h"
+#include "types.h"
 
-    for (i=0; i<p->tope; i++)
-        player_destroy (p->player[i]);
-
-    free(p);
-    p = NULL;
-}
-/*******************************************************************************
-Funcion: players_add
-Autor: Arturo Morcillo
-Descripcion: Añade un jugador a la estructura Players
-Argumentos:
-  p: Puntero a la estructura player
-  player_ EL jugador a añadir
-Return:
-  Un Status que indica si la funcion ha ido bien o no
-*******************************************************************************/
-STATUS players_add(Players *p, const Player *player) {
-    if (p==NULL || player==NULL)
-      return ERROR;
-    if ( p->tope == MAX_PLAYERS-1)
-      return ERROR;
-
-    p->player[p->tope] = player_copy(player);
-    if (p->player[p->tope]==NULL)
-      return ERROR;
-
-    p->tope++;
-    return OK;
- }
- /*******************************************************************************
- Funcion: players_isempty
- Autor: Arturo Morcillo
- Descripcion: Comprueba si la estructura introducida esta vacia
- Argumentos:
-   p: Puntero a players a comprobar si esta vacio
- Return:
-   BOOL que nos indica si esta vacia o no
- *******************************************************************************/
- BOOL players_isempty(const Players *p) {
-    if (p==NULL)
-      return TRUE;
-    if (p->tope==0)
-      return TRUE;
-
-    return FALSE;
-}
+struct _Set{
+  Id id[MAX_ID];
+  int cantidad;
+};
 
 /*******************************************************************************
-Funcion: players_pop
+Funcion: set_create
 Autor: Arturo Morcillo
-Descripcion: sacas un elemento del array de players (devuelve el ultimo)
-Argumentos:
-  p: puntero a la estructura de la que se extraera el Player
-Return:
-  Puntero a estructura de tipo Player
-*******************************************************************************/
-Player * players_pop(Players *p) {
-    Player *temp;
-    if (p==NULL)
-      return NULL;
-
-    if (players_isempty(p) == TRUE)
-      return NULL;
-
-    p->tope--;
-    temp = player_copy(p->player[p->tope]);
-    player_destroy (p->player[p->tope]);
-
-    return temp;
-}
-/*******************************************************************************
-Funcion: players_print
-Autor: Arturo Morcillo
-Descripcion:  imprimir todos los elementos de la estructura Players introducida
-Argumentos:
-  p: puntero a la estructura a imprimir
-Return:
-  Nada (tipo void)
-*******************************************************************************/
-void players_print(const Players *p) {
-    int n;
-   /*compruebo los argumentos*/
-   if (p == NULL || p->player == NULL || p->tope == 0)
-    return 0;
-  for (n=(p->tope-1);n>=0;n++){
-    player_print(s->player[n]);
-  }
-}
-
-/*******************************************************************************
-Funcion: objects_create
-Autor: Arturo Morcillo
-Descripcion: Reserva memoria (vacía por calloc) para un una estructura Objects,
-  e inicializa sus campos a NULL
+Descripcion: Reserva memoria para una estructura de tipo set e inicializa
+sus parametros con NO_ID y 0-
 Argumentos:
   Ninguno
 Return:
-  Puntero a estructura de tipo Objects
+  Un puntero a Set
 *******************************************************************************/
-Objects * objects_create() {
-   Objects *o;
-   int i;
-   o = (Objects*)calloc(1,sizeof(Objects));
-   if (o==NULL)
-     return NULL;
 
-   o->tope = 0;
+Set *set_create(){
+  Set *set;
+  int n;
 
-   for (i=0; i<MAX_OBJECTS; i++)
-       o->object[i] = NULL;
-   return o;
-}
-/*******************************************************************************
-Funcion: objects_destroy
-Autor: Arturo Morcillo
-Descripcion: Libera la memoria de la estructura introducida como argumento
-y la pone a NULL
-Argumentos:
-  o: Puntero a estructura tipo Objects
-Return:
-  Nada (tipo void)
-*******************************************************************************/
-void objects_destroy(Objects *o) {
-    int i;
-    if (o==NULL)
-      return;
+  set = (Set*)calloc(1,sizeof(Set));
 
-    for (i=0; i<o->tope; i++)
-        object_destroy (o->object[i]);
+  if (set == NULL)
+    return NULL;
 
-    free(o);
-    o = NULL;
-}
-/*******************************************************************************
-Funcion: objects_add
-Autor: Arturo Morcillo
-Descripcion: Añade un jugador a la estructura Objects
-Argumentos:
-  o: Puntero a la estructura objects
-  object: EL objeto a añadir
-Return:
-  Un Status que indica si la funcion ha ido bien o no
-*******************************************************************************/
-STATUS objects_add(Objects *o, const Object *object) {
-    if (o==NULL || object==NULL)
-      return ERROR;
-    if ( o->tope == MAX_OBJECTS-1)
-      return ERROR;
+  /*Inicializamos todos sus campos con NO_ID*/
+  for (n=0;n<MAX_ID;n++)
+    set->id[n] = NO_ID;
 
-    p->object[o->tope] = object_copy(object);
-    if (o->object[p->tope]==NULL)
-      return ERROR;
+  set->cantidad = 0;
 
-    o->tope++;
-    return OK;
- }
- /*******************************************************************************
- Funcion: objects_isempty
- Autor: Arturo Morcillo
- Descripcion: Comprueba si la estructura introducida esta vacia
- Argumentos:
-   o: Puntero a objects a comprobar si esta vacio
- Return:
-   BOOL que nos indica si esta vacia o no
- *******************************************************************************/
- BOOL objects_isempty(const Objects *o) {
-    if (o==NULL)
-      return TRUE;
-    if (o->tope==0)
-      return TRUE;
-
-    return FALSE;
+  return set;
 }
 
 /*******************************************************************************
-Funcion: players_pop
+Funcion: set_destroy
 Autor: Arturo Morcillo
-Descripcion: sacas un elemento del array de objects (devuelve el ultimo)
+Descripcion: Libera la memoria de una estructura set
 Argumentos:
-  o: puntero a la estructura de la que se extraera el Object
+  Un puntero a Set (ps)
 Return:
-  Puntero a estructura de tipo Object
+  nada (tipo void)
 *******************************************************************************/
-Object * objects_pop(Objects *o) {
-    Object *temp;
-    if (o==NULL)
-      return NULL;
 
-    if (objects_isempty(o) == TRUE)
-      return NULL;
-
-    o->tope--;
-    temp = object_copy(o->object[o->tope]);
-    object_destroy (o->object[o->tope]);
-
-    return temp;
-}
-/*******************************************************************************
-Funcion: objects_print
-Autor: Arturo Morcillo
-Descripcion:  imprimir todos los elementos de la estructura Objectss introducida
-Argumentos:
-  o: puntero a la estructura a imprimir
-Return:
-  Nada (tipo void)
-*******************************************************************************/
-void objects_print(const Object *o) {
-    int n;
-   /*compruebo los argumentos*/
-   if (o == NULL || o->object == NULL || o->tope == 0)
+void set_destroy (Set *ps){
+  if (ps == NULL)
     return;
-  for (n=(o->tope-1);n>=0;n++){
-    object_print(s->player[n]);
+
+  free (ps);
+
+}
+
+/*******************************************************************************
+Funcion: set_add
+Autor: Arturo Morcillo
+Descripcion: Añade una Id al array de la estructura tipo Set introducida y
+le suma uno a la cantidad de Ids almacenadas
+Argumentos:
+  Un puntero a Set (ps) y una id
+Return:
+  Un STATUS. Devuelve ERROR si ago falla
+*******************************************************************************/
+
+STATUS set_add (Set *ps, Id id){
+
+  if (ps == NULL || id == NO_ID)
+    return ERROR;
+
+  ps->id[ps->cantidad] = id;
+
+  ps->cantidad++;
+
+  return OK;
+}
+
+/*******************************************************************************
+Funcion: set_del
+Autor: Arturo Morcillo
+Descripcion: Elimina una Id de la estructura Set introducida y le resta uno a
+la cantidad de Ids que hay almacenadas. Donde estaba la eliminada ahora hay NO_ID
+Argumentos:
+  Un puntero a Set (ps)
+Return:
+  una Id (La eliminada). Devuelve NO_ID si algo falla
+*******************************************************************************/
+
+Id set_del (Set *ps){
+  Id id_aux;
+  if (ps == NULL)
+    return NO_ID;
+
+  id_aux = ps->id[(ps->cantidad - 1)];
+
+  ps->id[ps->cantidad] = NO_ID;
+
+  ps->cantidad--;
+
+  return id_aux;
+
+}
+
+/*******************************************************************************
+Funcion: set_print
+Autor: Arturo Morcillo
+Descripcion: Muestra por pantalla todos los Ids de la estructura set introducida
+como argumento y la cantidad total de estos.
+Argumentos:
+  Un puntero a Set (ps)
+Return:
+  Un STATUS. Devuelve ERROR si ago falla
+*******************************************************************************/
+
+STATUS set_print(Set *ps){
+  int n;
+
+  if (ps == NULL)
+    return ERROR;
+
+  for (n=0;n<MAX_ID || n<ps->cantidad;n++)
+    fprintf(stdout,"Elemento %d: %ld\n",n+1,ps->id[n]);
+
+  fprintf(stdout,"Cantidad de elementos total: %d",n);
+
+  return OK;
+
   }
+
+/*******************************************************************************
+Funcion: set_isempty
+Autor: Arturo Morcillo
+Descripcion: Comprueba si el Set introducido no tiene ninguna id almacenada
+Argumentos:
+  Un puntero a Set (ps)
+Return:
+  Un BOOL. TRUE si esta vacia, FALSE si tiene alguna ID.
+*******************************************************************************/
+
+BOOL set_isempty(Set *ps)
+{
+  if (ps == NULL)
+    return TRUE;
+  if (ps->cantidad == 0)
+    return TRUE;
+
+  return FALSE;
 }
 
 /*******************************************************************************
-Funcion: spaces_create
+Funcion: get_id_pos
 Autor: Arturo Morcillo
-Descripcion: Reserva memoria (vacía por calloc) para un una estructura Spaces,
-  e inicializa sus campos a NULL
+Descripcion: Te devuelve el id de Set en la posicion introducida
 Argumentos:
-  Ninguno
+  Un puntero a Set (ps) y un entero (pos)
 Return:
-  Puntero a estructura de tipo Spaces
-*******************************************************************************/
-Spaces * spaces_create() {
-   Spaces *s;
-   int i;
-   s = (Spaces*)calloc(1,sizeof(Spaces));
-   if (s==NULL)
-     return NULL;
-
-   s->tope = 0;
-
-   for (i=0; i<MAX_PLAYERS; i++)
-       s->space[i] = NULL;
-   return p;
-}
-/*******************************************************************************
-Funcion: spaces_destroy
-Autor: Arturo Morcillo
-Descripcion: Libera la memoria de la estructura introducida como argumenro
-y la pone a NULL
-Argumentos:
-  s: Puntero a estructura tipo Spaces
-Return:
-  Nada (tipo void)
+  Un id o NO_ID si falla algo
 *******************************************************************************/
 
-void spaces_destroy(Spaces *s) {
-   int i;
-   if (s==NULL)
-     return;
+Id get_id_pos (Set *ps, int pos){
+  Id id_aux;
 
-   for (i=0; i<s->tope; i++)
-       space_destroy (s->space[i]);
+  if (ps == NULL || pos < 0 || pos > ps->cantidad || set_isempty (ps) == TRUE)
+    return NO_ID;
 
-   free(s);
-   s = NULL;
+  id_aux = ps->id[pos];
+
+  return id_aux;
 }
 
 /*******************************************************************************
-Funcion: spaces_add
+Funcion: get_set_tope
 Autor: Arturo Morcillo
-Descripcion: Añade un espacio a la estructura Spaces
+Descripcion: Devuelve la cantidad de ids que hay en un set
 Argumentos:
-  p: Puntero a la estructura space
-  space: EL espacio a añadir
+  Un puntero a Set (ps).
 Return:
-  Un Status que indica si la funcion ha ido bien o no
-*******************************************************************************/
-STATUS spaces_add(Spaces *s, const Space *space) {
-   if (s==NULL || space==NULL)
-     return ERROR;
-   if ( s->tope == MAX_SPACES-1)
-     return ERROR;
-
-   s->space[p->tope] = space_copy(space);
-   if (s->space[s->tope]==NULL)
-     return ERROR;
-
-   s->tope++;
-   return OK;
-}
-/*******************************************************************************
-Funcion: players_isempty
-Autor: Arturo Morcillo
-Descripcion: Comprueba si la estructura introducida esta vacia
-Argumentos:
-  s: Puntero al Spaces a comprobar si esta vacio
-Return:
-  BOOL que nos indica si esta vacia o no
+  Un entero. si falla un 0.
 *******************************************************************************/
 
-BOOL spaces_isempty(const Spaces *s) {
-   if (s==NULL)
-     return TRUE;
-   if (s->tope==0)
-     return TRUE;
+int get_set_tope(Set *ps){
+  int pos;
 
-   return FALSE;
-}
+  if (ps == NULL)
+    return 0;
 
-/*******************************************************************************
-Funcion: spaces_pop
-Autor: Arturo Morcillo
-Descripcion: sacas un elemento del array de spaces (devuelve el ultimo)
-Argumentos:
-  s: puntero a la estructura de la que se extraera el Space
-Return:
-  Puntero a estructura de tipo Space
-*******************************************************************************/
-Space * spaces_pop(Spaces *s) {
-   Space *temp;
-   if (s==NULL)
-     return NULL;
+  pos = ps->cantidad;
 
-   if (spaces_isempty(s) == TRUE)
-     return NULL;
 
-   s->tope--;
-   temp = space_copy(s->space[s->tope]);
-   space_destroy (s->space[s->tope]);
-
-   return temp;
-}
-/*******************************************************************************
-Funcion: spaces_print
-Autor: Arturo Morcillo
-Descripcion:  imprimir todos los elementos de la estructura Spaces introducida
-Argumentos:
-  p: puntero a la estructura a imprimir
-Return:
-  Nada (tipo void)
-*******************************************************************************/
-void spaces_print(const Spaces *s) {
-   int n;
-  /*compruebo los argumentos*/
-  if (s == NULL || s->space == NULL || s->tope == 0)
-   return;
- for (n=(s->tope-1);n>=0;n++){
-   space_print(s->player[n]);
- }
+  return pos;
 }

@@ -17,16 +17,15 @@
 #include "object.h"
 
 
-/*
-Estructura que define un jugador, con un identificador (id) y un nombre,
-un id que indica en qué casilla se encuentra, y otro que indica qué objeto porta
-*/
+/* Estructura que define un jugador, con un identificador (id) y un nombre,
+un id que indica en qué casilla se encuentra, y una tabla con los id de los
+objetos que porta */
 struct _Player
 {
   Id player_id;
   char name[WORD_SIZE+1];
   Id space_id;
-  Id object_id;
+  Id object_id[MAX_BAG];
 };
 
 
@@ -51,6 +50,12 @@ Player* player_create(Id id)
 
   /* Inicializa su id al especificado como argumento */
   newPlayer->player_id = id;
+
+  /* Inicializa los id de los objetos que porta el jugador a NO_ID */
+  for (i=0; i<MAX_BAG; i++)
+  {
+    player->object_id[i] = NO_ID;
+  }
 
   return newPlayer;
 }
@@ -130,6 +135,7 @@ STATUS player_set_location(Player* player, Id location)
 
 /*******************************************************************************
 Funcion: player_set_object
+TODO: Arreglar para tabla de ids, SET??
 Autor: Arturo Morcillo
 Descripcion: Asigna un objeto a un jugador
 Argumentos:
@@ -162,7 +168,7 @@ Return:
   Cadena de caracteres con el nombre del jugador (player->name)
   Si el argumento introducido no es correcto, devuelve NULL
 *******************************************************************************/
-const char * player_get_name(Player* player)
+char * player_get_name(Player* player)
 {
   if (!player)
   {
@@ -263,6 +269,7 @@ STATUS player_print(Player* player)
 
   return OK;
 }
+
 /*******************************************************************************
 Funcion: player_copy
 Autor: Arturo Morcillo
@@ -274,26 +281,33 @@ Return:
 *******************************************************************************/
 
 Player *player_copy (Player *pc){
-  Player aux;
+  Player *aux;
+  Id id_aux;
+  char *nombre;
   if (pc == NULL)
     return NULL;
 
   aux = player_create(pc->player_id);
-  if(aux ==NO_ID)
+  if(aux == NULL)
     return NULL;
 
-  aux->name = player_get_name(pc);
-  if((aux->name == NULL)
-    return NULL;
-  aux->space_id = player_get_id(pc);
-  if((aux->space_id == NO_ID)
+  nombre = player_get_name(pc);
+  player_set_name(pc, nombre);
+  if(aux->name == NULL)
     return NULL;
 
-  aux->object_id = player_get_item(pc);
-  if((aux->object_id ==NO_ID)
+  id_aux = player_get_location(pc);
+  player_set_location(aux, id_aux);
+  if(aux->space_id == NO_ID)
+    return NULL;
+
+  id_aux = NO_ID;
+
+
+  id_aux = player_get_item(pc);
+  player_set_object(aux, id_aux);
+  if(aux->object_id == NO_ID)
       return NULL;
 
   return aux;
-
-
 }

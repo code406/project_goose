@@ -10,7 +10,10 @@
 
  #ifndef DIE_H
  #define DIE_H
- 
+
+ #define NO_ROLL 0
+
+#include "types.h"
 
 /* Estructura que define un dado */
 typedef struct _Die Die;
@@ -63,6 +66,18 @@ Return:
   OK o ERROR, que pertenecen al enum STATUS
 *******************************************************************************/
 STATUS die_print (Die * die);
+
+
+/*******************************************************************************
+Funcion: die_get_last_roll
+Autor: David Palomo
+Descripcion: Devuelve el último valor generado por el dado
+Argumentos:
+  die: Puntero a una estructura de tipo Die
+Return:
+  Entero (int) con el último valor generado por el dado
+*******************************************************************************/
+STATUS die_get_last_roll (Die * die);
 
 
 #endif

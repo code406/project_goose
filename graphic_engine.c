@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include "screen.h"
 #include "graphic_engine.h"
+#include "die.h"
 
 
 /*
@@ -111,6 +112,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   char str[255];
   T_Command last_cmd = UNKNOWN;
   extern char *cmd_to_str[];
+  int i;
 
   /* Resetea el mapa y dibuja el area interior del mapa */
   screen_area_clear(ge->map);
@@ -125,10 +127,13 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
     /* Dibuja la casilla anterior.
     Tendrá un "*" si en la casilla hay un objeto */
-    if (game_get_object_location(game) == id_back)
-      obj='*';
-    else
-      obj=' ';
+    /*Tengo que comprobar todos los objetos*/
+    for (i=0,obj=' ';i<MAX_ID && game->object[i]!= NULL && obj==' ';i++){
+      if (game_get_object_location(game,game->object[i]) == id_back){
+        obj='*';
+      }
+    }
+
 
     if (id_back != NO_ID) {
       sprintf(str, "  |         %2d|",(int) id_back);
@@ -144,10 +149,12 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
     /* Dibuja la casilla actual.
     Tendrá un "*" si en la casilla hay un objeto */
-    if (game_get_object_location(game) == id_act)
-      obj='*';
-    else
-      obj=' ';
+    for (i=0,obj=' ';i<MAX_ID && game->object[i]!= NULL && obj==' ';i++){
+      if (game_get_object_location(game,game->object[i]) == id_act){
+        obj='*';
+      }
+    }
+
 
     if (id_act != NO_ID) {
       sprintf(str, "  +-----------+");
@@ -163,10 +170,12 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
     /* Dibuja la casilla siguiente.
     Tendrá un "*" si en la casilla hay un objeto */
-    if (game_get_object_location(game) == id_next)
-      obj='*';
-    else
-      obj=' ';
+    for (i=0,obj=' ';i<MAX_ID && game->object[i]!= NULL && obj==' ';i++){
+      if (game_get_object_location(game,game->object[i]) == id_next){
+        obj='*';
+      }
+    }
+
 
     if (id_next != NO_ID) {
       sprintf(str, "        v");
@@ -183,10 +192,19 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
   /* Dibuja el area de descripcion (description) */
   screen_area_clear(ge->descript);
-  if ((obj_loc = game_get_object_location(game)) != NO_ID){
-    sprintf(str, "  Object location:%d", (int)obj_loc);
-    screen_area_puts(ge->descript, str);
+  sprintf(str, " Object location:");
+  screen_area_puts(ge->descript, str);
+  for (i=0;i<MAX_ID && game->object[i]!= NULL;i++)
+  {
+    if ((obj_loc = game_get_object_location(game,game->object[i])) != NO_ID)
+    {
+      sprintf(str, "    %s:%d",object_get_name(game->object[i]), (int)obj_loc);
+      screen_area_puts(ge->descript, str);
+    }
   }
+  sprintf(str, " Last die value: %d", die_get_last_roll(game->die));
+  screen_area_puts(ge->descript, str);
+
 
   /* Dibuja el area del banner */
   screen_area_puts(ge->banner, " The game of the Goose ");
@@ -195,7 +213,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   screen_area_clear(ge->help);
   sprintf(str, " The commands you can use are:");
   screen_area_puts(ge->help, str);
-  sprintf(str, "     following or f, previous or p, or exit or e, get or g, drop or d");
+  sprintf(str, "    following(f) previous(p) right(r) left(l) get(g) drop(d) roll(x) exit(e)");
   screen_area_puts(ge->help, str);
 
   /* Dibuja el area de feedback */

@@ -4,7 +4,7 @@
  * @file command.c
  * @author Arturo Morcillo, David Palomo
  * @version 1.0.E
- * @date 16-02-2018
+ * @date 27-02-2018
  * @copyright GNU Public License
  */
 
@@ -15,14 +15,14 @@
 /* Tamaño máximo para la introducción de comando.
  Deberíamos cambiar a screen_gets la funcion de input */
 #define CMD_LENGHT 256
-#define N_CMD 7
+#define N_CMD 10
 
 /* Tabla de comandos que el usuario introduce (completos) */
-char *cmd_to_str[N_CMD] = {"No command", "Unknown", "Exit",
-                           "Following", "Previous","Get","Drop"};
+char *cmd_to_str[N_CMD] = {"No command","Unknown","Exit","Following","Previous",
+                           "Get","Drop","Roll","Left","Right"};
 
 /* Tabla de comandos que el usuario introduce (abreviados) */
-char *short_cmd_to_str[N_CMD] ={"","","e","f","p","g","d"};
+char *short_cmd_to_str[N_CMD] ={"","","e","f","p","g","d","x","l","r"};
 
 
 /*******************************************************************************

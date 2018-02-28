@@ -13,6 +13,7 @@
 #include "types.h"
 #include "space.h"
 
+#define MAX_BAG 32
 
 /* Estructura que define un jugador */
 typedef struct _Player Player;
@@ -92,7 +93,7 @@ Return:
   Cadena de caracteres con el nombre del jugador (player->name)
   Si el argumento introducido no es correcto, devuelve NULL
 *******************************************************************************/
-const char * player_get_name(Player* player);
+char * player_get_name(Player* player);
 
 
 /*******************************************************************************
@@ -156,6 +157,7 @@ Argumentos:
 Return:
   Un puntero a la copia
 *******************************************************************************/
+
 Player *player_copy (Player *pc);
 
 

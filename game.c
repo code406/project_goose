@@ -15,12 +15,16 @@
 #include "game_reader.h"
 #include "player.h"
 #include "object.h"
+#include "space.h"
+#include "set.h"
+#include "die.h"
 
 
-#define N_CALLBACK 6 /* Numero de llamadas a comando de la lista */
+#define N_CALLBACK 9 /* Numero de llamadas a comando de la lista */
 
 #define ID_P 1   /* Id que se asigna al jugador  */
 #define ID_O 1   /* Id que se asigna al objeto   */
+#define ID_D 1   /* Id que se asigna al dado     */
 #define INI_P 0  /* Posicion inicial del jugador */
 #define INI_O 4  /* Posicion inicial del objeto  */
 
@@ -35,6 +39,9 @@ void game_callback_following(Game* game);
 void game_callback_previous(Game* game);
 void game_callback_get(Game* game);
 void game_callback_drop(Game* game);
+void game_callback_roll(Game* game);
+void game_callback_left(Game* game);
+void game_callback_right(Game* game);
 
 
 /*******************************************************************************
@@ -53,7 +60,10 @@ static callback_fn game_callback_fn_list[N_CALLBACK] =
   game_callback_following,
   game_callback_previous,
   game_callback_get,
-  game_callback_drop
+  game_callback_drop,
+  game_callback_roll,
+  game_callback_left,
+  game_callback_right
 };
 
 
@@ -69,35 +79,7 @@ Argumentos:
 Return:
   Entero de tipo Id (long) que identifica la casilla asociada a una posicion
 *******************************************************************************/
-Id     game_get_space_id_at(Game* game, int position);
-
-
-/*******************************************************************************
-Funcion: game_set_player_location
-Autor: Arturo Morcillo
-Descripcion: Asigna la posicion del jugador a un id introducido que
-  identifica una casilla
-Argumentos:
-  game: Puntero a una estructura de tipo Game
-  id  : Entero de tipo Id (long)
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
-STATUS game_set_player_location(Game* game, Id id);
-
-
-/*******************************************************************************
-Funcion: game_set_object_location
-Autor: David Palomo
-Descripcion: Asigna la posicion del objeto a un id introducido que
-  identifica una casilla
-Argumentos:
-  game: Puntero a una estructura de tipo Game
-  id  : Entero de tipo Id (long)
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
-STATUS game_set_object_location(Game* game, Id id);
+Id game_get_space_id_at(Game* game, int position);
 
 /*----------------------  Fin de funciones privadas  -------------------------*/
 
@@ -122,13 +104,22 @@ STATUS game_create(Game* game)
 
   /* Asigna un id al jugador y al objeto */
   game->player=player_create(ID_P);
-  game->object=object_create(ID_O);
+  for (i = 0; i < MAX_ID; i++)
+  {
+    game->object[i] = object_create(NO_ID);
+  }
 
   game_set_player_location(game, NO_ID);
-  game_set_object_location(game, NO_ID);
+  for (i = 0; i < MAX_ID; i++)
+  {
+    game->object[i] = NULL;
+  }
 
   game->last_cmd = NO_CMD;
 
+  /* Crea el dado y fija la última tirada a NO_ID */
+  game->die = die_create(ID_D);
+  
   return OK;
 }
 
@@ -152,9 +143,10 @@ STATUS game_create_from_file(Game* game, char* filename)
   /* Carga los espacios del archivo */
   if (game_load_spaces(game, filename) == ERROR)
     return ERROR;
+    if (game_load_objects(game, filename) == ERROR)
+      return ERROR;
   /* Coloca a jugador y objeto en sus casillas iniciales (INI_P e INI_O) */
   game_set_player_location(game, game_get_space_id_at(game, INI_P));
-  game_set_object_location(game, game_get_space_id_at(game, INI_O));
   return OK;
 }
 
@@ -177,6 +169,14 @@ STATUS game_destroy(Game* game)
     /* Libera memoria y pone a NULL el puntero correspondiente a cada casilla */
     space_destroy(game->spaces[i]);
   }
+
+  for (i = 0; (i < MAX_ID) && (game->object[i] != NULL); i++)
+  {
+    /* Libera memoria y pone a NULL el puntero correspondiente a cada casilla */
+    object_destroy(game->object[i]);
+  }
+
+  /*TODO: Destroy dado y player tambien */
 
   return OK;
 }
@@ -213,6 +213,42 @@ STATUS game_add_space(Game* game, Space* space)
   }
 
   game->spaces[i] = space;
+
+  return OK;
+}
+
+
+/*******************************************************************************
+Funcion: game_add_object
+Autor: Arturo Morcillo
+Descripcion: Crea un objeto. Al último elemento "vacío" (= NULL) de la
+  tabla de tipo Object de game se le asigna el Object introducido como argumento.
+Argumentos:
+  game : Puntero a una estructura de tipo Game
+  space: Puntero a una estructura de tipo Space (casilla)
+Return:
+  OK o ERROR, que pertenecen al enum STATUS
+*******************************************************************************/
+STATUS game_add_object(Game* game, Object* object)
+{
+  int i = 0;
+
+  if (game == NULL || object == NULL)
+  {
+    return ERROR;
+  }
+
+  while ((i < MAX_ID) && (game->object[i] != NULL))
+  {
+    i++;
+  }
+
+  if (i >= MAX_ID)
+  {
+    return ERROR;
+  }
+
+  game->object[i] = object;
 
   return OK;
 }
@@ -331,13 +367,13 @@ Argumentos:
 Return:
   OK o ERROR, que pertenecen al enum STATUS
 *******************************************************************************/
-STATUS game_set_object_location(Game* game, Id space_id)
+STATUS game_set_object_location(Game* game,Object *object ,Id space_id)
 {
   int i;
   Id space_aux, object_id_aux;
 
   /* Comprueba los argumentos */
-  if (!game || space_id == NO_ID)
+  if (!game || space_id == NO_ID || object == NULL)
   {
     return ERROR;
   }
@@ -350,8 +386,8 @@ STATUS game_set_object_location(Game* game, Id space_id)
     /* Si coincide con el id introducido como argumento, coloca el objeto */
     if (space_aux == space_id)
     {
-      object_id_aux = object_get_id(game->object);
-      space_set_object(game->spaces[i], object_id_aux);
+      object_id_aux = object_get_id(object);
+      space_add_object(game->spaces[i], object_id_aux);
       return OK;
     }
 
@@ -371,30 +407,40 @@ Argumentos:
 Return:
   Entero de tipo Id (long) que identifica una casilla
 *******************************************************************************/
-Id game_get_object_location(Game* game)
+Id game_get_object_location(Game* game, Object *object)
 {
-  int n;
-  Id space_aux, object_aux, location;
+  int n,i;
+  Id space_id_aux, object_id_aux, location;
+  Set *set_aux;
 
-  if (!game)
+
+  if (!game || !object)
   {
     return NO_ID;
   }
 
-  /* Obtiene el id del objeto desde la estructura game */
-  object_aux = object_get_id(game->object);
+
+  /* Obtengo el id del objeto cuya localizacion quiero saber */
+  object_id_aux = object_get_id(object);
+  /*Recorro todos los espacios*/
   for (n=0;n<MAX_SPACES;n++)
   {
-    /* Obtiene el id del objeto que haya en la casilla. Si no hay, será NO_ID */
-    space_aux = space_get_object(game->spaces[n]);
-    /* Si el id del objeto coincide con el id del objeto que hay en la casilla */
-    if (space_aux == object_aux)
-    {
-      /* Devuelve el id de la casilla */
-      location = space_get_id(game->spaces[n]);
-      return location;
+    /*Obtengo todos los objetos de cada espacio*/
+    set_aux = space_get_objects (game->spaces[n]);
+    /*  */
+    for (i=0; i<get_set_tope(set_aux) ;i++){
+      space_id_aux = get_id_pos (set_aux, i);
+      /* Si el id del objeto coincide con el id del objeto que hay en la casilla */
+      if (space_id_aux == object_id_aux)
+      {
+        /* Devuelve el id de la casilla */
+        location = space_get_id(game->spaces[n]);
+        return location;
+      }
     }
+
   }
+  /*Si llegamos hasta aqui quiere decir que no hemos encontrado el objeto en ningun espacio*/
   return NO_ID;
 }
 
@@ -460,7 +506,11 @@ void game_print_data(Game* game)
 
   /* obtiene la posicion del jugador y del objeto y la mustra por pantalla */
   printf("=> Player location: %d\n", (int) (game_get_player_location(game)));
-  printf("=> Object location: %d\n", (int) (game_get_object_location(game)));
+  for (i = 0; i < MAX_ID && game->object[i] != NULL; i++)
+  {
+    printf("=> Object location: %d\n", (int) (game_get_object_location(game,game->object[i])));
+  }
+  /* TODO: Imprimir el dado */
   printf("prompt:> ");
 }
 
@@ -607,6 +657,7 @@ void game_callback_get(Game* game)
   Id current_id = NO_ID;
   Space * current_space = NULL;
   Id object = NO_ID;
+  Set *set_aux = NULL;
 
   /* Obtiene el id de la casilla en que se encuentra el jugador */
   current_id = game_get_player_location(game);
@@ -626,14 +677,12 @@ void game_callback_get(Game* game)
 
   /* Si el jugador está en una casilla con objeto,
   lo coge (se le asigna) y desaparece de la casilla */
-  if (space_get_object(current_space) == NO_ID)
+  set_aux = space_get_objects(current_space);
+  if (set_aux == NULL || set_isempty(set_aux) == TRUE)
     return;
 
-  object = object_get_id(game->object);
+  object = set_del (set_aux);
   player_set_object(game->player, object);
-
-  /* Quita de la casilla el objeto */
-  space_set_object(current_space, NO_ID);
 }
 
 
@@ -648,9 +697,13 @@ Return:
 *******************************************************************************/
 void game_callback_drop(Game* game)
 {
+  int i;
   Id current_id = NO_ID;
   Space * current_space = NULL;
-  Id object = NO_ID;
+  Id object_id = NO_ID;
+  Set *set_aux = NULL;
+  Object *object;
+
 
   /* Obtiene el id de la casilla en que se encuentra el jugador */
   current_id = game_get_player_location(game);
@@ -670,12 +723,127 @@ void game_callback_drop(Game* game)
 
   /* Si el jugador está en casilla sin objeto,
   lo deja (se le asigna NO_ID) y aparece en la casilla */
-  if (space_get_object(current_space) == NO_ID)
-  {
-    object = object_get_id(game->object);
-    player_set_object(game->player, NO_ID);
+  set_aux = space_get_objects(current_space);
 
-    /* Pone en la casilla el objeto */
-    space_set_object(current_space, object);
+  if (set_aux == NULL){
+    return;
+  }
+
+
+  object_id = player_get_item(game->player);
+
+  if (object_id == NO_ID){
+    return;
+  }
+
+  for (i=0; i<MAX_ID && object_get_id(object) != object_id; i++)
+  {
+    object = game->object[i];
+  }
+
+  /* Pone en la casilla el objeto */
+  game_set_object_location(game, object ,current_id);
+
+  player_set_object(game->player, NO_ID);
+
+
+  player_print(game->player);
+
+}
+
+
+/*******************************************************************************
+Funcion: game_callback_roll
+Autor: David Palomo
+Descripcion: Implementa la funcionalidad del comando roll (tirar el dado)
+Argumentos:
+  game: Puntero a una estructura de tipo Game
+Return:
+  Ninguno (void)
+*******************************************************************************/
+void game_callback_roll(Game* game)
+{
+  die_roll(game->die);
+}
+
+
+/*******************************************************************************
+Funcion: game_callback_left
+Autor: David Palomo
+Descripcion: Implementa la funcionalidad del comando left (moverse hacia izquierda)
+  Se utiliza "west".
+Argumentos:
+  game: Puntero a una estructura de tipo Game
+Return:
+  Ninguno (void)
+*******************************************************************************/
+void game_callback_left(Game* game)
+{
+  int i = 0;
+  Id current_id = NO_ID;
+  Id space_id = NO_ID;
+
+  /* Asigna la posicion del jugador a space_id, y realiza la comprobacion */
+  space_id = game_get_player_location(game);
+  if (space_id == NO_ID)
+  {
+    return;
+  }
+
+  /* Recorre las casillas */
+  for (i = 0; i < MAX_SPACES && game->spaces[i] != NULL; i++)
+  {
+    current_id = space_get_id(game->spaces[i]);
+    if (current_id == space_id)
+    {
+      /* Mueve al jugador hacia el oeste (la casilla a la izquierda) */
+      current_id = space_get_west(game->spaces[i]);
+      if (current_id != NO_ID)
+      {
+	       game_set_player_location(game, current_id);
+      }
+      return;
+    }
+  }
+}
+
+
+/*******************************************************************************
+Funcion: game_callback_right
+Autor: David Palomo
+Descripcion: Implementa la funcionalidad del comando right (moverse hacia derecha)
+  Se utiliza "east".
+Argumentos:
+  game: Puntero a una estructura de tipo Game
+Return:
+  Ninguno (void)
+*******************************************************************************/
+void game_callback_right(Game* game)
+{
+  int i = 0;
+  Id current_id = NO_ID;
+  Id space_id = NO_ID;
+
+  /* Asigna la posicion del jugador a space_id, y realiza la comprobacion */
+  space_id = game_get_player_location(game);
+  if (space_id == NO_ID)
+  {
+    return;
+  }
+
+  /* Recorre las casillas */
+  for (i = 0; i < MAX_SPACES && game->spaces[i] != NULL; i++)
+  {
+    current_id = space_get_id(game->spaces[i]);
+    if (current_id == space_id)
+    {
+      /* Mueve al jugador hacia el este (la casilla a la derecha) */
+      current_id = space_get_east(game->spaces[i]);
+      if (current_id != NO_ID)
+      {
+	       game_set_player_location(game, current_id);
+      }
+      return;
+    }
   }
 }
