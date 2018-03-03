@@ -68,14 +68,15 @@ STATUS game_create_from_file(Game* game, char* filename);
 Funcion: game_update
 Autor: David Palomo
 Descripcion: Actualiza el panel de comandos introducidos para mostrar
-  el último comando introducido
+  el último comando introducido y llama a la funcion callback correspondiente
 Argumentos:
   game     : Puntero a una estructura de tipo Game
   T_Command: Enumeración que identifica cada comando con un número
+  param    : Cadena de caracteres con el parámetro que se introduce para get/drop
 Return:
   OK o ERROR, que pertenecen al enum STATUS
 *******************************************************************************/
-STATUS game_update(Game* game, T_Command cmd);
+STATUS game_update(Game* game, T_Command cmd, char* param);
 
 
 /*******************************************************************************

@@ -83,6 +83,19 @@ Id object_get_id(Object* object);
 
 
 /*******************************************************************************
+Funcion: object_get_id_from_name
+Descripcion: Devuelve el id asignado a un objeto dado su nombre
+Autor: David Palomo
+Argumentos:
+  object: Puntero a una estructura de tipo Object
+Return:
+  Variable de tipo Id (long) que identifica al objeto (object->id)
+  Si el argumento introducido no es correcto, devuelve NULL
+*******************************************************************************/
+Id object_get_id_from_name(char* name);
+
+
+/*******************************************************************************
 Funcion: object_print
 Autor: David Palomo
 Descripcion: Muestra por pantalla el id y el nombre del objeto

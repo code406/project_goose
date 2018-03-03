@@ -11,6 +11,8 @@
 #ifndef COMMAND_H
 #define COMMAND_H
 
+/* Tamaño máximo para la introducción de comando */
+#define CMD_LENGHT 256
 
 /* Enumeración que define para cada comando del usuario un valor numérico */
 typedef enum enum_Command
@@ -34,11 +36,12 @@ Autor: David Palomo
 Descripcion: Escanea el comando escrito por el usuario y lo transforma
   a un valor numérico definido en la enumeración T_Command.
 Argumentos:
-  Ninguno
+  param: Cadena de caracteres donde se copia el parámetro del comando
+         (para comandos como "get O1" o "drop O1")
 Return:
   Valor numérico de la enumeración T_Command que identifica a cada comando
 *******************************************************************************/
-T_Command get_user_input();
+T_Command get_user_input(char* param);
 
 
 #endif

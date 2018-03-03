@@ -30,18 +30,18 @@
 
 
 /* Define el tipo de funcion para las llamadas */
-typedef void (*callback_fn)(Game* game);
+typedef void (*callback_fn)(Game* game, char* param);
 
 /* Funciones de llamada para cada comando. Se definen mas adelante */
-void game_callback_unknown(Game* game);
-void game_callback_exit(Game* game);
-void game_callback_following(Game* game);
-void game_callback_previous(Game* game);
-void game_callback_get(Game* game);
-void game_callback_drop(Game* game);
-void game_callback_roll(Game* game);
-void game_callback_left(Game* game);
-void game_callback_right(Game* game);
+void game_callback_unknown(Game* game, char* param);
+void game_callback_exit(Game* game, char* param);
+void game_callback_following(Game* game, char* param);
+void game_callback_previous(Game* game, char* param);
+void game_callback_get(Game* game, char* param);
+void game_callback_drop(Game* game, char* param);
+void game_callback_roll(Game* game, char* param);
+void game_callback_left(Game* game, char* param);
+void game_callback_right(Game* game, char* param);
 
 
 /*******************************************************************************
@@ -104,12 +104,9 @@ STATUS game_create(Game* game)
 
   /* Asigna un id al jugador y al objeto */
   game->player=player_create(ID_P);
-  for (i = 0; i < MAX_ID; i++)
-  {
-    game->object[i] = object_create(NO_ID);
-  }
 
   game_set_player_location(game, NO_ID);
+
   for (i = 0; i < MAX_ID; i++)
   {
     game->object[i] = NULL;
@@ -143,8 +140,8 @@ STATUS game_create_from_file(Game* game, char* filename)
   /* Carga los espacios del archivo */
   if (game_load_spaces(game, filename) == ERROR)
     return ERROR;
-    if (game_load_objects(game, filename) == ERROR)
-      return ERROR;
+  if (game_load_objects(game, filename) == ERROR)
+    return ERROR;
   /* Coloca a jugador y objeto en sus casillas iniciales (INI_P e INI_O) */
   game_set_player_location(game, game_get_space_id_at(game, INI_P));
   return OK;
@@ -493,18 +490,19 @@ BOOL game_get_object_player(Game* game, Object *object)
 Funcion: game_update
 Autor: David Palomo
 Descripcion: Actualiza el panel de comandos introducidos para mostrar
-  el último comando introducido
+  el último comando introducido y llama a la funcion callback correspondiente
 Argumentos:
   game     : Puntero a una estructura de tipo Game
   T_Command: Enumeración que identifica cada comando con un número
+  param    : Cadena de caracteres con el parámetro que se introduce para get/drop
 Return:
   OK o ERROR, que pertenecen al enum STATUS
 *******************************************************************************/
-STATUS game_update(Game* game, T_Command cmd)
+STATUS game_update(Game* game, T_Command cmd, char* param)
 {
   /* fija game->last_cmd al cmd introducido */
   game->last_cmd = cmd;
-  (*game_callback_fn_list[cmd])(game);
+  (*game_callback_fn_list[cmd])(game, param);
   return OK;
 }
 
@@ -583,11 +581,12 @@ Autor: David Palomo
 Descripcion: Implementa la funcionalidad del comando unknown (introducir un
   comando no contemplado en la lista). No ocurre nada.
 Argumentos:
-  game: Puntero a una estructura de tipo Game
+  game : Puntero a una estructura de tipo Game
+  param: Cadena de caracteres con el parámetro que se introduce para get/drop
 Return:
   Ninguno (void)
 *******************************************************************************/
-void game_callback_unknown(Game* game)
+void game_callback_unknown(Game* game, char* param)
 {
 }
 
@@ -598,11 +597,12 @@ Autor: David Palomo
 Descripcion: Implementa la funcionalidad del comando exit (salir del juego).
   No ocurre nada.
 Argumentos:
-  game: Puntero a una estructura de tipo Game
+  game : Puntero a una estructura de tipo Game
+  param: Cadena de caracteres con el parámetro que se introduce para get/drop
 Return:
   Ninguno (void)
 *******************************************************************************/
-void game_callback_exit(Game* game)
+void game_callback_exit(Game* game, char* param)
 {
 }
 
@@ -612,11 +612,12 @@ Funcion: game_callback_following
 Autor: Arturo Morcillo
 Descripcion: Implementa la funcionalidad del comando following (avanzar)
 Argumentos:
-  game: Puntero a una estructura de tipo Game
+  game : Puntero a una estructura de tipo Game
+  param: Cadena de caracteres con el parámetro que se introduce para get/drop
 Return:
   Ninguno (void)
 *******************************************************************************/
-void game_callback_following(Game* game)
+void game_callback_following(Game* game, char* param)
 {
   int i = 0;
   Id current_id = NO_ID;
@@ -652,11 +653,12 @@ Funcion: game_callback_previous
 Autor: Arturo Morcillo
 Descripcion: Implementa la funcionalidad del comando previous (retroceder)
 Argumentos:
-  game: Puntero a una estructura de tipo Game
+  game : Puntero a una estructura de tipo Game
+  param: Cadena de caracteres con el parámetro que se introduce para get/drop
 Return:
   Ninguno (void)
 *******************************************************************************/
-void game_callback_previous(Game* game)
+void game_callback_previous(Game* game, char* param)
 {
   int i = 0;
   Id current_id = NO_ID;
@@ -692,17 +694,17 @@ Funcion: game_callback_get
 Autor: David Palomo
 Descripcion: Implementa la funcionalidad del comando get (coger un objeto)
 Argumentos:
-  game: Puntero a una estructura de tipo Game
+  game : Puntero a una estructura de tipo Game
+  param: Cadena de caracteres con el parámetro que se introduce para get/drop
 Return:
   Ninguno (void)
 *******************************************************************************/
-void game_callback_get(Game* game)
+void game_callback_get(Game* game, char* param)
 {
   Id current_id = NO_ID;
   Space * current_space = NULL;
-  Id object = NO_ID;
+  Id object_id = NO_ID;
   Set *set_aux = NULL;
-
 
   /* Obtiene el id de la casilla en que se encuentra el jugador */
   current_id = game_get_player_location(game);
@@ -720,15 +722,24 @@ void game_callback_get(Game* game)
     return;
   }
 
-  /* Si el jugador está en una casilla con objeto,
+  /* Si el jugador está en la casilla en la que se encuentra ese objeto,
   lo coge (se le asigna) y desaparece de la casilla */
   set_aux = space_get_objects(current_space);
   if (set_aux == NULL || set_isempty(set_aux) == TRUE)
     return;
 
-  object = set_del (set_aux);
-  player_add_object(game->player, object);
+  object_id = object_get_id_from_name(param);
+  printf("Got %ld",object_id);
 
+  if (check_object (current_space, object_id) == TRUE)
+  {
+    object_id = set_del(set_aux);
+    player_add_object(game->player, object_id);
+  }
+  else
+  {
+    return;
+  }
 
 }
 
@@ -738,11 +749,12 @@ Funcion: game_callback_drop
 Autor: David Palomo
 Descripcion: Implementa la funcionalidad del comando drop (soltar un objeto)
 Argumentos:
-  game: Puntero a una estructura de tipo Game
+  game : Puntero a una estructura de tipo Game
+  param: Cadena de caracteres con el parámetro que se introduce para get/drop
 Return:
   Ninguno (void)
 *******************************************************************************/
-void game_callback_drop(Game* game)
+void game_callback_drop(Game* game, char* param)
 {
   int i;
   Id current_id = NO_ID;
@@ -750,13 +762,12 @@ void game_callback_drop(Game* game)
   Id object_id = NO_ID;
   Set *set_aux = NULL;
   Set *player_set = NULL;
+  Id object_id = NO_ID;
   Object *object;
 
-
   player_set = player_get_objects(game->player);
-  if (get_set_tope(player_set) == 0)
+  if (get_set_tope(player_set) <= 0)
     return;
-
 
   /* Obtiene el id de la casilla en que se encuentra el jugador */
   current_id = game_get_player_location(game);
@@ -774,8 +785,10 @@ void game_callback_drop(Game* game)
     return;
   }
 
-  /* Si el jugador está en casilla sin objeto,
-  lo deja (se le asigna NO_ID) y aparece en la casilla */
+  object_id = object_get_id_from_name(param);
+  printf("Got %ld",object_id);
+
+  /* El jugador deja de llevar objeto y aparece en la casilla */
   set_aux = space_get_objects(current_space);
 
   if (set_aux == NULL){
@@ -804,11 +817,12 @@ Funcion: game_callback_roll
 Autor: David Palomo
 Descripcion: Implementa la funcionalidad del comando roll (tirar el dado)
 Argumentos:
-  game: Puntero a una estructura de tipo Game
+  game : Puntero a una estructura de tipo Game
+  param: Cadena de caracteres con el parámetro que se introduce para get/drop
 Return:
   Ninguno (void)
 *******************************************************************************/
-void game_callback_roll(Game* game)
+void game_callback_roll(Game* game, char* param)
 {
   die_roll(game->die);
 }
@@ -820,11 +834,12 @@ Autor: David Palomo
 Descripcion: Implementa la funcionalidad del comando left (moverse hacia izquierda)
   Se utiliza "west".
 Argumentos:
-  game: Puntero a una estructura de tipo Game
+  game : Puntero a una estructura de tipo Game
+  param: Cadena de caracteres con el parámetro que se introduce para get/drop
 Return:
   Ninguno (void)
 *******************************************************************************/
-void game_callback_left(Game* game)
+void game_callback_left(Game* game, char* param)
 {
   int i = 0;
   Id current_id = NO_ID;
@@ -861,11 +876,12 @@ Autor: David Palomo
 Descripcion: Implementa la funcionalidad del comando right (moverse hacia derecha)
   Se utiliza "east".
 Argumentos:
-  game: Puntero a una estructura de tipo Game
+  game : Puntero a una estructura de tipo Game
+  param: Cadena de caracteres con el parámetro que se introduce para get/drop
 Return:
   Ninguno (void)
 *******************************************************************************/
-void game_callback_right(Game* game)
+void game_callback_right(Game* game, char* param)
 {
   int i = 0;
   Id current_id = NO_ID;

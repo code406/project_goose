@@ -10,11 +10,10 @@
 
 #include <stdio.h>
 #include <strings.h>
+#include <string.h>
 #include "command.h"
 
-/* Tamaño máximo para la introducción de comando.
- Deberíamos cambiar a screen_gets la funcion de input */
-#define CMD_LENGHT 256
+
 #define N_CMD 10
 
 /* Tabla de comandos que el usuario introduce (completos) */
@@ -31,32 +30,60 @@ Autor: David Palomo
 Descripcion: Escanea el comando escrito por el usuario y lo transforma
   a un valor numérico definido en la enumeración T_Command.
 Argumentos:
-  Ninguno
+  param: Cadena de caracteres donde se copia el parámetro del comando
+         (para comandos como "get O1" o "drop O1")
 Return:
   Valor numérico de la enumeración T_Command que identifica a cada comando
 *******************************************************************************/
-T_Command get_user_input()
+T_Command get_user_input(char* param)
 {
+  char* toks = NULL;
   /*Variable cmd tipo T_Command inicializada a -1*/
   T_Command cmd = NO_CMD;
   /*Variable input tipo cadena de caracteres, leerá el comando más adelante*/
   char input[CMD_LENGHT] = "";
   /*Variable i tipo entero inicializada a 2*/
   int i = UNKNOWN - NO_CMD + 1;
+  /* En caso de no requerir parametro, será '\0' */
+  *param = '\0';
 
   /*Si escanea el comando bien*/
-  if (scanf("%s", input) > 0)
+  if (fgets(input, sizeof(input), stdin) != NULL)
   {
+    input[strlen(input)-1] = '\0';
     /*cmd = 0*/
     cmd = UNKNOWN;
+
+    /* toks es la primera palabra introducida (hasta espacio) */
+    toks = strtok(input, " ");
 
     /* Compara el comando introducido con la lista de comandos disponibles */
     while(cmd == UNKNOWN && i < N_CMD)
     {
       /* Si coincide con uno, le da a cmd el valor que le corresponde */
-      if (!strcasecmp(input,short_cmd_to_str[i]) || !strcasecmp(input,cmd_to_str[i]))
+      if (!strcasecmp(toks, short_cmd_to_str[i]) || !strcasecmp(toks, cmd_to_str[i]))
       {
         cmd = i + NO_CMD;
+        toks = strtok(NULL, " ");
+
+        if(toks==NULL)
+        {
+          if (cmd == GET || cmd == DROP)
+          {
+            return UNKNOWN;
+          }
+        }
+        else
+        {
+          if (cmd == GET || cmd == DROP)
+          {
+            strcpy(param, toks);
+          }
+          else
+          {
+            return UNKNOWN;
+          }
+        }
       }
       /* Si no coincide, incrementa i para comparar con otro comando */
       else
