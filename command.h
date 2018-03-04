@@ -21,7 +21,10 @@ typedef enum enum_Command
   FOLLOWING,  /* 2 */
   PREVIOUS,   /* 3 */
   GET,        /* 4 */
-  DROP        /* 5 */
+  DROP,       /* 5 */
+  ROLL,       /* 6 */
+  LEFT,       /* 7 */
+  RIGHT       /* 8 */
 } T_Command;
 
 

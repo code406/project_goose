@@ -245,7 +245,7 @@ STATUS space_del_object(Space* space)
 /*******************************************************************************
 Funcion: space_add_object
 Autor: Arturo Morcillo
-Descripcion: Coloca en la casilla especificada un objeto, o lo quita.
+Descripcion: Coloca en la casilla especificada un objeto.
 Argumentos:
   space: puntero a una estructura de tipo Space (casilla)
   value: Entero de tipo id (long) que identifica un objeto
@@ -433,6 +433,7 @@ BOOL check_object (Space *ps, Id object_id)
 {
   Set *aux;
   Id id_aux;
+  int n;
 
   if (ps == NULL || object_id == NO_ID)
     return FALSE;
@@ -441,13 +442,17 @@ BOOL check_object (Space *ps, Id object_id)
   if (aux == NULL)
     return FALSE;
 
-  while ((id_aux=set_del(aux)) != NO_ID){
-    if (id_aux == object_id){
-      set_destroy (aux);
-      aux = NULL;
-      return TRUE;
+  for (n=0;n<MAX_ID;n++){
+    id_aux = get_id_pos (aux, n);
+    if (id_aux != NO_ID){
+      if (id_aux == object_id){
+        
+        return TRUE;
+      }
     }
   }
+
+
   set_destroy (aux);
   aux = NULL;
 

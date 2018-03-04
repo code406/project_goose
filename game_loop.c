@@ -18,6 +18,8 @@
  	Game game;
  	T_Command command = NO_CMD;
  	Graphic_engine *gengine;
+  char param[WORD_SIZE+1] = " ";
+
 
  	/* Si no se invoca el programa correctamente ("./game  game_data_file")
   porque no se introduce un minimo de 2 argumentos,imprime error y
@@ -36,6 +38,7 @@
  		return 1;
  	}
 
+  game_set_param(&game,param);
  	/* Intenta crear el graphic_engine. Si no consigue crear, el puntero es NULL,
  	muestra error, libera con game_destroy y termina (return). */
  	if ((gengine = graphic_engine_create()) == NULL)
@@ -50,8 +53,8 @@
  	while ((command != EXIT) && !game_is_over(&game))
  	{
  		graphic_engine_paint_game(gengine, &game);
- 		command = get_user_input();
- 		game_update(&game, command);
+ 		command = get_user_input(param);
+ 		game_update(&game, command, param);
  	}
 
  	/* Cuando el loop termina, libera con game_destroy y graphic_engine_destroy,

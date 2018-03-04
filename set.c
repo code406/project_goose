@@ -203,3 +203,37 @@ int get_set_tope(Set *ps){
 
   return pos;
 }
+
+/*******************************************************************************
+Funcion: remove_id
+Autor: Arturo Morcillo
+Descripcion: Elimina del set la Id introducida
+Argumentos:
+  Un puntero a Set (ps) y una id.
+Return:
+  Un Status
+*******************************************************************************/
+
+STATUS remove_id (Set *ps, Id id){
+  int i,n;
+  STATUS encontrado = ERROR;
+  Id id_aux;
+
+  if (ps == NULL || id == NO_ID)
+    return ERROR;
+
+  for (i=0; i<ps->cantidad;i++){
+    id_aux = get_id_pos (ps, i);
+    if(id == id_aux){
+      for (n=i;n+1<MAX_ID && ps->id[n] != NO_ID;n++){
+        ps->id[n] = ps->id[n+1];
+      }
+      encontrado = OK;
+      ps->cantidad--;
+    }
+  }
+
+
+
+  return encontrado;
+}
