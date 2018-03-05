@@ -15,6 +15,7 @@
 
 
 #define N_CMD 10
+#define CMD_LENGHT 100
 
 /* Tabla de comandos que el usuario introduce (completos) */
 char *cmd_to_str[N_CMD] = {"No command","Unknown","Exit","Following","Previous",

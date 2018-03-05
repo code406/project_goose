@@ -33,6 +33,7 @@ typedef struct _Game
   Space* spaces[MAX_SPACES + 1];
   T_Command last_cmd;
   Die* die;
+  char* param;
 } Game;
 
 
@@ -68,15 +69,14 @@ STATUS game_create_from_file(Game* game, char* filename);
 Funcion: game_update
 Autor: David Palomo
 Descripcion: Actualiza el panel de comandos introducidos para mostrar
-  el último comando introducido y llama a la funcion callback correspondiente
+  el último comando introducido
 Argumentos:
   game     : Puntero a una estructura de tipo Game
   T_Command: Enumeración que identifica cada comando con un número
-  param    : Cadena de caracteres con el parámetro que se introduce para get/drop
 Return:
   OK o ERROR, que pertenecen al enum STATUS
 *******************************************************************************/
-STATUS game_update(Game* game, T_Command cmd, char* param);
+STATUS game_update(Game* game, T_Command cmd,char *param);
 
 
 /*******************************************************************************
@@ -254,6 +254,18 @@ Return:
   Valor numérico de la enumeración T_Command que identifica a cada comando
 *******************************************************************************/
 T_Command game_get_last_command(Game* game);
+
+/*******************************************************************************
+Funcion: game_set_param
+Autor: Arturo Morcillo
+Descripcion: Fija el param de la estructura game (necesario para get y drop)
+Argumentos:
+  param: puntero a char
+  game: puntero a game.
+Return:
+  nada (tipo void)
+*******************************************************************************/
+void game_set_param(Game *game,char *param);
 
 
 #endif

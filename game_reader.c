@@ -137,7 +137,8 @@ STATUS game_load_objects(Game* game, char* filename)
   Id id = NO_ID, space_id = NO_ID;
   Object* object = NULL;
 
-  /* Suponemos que la fucion devolverá OK */
+  /* Inicializa status a OK para que se ejecute incluso aunque falle la carga
+    de un solo espacio */
   STATUS status = OK;
 
   /* comprueba argumentos */
@@ -180,13 +181,13 @@ STATUS game_load_objects(Game* game, char* filename)
       if (object != NULL)
       {
       if((object_set_name(object,name))==ERROR)
-        return ERROR;
+        status = ERROR;
         /*Tras eso añade ese objeto a game*/
         if((game_add_object(game, object))==ERROR)
-          return ERROR;
+          status = ERROR;
 
         if((game_set_object_location(game,object ,space_id))==ERROR)
-          return ERROR;
+          status = ERROR;
 
       }
     }

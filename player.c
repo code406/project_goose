@@ -71,10 +71,8 @@ STATUS player_destroy (Player *player)
     return ERROR;
 
   set_destroy (player->objects);
-  player->objects = NULL;
 
   free(player);
-  player = NULL;
 
   return OK;
 }

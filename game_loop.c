@@ -11,7 +11,6 @@
  #include <stdio.h>
  #include <stdlib.h>
  #include "graphic_engine.h"
- #include "command.h"
 
 
  int main(int argc, char *argv[])
@@ -19,17 +18,17 @@
  	Game game;
  	T_Command command = NO_CMD;
  	Graphic_engine *gengine;
-  /* Cadena que almacena el parámetro que el usuario introduce para get/drop */
-  char param[CMD_LENGHT];
+  char param[WORD_SIZE+1] = " ";
+
 
  	/* Si no se invoca el programa correctamente ("./game  game_data_file")
   porque no se introduce un minimo de 2 argumentos,imprime error y
   explica cómo invocar el programa. Termina (return). */
   if (argc < 2)
-  {
-    fprintf(stderr, "Use: %s <game_data_file>\n", argv[0]);
-    return 1;
-  }
+{
+  fprintf(stderr, "Use: %s <game_data_file>\n", argv[0]);
+  return 1;
+}
 
   /* Intenta crear el juego a partir de game_data_file, que es el argv[1]
  	Si da error, muestra mensaje y termina (return). */
@@ -39,6 +38,7 @@
  		return 1;
  	}
 
+  game_set_param(&game,param);
  	/* Intenta crear el graphic_engine. Si no consigue crear, el puntero es NULL,
  	muestra error, libera con game_destroy y termina (return). */
  	if ((gengine = graphic_engine_create()) == NULL)

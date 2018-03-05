@@ -65,7 +65,6 @@ STATUS object_destroy (Object * object)
     return ERROR;
 
   free(object);
-  object = NULL;
 
   return OK;
 }
@@ -139,26 +138,6 @@ Id object_get_id(Object * object)
   return object->id;
 }
 
-
-/*******************************************************************************
-Funcion: object_get_id_from_name
-Descripcion: Devuelve el id asignado a un objeto dado su nombre
-Autor: David Palomo
-Argumentos:
-  object: Puntero a una estructura de tipo Object
-Return:
-  Variable de tipo Id (long) que identifica al objeto (object->id)
-  Si el argumento introducido no es correcto, devuelve NULL
-*******************************************************************************/
-Id object_get_id_from_name(char* name)
-{
-  if (!name)
-  {
-    return NO_ID;
-  }
-
-  return ((long)name[1] - 48);
-}
 
 
 /*******************************************************************************
