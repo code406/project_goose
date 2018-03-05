@@ -136,12 +136,14 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     /* Dibuja la casilla anterior.
     Tendrá un "*" si en la casilla hay un objeto */
     /*Tengo que comprobar todos los objetos*/
+
+    /*
     for (i=0; i<MAX_ID && game->object[i]!= NULL && !strcmp(obj[i],"  "); i++){
       if (game_get_object_location(game,game->object[i]) == id_back){
         obj[i] = object_get_name(game->object[i]);
       }
     }
-
+    */
 
     if (id_back != NO_ID) {
       sprintf(str, "  |                 %2d|",(int) id_back);
@@ -150,7 +152,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
       screen_area_puts(ge->map, str);
       sprintf(str, "  |                   |");
       screen_area_puts(ge->map, str);
-      sprintf(str, "  |  %s  %s  %s  %s     |",obj[0], obj[1], obj[2], obj[3]);
+      sprintf(str, "  |  %s  %s  %s  %s   |",obj[0], obj[1], obj[2], obj[3]);
       screen_area_puts(ge->map, str);
       sprintf(str, "  +-------------------+");
       screen_area_puts(ge->map, str);
@@ -161,12 +163,13 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
     /* Dibuja la casilla actual.
     Tendrá un "*" si en la casilla hay un objeto */
+    /*
     for (i=0; i<MAX_ID && game->object[i]!= NULL && !strcmp(obj[i],"  "); i++){
       if (game_get_object_location(game,game->object[i]) == id_act){
         obj[i] = object_get_name(game->object[i]);
       }
     }
-
+    */
 
     if (id_act != NO_ID) {
       sprintf(str, "  +-------------------+");
@@ -187,7 +190,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
       screen_area_puts(ge->map, str);
       sprintf(str, "  |                   |");
       screen_area_puts(ge->map, str);
-      sprintf(str, "  |  %s  %s  %s  %s     |",obj[0], obj[1], obj[2], obj[3]);
+      sprintf(str, "  |  %s  %s  %s  %s   |",obj[0], obj[1], obj[2], obj[3]);
       screen_area_puts(ge->map, str);
       sprintf(str, "  +-------------------+");
       screen_area_puts(ge->map, str);
@@ -196,12 +199,13 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
     /* Dibuja la casilla siguiente.
     Tendrá un "*" si en la casilla hay un objeto */
+    /*
     for (i=0; i<MAX_ID && game->object[i]!= NULL && !strcmp(obj[i],"  "); i++){
       if (game_get_object_location(game,game->object[i]) == id_next){
         obj[i] = object_get_name(game->object[i]);
       }
     }
-
+    */
 
     if (id_next != NO_ID) {
       sprintf(str, "        v");
@@ -214,7 +218,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
       screen_area_puts(ge->map, str);
       sprintf(str, "  |                   |");
       screen_area_puts(ge->map, str);
-      sprintf(str, "  |  %s  %s  %s  %s     |",obj[0], obj[1], obj[2], obj[3]);
+      sprintf(str, "  |  %s  %s  %s  %s   |",obj[0], obj[1], obj[2], obj[3]);
       screen_area_puts(ge->map, str);
     }
   }
