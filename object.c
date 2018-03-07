@@ -65,7 +65,6 @@ STATUS object_destroy (Object * object)
     return ERROR;
 
   free(object);
-  object = NULL;
 
   return OK;
 }
@@ -138,6 +137,7 @@ Id object_get_id(Object * object)
   }
   return object->id;
 }
+
 
 
 /*******************************************************************************

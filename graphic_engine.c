@@ -10,9 +10,12 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "screen.h"
 #include "graphic_engine.h"
 #include "die.h"
+
+#define N_OBJ 4
 
 
 /*
@@ -54,11 +57,11 @@ Graphic_engine *graphic_engine_create()
   ge = (Graphic_engine *) malloc(sizeof(Graphic_engine));
 
   /* Define areas y tamaños para cada seccion */
-  ge->map      = screen_area_init( 1, 1, 48, 13);
-  ge->descript = screen_area_init(50, 1, 29, 13);
-  ge->banner   = screen_area_init(28,15, 23,  1);
-  ge->help     = screen_area_init( 1,16, 78,  2);
-  ge->feedback = screen_area_init( 1,19, 78,  3);
+  ge->map      = screen_area_init( 1, 1, 48, 23);
+  ge->descript = screen_area_init(50, 1, 29, 23);
+  ge->banner   = screen_area_init(28,25, 23,  1);
+  ge->help     = screen_area_init( 1,26, 78,  2);
+  ge->feedback = screen_area_init( 1,29, 78,  3);
 
   return ge;
 }
@@ -106,13 +109,17 @@ Return:
 *******************************************************************************/
 void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 {
-  Id id_act = NO_ID, id_back = NO_ID, id_next = NO_ID, obj_loc = NO_ID;
+  Id id_act = NO_ID, id_back = NO_ID, id_next = NO_ID, id_left = NO_ID, id_right = NO_ID, obj_loc = NO_ID;
   Space* space_act = NULL;
-  char obj='\0';
+  Space* space_prev = NULL;
+  Space* space_next = NULL;
+  char* obj[N_OBJ];
   char str[255];
   T_Command last_cmd = UNKNOWN;
   extern char *cmd_to_str[];
   int i;
+  char *gdesc[3];
+
 
   /* Resetea el mapa y dibuja el area interior del mapa */
   screen_area_clear(ge->map);
@@ -123,68 +130,131 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     space_act = game_get_space(game, id_act);
     id_back = space_get_north(space_act);
     id_next = space_get_south(space_act);
+    id_left = space_get_east(space_act);
+    id_right = space_get_west(space_act);
 
+
+    for (i=0; i<N_OBJ; i++)
+    {
+      obj[i] = "  ";
+    }
 
     /* Dibuja la casilla anterior.
     Tendrá un "*" si en la casilla hay un objeto */
     /*Tengo que comprobar todos los objetos*/
-    for (i=0,obj=' ';i<MAX_ID && game->object[i]!= NULL && obj==' ';i++){
-      if (game_get_object_location(game,game->object[i]) == id_back){
-        obj='*';
+    for (i=0; i<MAX_ID && game->object[i]!= NULL; i++){
+      if (game_get_object_location(game, game->object[i]) == id_back){
+        obj[i] = object_get_name(game->object[i]);
       }
     }
 
 
     if (id_back != NO_ID) {
-      sprintf(str, "  |         %2d|",(int) id_back);
+      space_prev = game_get_space(game, id_back);
+      gdesc[0] = space_get_gdesc_0(space_prev);
+      gdesc[1] = space_get_gdesc_1(space_prev);
+      gdesc[2] = space_get_gdesc_2(space_prev);
+      sprintf(str, "  | %s%2d|",gdesc[0],(int) id_back);
       screen_area_puts(ge->map, str);
-      sprintf(str, "  |     %c     |",obj);
+      sprintf(str, "  |  %s |",gdesc[1]);
       screen_area_puts(ge->map, str);
-      sprintf(str, "  +-----------+");
+      sprintf(str, "  |  %s |",gdesc[2]);
+      screen_area_puts(ge->map, str);
+      sprintf(str, "  |  %s  %s  %s  %s    |",obj[0], obj[1], obj[2], obj[3]);
+      screen_area_puts(ge->map, str);
+      sprintf(str, "  +--------------------+");
       screen_area_puts(ge->map, str);
       sprintf(str, "        ^");
       screen_area_puts(ge->map, str);
     }
 
 
+    for (i=0; i<N_OBJ; i++)
+    {
+      obj[i] = "  ";
+    }
+
     /* Dibuja la casilla actual.
     Tendrá un "*" si en la casilla hay un objeto */
-    for (i=0,obj=' ';i<MAX_ID && game->object[i]!= NULL && obj==' ';i++){
+    for (i=0; i<MAX_ID && game->object[i]!= NULL && !strcmp(obj[i],"  "); i++){
       if (game_get_object_location(game,game->object[i]) == id_act){
-        obj='*';
+        obj[i] = object_get_name(game->object[i]);
       }
     }
 
-
     if (id_act != NO_ID) {
-      sprintf(str, "  +-----------+");
+      gdesc[0] = space_get_gdesc_0(space_act);
+      gdesc[1] = space_get_gdesc_1(space_act);
+      gdesc[2] = space_get_gdesc_2(space_act);
+      sprintf(str, "  +--------------------+");
       screen_area_puts(ge->map, str);
-      sprintf(str, "  | 8D      %2d|",(int) id_act);
+      if (id_act != NO_ID && id_left != NO_ID && id_right != NO_ID)
+      {
+        sprintf(str, " <| 8D              %2d |>",(int) id_act);
+      }
+      else if (id_act != NO_ID && id_left != NO_ID && id_right == NO_ID)
+      {
+        sprintf(str, "  | 8D              %2d |>",(int) id_act);
+      }
+      else if (id_act != NO_ID && id_left == NO_ID && id_right != NO_ID)
+      {
+        sprintf(str, " <| 8D              %2d |",(int) id_act);
+      }
+      else
+      {
+        sprintf(str, "  | 8D              %2d |",(int) id_act);
+      }
       screen_area_puts(ge->map, str);
-      sprintf(str, "  |     %c     |",obj);
+      sprintf(str, "  |                    |");
       screen_area_puts(ge->map, str);
-      sprintf(str, "  +-----------+");
+      sprintf(str, "  |                    |");
+      screen_area_puts(ge->map, str);
+      sprintf(str, "  |%s   |",gdesc[0]);
+      screen_area_puts(ge->map, str);
+      sprintf(str, "  | %s  |",gdesc[1]);
+      screen_area_puts(ge->map, str);
+      sprintf(str, "  | %s  |",gdesc[2]);
+      screen_area_puts(ge->map, str);
+      sprintf(str, "  |                    |");
+      screen_area_puts(ge->map, str);
+      sprintf(str, "  |                    |");
+      screen_area_puts(ge->map, str);
+      sprintf(str, "  |  %s  %s  %s  %s    |",obj[0], obj[1], obj[2], obj[3]);
+      screen_area_puts(ge->map, str);
+      sprintf(str, "  +--------------------+");
       screen_area_puts(ge->map, str);
     }
 
+
+    for (i=0; i<N_OBJ; i++)
+    {
+      obj[i] = "  ";
+    }
 
     /* Dibuja la casilla siguiente.
     Tendrá un "*" si en la casilla hay un objeto */
-    for (i=0,obj=' ';i<MAX_ID && game->object[i]!= NULL && obj==' ';i++){
+    for (i=0; i<MAX_ID && game->object[i]!= NULL && !strcmp(obj[i],"  "); i++){
       if (game_get_object_location(game,game->object[i]) == id_next){
-        obj='*';
+        obj[i] = object_get_name(game->object[i]);
       }
     }
 
-
     if (id_next != NO_ID) {
+      space_next = game_get_space(game, id_next);
+      gdesc[0] = space_get_gdesc_0(space_next);
+      gdesc[1] = space_get_gdesc_1(space_next);
+      gdesc[2] = space_get_gdesc_2(space_next);
       sprintf(str, "        v");
       screen_area_puts(ge->map, str);
-      sprintf(str, "  +-----------+");
+      sprintf(str, "  +--------------------+");
       screen_area_puts(ge->map, str);
-      sprintf(str, "  |         %2d|",(int) id_next);
+      sprintf(str, "  |%s%2d |",gdesc[0],(int) id_next);
       screen_area_puts(ge->map, str);
-      sprintf(str, "  |     %c     |",obj);
+      sprintf(str, "  | %s  |",gdesc[1]);
+      screen_area_puts(ge->map, str);
+      sprintf(str, "  | %s  |",gdesc[2]);
+      screen_area_puts(ge->map, str);
+      sprintf(str, "  |  %s  %s  %s  %s    |",obj[0], obj[1], obj[2], obj[3]);
       screen_area_puts(ge->map, str);
     }
   }
@@ -202,8 +272,20 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
       screen_area_puts(ge->descript, str);
     }
   }
+  sprintf(str, " Player items:");
+  screen_area_puts(ge->descript, str);
+  for (i=0;i<MAX_ID && game->object[i]!= NULL;i++)
+  {
+    if ((obj_loc = game_get_object_player(game, game->object[i])) != FALSE)
+    {
+      sprintf(str, "    %s",object_get_name(game->object[i]));
+      screen_area_puts(ge->descript, str);
+    }
+  }
+
   sprintf(str, " Last die value: %d", die_get_last_roll(game->die));
   screen_area_puts(ge->descript, str);
+
 
 
   /* Dibuja el area del banner */
@@ -218,7 +300,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
   /* Dibuja el area de feedback */
   last_cmd = game_get_last_command(game);
-  sprintf(str, " %s", cmd_to_str[last_cmd-NO_CMD]);
+  sprintf(str, " %s %s", cmd_to_str[last_cmd-NO_CMD],game->param);
   screen_area_puts(ge->feedback, str);
 
   /* Pasa a la terminal */

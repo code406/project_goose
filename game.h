@@ -33,6 +33,7 @@ typedef struct _Game
   Space* spaces[MAX_SPACES + 1];
   T_Command last_cmd;
   Die* die;
+  char* param;
 } Game;
 
 
@@ -75,7 +76,7 @@ Argumentos:
 Return:
   OK o ERROR, que pertenecen al enum STATUS
 *******************************************************************************/
-STATUS game_update(Game* game, T_Command cmd);
+STATUS game_update(Game* game, T_Command cmd,char *param);
 
 
 /*******************************************************************************
@@ -230,6 +231,20 @@ Id game_get_object_location(Game* game, Object *object);
 
 
 /*******************************************************************************
+Funcion: game_get_object_player
+Autor: David Palomo
+Descripcion: Devuelve si el objeto es portado por un jugador.
+  Posiblemente quede obsoleta en futuras iteraciones,
+  es válida porque solo hay un jugador.
+Argumentos:
+  game: Puntero a una estructura de tipo Game
+Return:
+  BOOL, es decir, TRUE o FALSE
+*******************************************************************************/
+BOOL game_get_object_player(Game* game, Object *object);
+
+
+/*******************************************************************************
 Funcion: game_get_last_command
 Autor: David Palomo
 Descripcion: Devuelve el último comando introducido
@@ -239,6 +254,18 @@ Return:
   Valor numérico de la enumeración T_Command que identifica a cada comando
 *******************************************************************************/
 T_Command game_get_last_command(Game* game);
+
+/*******************************************************************************
+Funcion: game_set_param
+Autor: Arturo Morcillo
+Descripcion: Fija el param de la estructura game (necesario para get y drop)
+Argumentos:
+  param: puntero a char
+  game: puntero a game.
+Return:
+  nada (tipo void)
+*******************************************************************************/
+void game_set_param(Game *game,char *param);
 
 
 #endif

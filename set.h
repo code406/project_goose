@@ -118,5 +118,17 @@ Return:
 
 int get_set_tope(Set *ps);
 
+/*******************************************************************************
+Funcion: remove_id
+Autor: Arturo Morcillo
+Descripcion: Elimina del set la Id introducida
+Argumentos:
+  Un puntero a Set (ps) y una id.
+Return:
+  Un Status
+*******************************************************************************/
+
+STATUS remove_id (Set *ps, Id id);
+
 
 #endif

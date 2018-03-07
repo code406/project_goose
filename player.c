@@ -24,7 +24,7 @@ struct _Player
   Id player_id;
   char name[WORD_SIZE+1];
   Id space_id;
-  Id object_id;
+  Set *objects;
 };
 
 
@@ -50,6 +50,8 @@ Player* player_create(Id id)
   /* Inicializa su id al especificado como argumento */
   newPlayer->player_id = id;
 
+  newPlayer->objects = set_create();
+
   return newPlayer;
 }
 
@@ -68,8 +70,9 @@ STATUS player_destroy (Player *player)
   if (!player)
     return ERROR;
 
+  set_destroy (player->objects);
+
   free(player);
-  player = NULL;
 
   return OK;
 }
@@ -125,29 +128,54 @@ STATUS player_set_location(Player* player, Id location)
   return OK;
 }
 
-
 /*******************************************************************************
-Funcion: player_set_object
+Funcion: player_del_object
 Autor: Arturo Morcillo
-Descripcion: Asigna un objeto a un jugador
+Descripcion: Quita el ultimo objeto de un jugador
 Argumentos:
-  player: Puntero a una estructura de tipo Player
-  id    : Entero de tipo Id (long) que identifica al objeto
+  space: puntero a una estructura de tipo Player (jugador)
 Return:
   OK o ERROR, que pertenecen al enum STATUS
 *******************************************************************************/
-STATUS player_set_object(Player* player, Id object)
+STATUS player_del_object(Player* player)
 {
-  /*Comprueba los argumentos*/
   if (!player)
   {
     return ERROR;
   }
-  player->object_id = object;
 
-  /*Si todo va bien devuelve OK*/
+  if((set_del (player->objects))==ERROR)
+    return ERROR;
+
   return OK;
 }
+
+/*******************************************************************************
+Funcion: player_add_object
+Autor: Arturo Morcillo
+Descripcion: Coloca en la player especificado un objeto.
+Argumentos:
+  player: puntero a una estructura de tipo Player (jugador)
+  value: Entero de tipo id (long) que identifica un objeto
+Return:
+  OK o ERROR, que pertenecen al enum STATUS
+*******************************************************************************/
+
+STATUS player_add_object(Player* player, Id value)
+{
+  if (!player)
+  {
+    return ERROR;
+  }
+
+  if((set_add (player->objects, value))==ERROR)
+    return ERROR;
+
+  return OK;
+}
+
+
+
 
 
 /*******************************************************************************
@@ -212,22 +240,25 @@ Id player_get_location(Player* player)
 
 
 /*******************************************************************************
-Funcion: player_get_item
+Funcion: player_get_objects
 Autor: Arturo Morcillo
-Descripcion: Devuelve el id del objeto que porta un jugador
+Descripcion: Devuelve la estructura objects (tipo set) del jugador introducido
 Argumentos:
-  player: Puntero a una estructura de tipo Player
+  player: puntero a una estructura de tipo Player (jugador)
 Return:
-  Entero de tipo Id (long) que identifica un objeto
-  Si el argumento introducido no es correcto, devuelve NO_ID
+  Una estructura tipo Set.
+  En caso de error, o de que no haya objetos, devuelve NULL.
 *******************************************************************************/
-Id player_get_item(Player* player)
+Set *player_get_objects(Player* player)
 {
-  if (!player)
+  if (!player || player->objects == NULL)
   {
-    return NO_ID;
+    return NULL;
   }
-  return player->object_id;
+
+
+
+  return player->objects;
 }
 
 
@@ -243,16 +274,22 @@ Return:
 *******************************************************************************/
 STATUS player_print(Player* player)
 {
+  Set *set_aux = NULL;
   if (!player)
   {
     return ERROR;
   }
 
+  set_aux = player_get_objects(player);
+  if (set_aux == NULL)
+    return ERROR;
+
+
   fprintf(stdout, "--> Player (Id: %ld; Name: %s)\n", player->player_id, player->name);
 
-  if (player_get_item(player) != 0)
+  if (get_set_tope(set_aux) != 0)
   {
-    fprintf(stdout, "---> The player has an item.\n");
+    fprintf(stdout, "---> The player has %d item(s).\n",get_set_tope(set_aux));
   }
   else
   {
@@ -274,6 +311,7 @@ Return:
 
 Player *player_copy (Player *pc){
   Player *aux;
+  Set *set_aux;
   Id id_aux;
   char *nombre;
   if (pc == NULL)
@@ -296,9 +334,9 @@ Player *player_copy (Player *pc){
   id_aux = NO_ID;
 
 
-  id_aux = player_get_item(pc);
-  player_set_object(aux, id_aux);
-  if(aux->object_id == NO_ID)
+  set_aux = player_get_objects(pc);
+  aux->objects = set_aux;
+  if(aux->objects == NULL)
       return NULL;
 
   return aux;

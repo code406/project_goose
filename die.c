@@ -65,8 +65,7 @@ STATUS die_destroy (Die * die)
     return ERROR;
 
   free(die);
-  die = NULL;
-
+  
   return OK;
 }
 

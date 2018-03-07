@@ -27,6 +27,7 @@ struct _Space
   Id east;
   Id west;
   Set *objects;
+  char gdesc[3][21];
 };
 
 
@@ -93,10 +94,8 @@ STATUS space_destroy(Space* space)
   }
 
   set_destroy (space->objects);
-  space->objects = NULL;
 
   free(space);
-  space = NULL;
 
   return OK;
 }
@@ -245,7 +244,7 @@ STATUS space_del_object(Space* space)
 /*******************************************************************************
 Funcion: space_add_object
 Autor: Arturo Morcillo
-Descripcion: Coloca en la casilla especificada un objeto, o lo quita.
+Descripcion: Coloca en la casilla especificada un objeto.
 Argumentos:
   space: puntero a una estructura de tipo Space (casilla)
   value: Entero de tipo id (long) que identifica un objeto
@@ -419,6 +418,7 @@ Set *space_get_objects(Space* space)
   return space->objects;
 }
 
+
 /*******************************************************************************
 Funcion: check_object
 Autor: Arturo Morcillo
@@ -428,11 +428,11 @@ Argumentos:
 Return:
   Un BOOL: TRUE si se encuentra y FALSE si no
 *******************************************************************************/
-
 BOOL check_object (Space *ps, Id object_id)
 {
   Set *aux;
   Id id_aux;
+  int n;
 
   if (ps == NULL || object_id == NO_ID)
     return FALSE;
@@ -441,15 +441,15 @@ BOOL check_object (Space *ps, Id object_id)
   if (aux == NULL)
     return FALSE;
 
-  while ((id_aux=set_del(aux)) != NO_ID){
-    if (id_aux == object_id){
-      set_destroy (aux);
-      aux = NULL;
-      return TRUE;
+  for (n=0;n<MAX_ID;n++){
+    id_aux = get_id_pos (aux, n);
+    if (id_aux != NO_ID){
+      if (id_aux == object_id){
+
+        return TRUE;
+      }
     }
   }
-  set_destroy (aux);
-  aux = NULL;
 
   return FALSE;
 
@@ -527,4 +527,132 @@ STATUS space_print(Space* space)
   }
 
   return OK;
+}
+
+/*******************************************************************************
+Funcion: space_set_gdesc_0
+Autor: Arturo Morcillo
+Descripcion: Asigna a la casilla especificada la primera linea del dibujo o una serie de 7 espacios.
+Argumentos:
+  space: puntero a una estructura de tipo Space (casilla)
+  cadena : cadena de caracteres
+Return:
+  OK o ERROR, que pertenecen al enum STATUS
+*******************************************************************************/
+
+STATUS space_set_gdesc_0(Space* space, char* cadena)
+{
+  /* Comprueba los argumentos */
+  if (!space || !cadena)
+  {
+    return ERROR;
+  }
+
+  /* Asigna a space.name el nombre introducido y lo comprueba */
+  if (!strcpy(space->gdesc[0], cadena)) {
+    return ERROR;
+  }
+  /* Si todo va bien devuelve OK */
+  return OK;
+}
+
+/*******************************************************************************
+Funcion: space_set_gdesc_1
+Autor: Arturo Morcillo
+Descripcion: Asigna a la casilla especificada la segunda linea del dibujo o una serie de 7 espacios.
+Argumentos:
+  space: puntero a una estructura de tipo Space (casilla)
+  cadena : cadena de caracteres
+Return:
+  OK o ERROR, que pertenecen al enum STATUS
+*******************************************************************************/
+
+STATUS space_set_gdesc_1(Space* space, char* cadena)
+{
+  /* Comprueba los argumentos */
+  if (!space || !cadena)
+  {
+    return ERROR;
+  }
+
+  /* Asigna a space.name el nombre introducido y lo comprueba */
+  if (!strcpy(space->gdesc[1], cadena)) {
+    return ERROR;
+  }
+  /* Si todo va bien devuelve OK */
+  return OK;
+}
+
+/*******************************************************************************
+Funcion: space_set_gdesc_2
+Autor: Arturo Morcillo
+Descripcion: Asigna a la casilla especificada la tercera linea del dibujo o una serie de 7 espacios.
+Argumentos:
+  space: puntero a una estructura de tipo Space (casilla)
+  cadena : cadena de caracteres
+Return:
+  OK o ERROR, que pertenecen al enum STATUS
+*******************************************************************************/
+STATUS space_set_gdesc_2(Space* space, char* cadena)
+{
+  /* Comprueba los argumentos */
+  if (!space || !cadena)
+  {
+    return ERROR;
+  }
+
+  /* Asigna a space.name el nombre introducido y lo comprueba */
+  if (!strcpy(space->gdesc[2], cadena)) {
+    return ERROR;
+  }
+  /* Si todo va bien devuelve OK */
+  return OK;
+}
+
+/*******************************************************************************
+Funcion: space_get_gdesc_0
+Autor: Arturo Morcillo
+Descripcion: La cadena correspondiente a la primera linea del dibujo
+Argumentos:
+  space: puntero a una estructura de tipo Space (casilla)
+Return:
+  Un puntero a char (cadena de caracteres)
+*******************************************************************************/
+char* space_get_gdesc_0(Space* space){
+  if (space == NULL)
+    return NULL;
+
+  return space->gdesc[0];
+}
+
+/*******************************************************************************
+Funcion: space_get_gdesc_1
+Autor: Arturo Morcillo
+Descripcion: La cadena correspondiente a la primera linea del dibujo
+Argumentos:
+  space: puntero a una estructura de tipo Space (casilla)
+Return:
+  Un puntero a char (cadena de caracteres)
+*******************************************************************************/
+char* space_get_gdesc_1(Space* space){
+  if (space == NULL)
+    return NULL;
+
+  return space->gdesc[1];
+}
+
+/*******************************************************************************
+Funcion: space_get_gdesc_2
+Autor: Arturo Morcillo
+Descripcion: La cadena correspondiente a la primera linea del dibujo
+Argumentos:
+  space: puntero a una estructura de tipo Space (casilla)
+Return:
+  Un puntero a char (cadena de caracteres)
+*******************************************************************************/
+char* space_get_gdesc_2(Space* space){
+  if (space == NULL)
+    return NULL;
+
+  return space->gdesc[2];
 }

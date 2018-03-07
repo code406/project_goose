@@ -41,10 +41,17 @@
    char line[WORD_SIZE] = "";
    char name[WORD_SIZE] = "";
    char* toks = NULL;
+   char *cadena0 = NULL;
+   char* cadena1=NULL;
+   char* cadena2=NULL;
+   char cadena_aux[20] = "                 ";
    Id id = NO_ID, north = NO_ID, east = NO_ID, south = NO_ID, west = NO_ID;
    Space* space = NULL;
 
-   /* Suponemos que la fucion devolverá OK */
+
+   /* Como es importante que se ejectute completamente, en vez de un "return" en
+    caso de error, se utiliza un status que se devolverá al final, para que la
+    ejecución no se detenga a medias.*/
    STATUS status = OK;
 
    /* comprueba argumentos */
@@ -80,10 +87,14 @@
        south = atol(toks);
        toks = strtok(NULL, "|");
        west = atol(toks);
+       cadena0 = strtok(NULL, "|");
+       cadena1 = strtok(NULL, "|");
+       cadena2 = strtok(NULL, "|");
+
 
        /* Solo se compila cuando DEBUG está definido */
        #ifdef DEBUG
-         printf("Leido: %ld|%s|%ld|%ld|%ld|%ld\n", id, name, north, east, south, west);
+         printf("Leido: %ld|%s|%ld|%ld|%ld|%ld|%s|%s|%s\n", id, name, north, east, south, west,cadena0,cadena1,cadena2);
        #endif
 
        /*Crea un espacio*/
@@ -97,6 +108,21 @@
          space_set_east(space, east);
          space_set_south(space, south);
          space_set_west(space, west);
+         if (cadena0 == NULL)
+          space_set_gdesc_0(space, cadena_aux);
+         else
+          space_set_gdesc_0(space, cadena0);
+
+          if (cadena1 == NULL)
+           space_set_gdesc_1(space, cadena_aux);
+          else
+           space_set_gdesc_1(space, cadena1);
+
+           if (cadena2 == NULL)
+            space_set_gdesc_2(space, cadena_aux);
+           else
+            space_set_gdesc_2(space, cadena2);
+
          /*Tras eso añade ese espacio a game*/
          game_add_space(game, space);
        }
@@ -137,7 +163,8 @@ STATUS game_load_objects(Game* game, char* filename)
   Id id = NO_ID, space_id = NO_ID;
   Object* object = NULL;
 
-  /* Suponemos que la fucion devolverá OK */
+  /* Inicializa status a OK para que se ejecute incluso aunque falle la carga
+    de un solo espacio */
   STATUS status = OK;
 
   /* comprueba argumentos */
@@ -180,13 +207,13 @@ STATUS game_load_objects(Game* game, char* filename)
       if (object != NULL)
       {
       if((object_set_name(object,name))==ERROR)
-        return ERROR;
+        status = ERROR;
         /*Tras eso añade ese objeto a game*/
         if((game_add_object(game, object))==ERROR)
-          return ERROR;
+          status = ERROR;
 
         if((game_set_object_location(game,object ,space_id))==ERROR)
-          return ERROR;
+          status = ERROR;
 
       }
     }
