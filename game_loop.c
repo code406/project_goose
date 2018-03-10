@@ -11,6 +11,7 @@
  #include <stdio.h>
  #include <stdlib.h>
  #include "graphic_engine.h"
+ #include "command.h"
 
 
  int main(int argc, char *argv[])
@@ -19,22 +20,28 @@
  	T_Command command = NO_CMD;
  	Graphic_engine *gengine;
   char param[WORD_SIZE+1] = " ";
+  char input[WORD_SIZE+1] = " ";
+  FILE *f = NULL;
 
 
  	/* Si no se invoca el programa correctamente ("./game  game_data_file")
   porque no se introduce un minimo de 2 argumentos,imprime error y
   explica cómo invocar el programa. Termina (return). */
-  if (argc < 2)
-  {
-    fprintf(stderr, "Use: %s <game_data_file>\n", argv[0]);
-    return 1;
+
+  if (argc == 4){
+    f = fopen(argv[3],"w");
+    if (f == NULL)
+      fprintf(stderr,"Error al crear el LOG.\n");
   }
+
 
   /* Intenta crear el juego a partir de game_data_file, que es el argv[1]
  	Si da error, muestra mensaje y termina (return). */
  	if (game_create_from_file(&game, argv[1]) == ERROR)
  	{
  		fprintf(stderr, "Error while initializing game.\n");
+    if (f != NULL)
+      fclose (f);
  		return 1;
  	}
 
@@ -53,13 +60,26 @@
  	while ((command != EXIT) && !game_is_over(&game))
  	{
  		graphic_engine_paint_game(gengine, &game);
- 		command = get_user_input(param);
- 		game_update(&game, command, param);
+    fgets(input, sizeof(input), stdin);
+ 		command = get_user_input(param,input);
+    game_update(&game, command, param);
+    if (f != NULL)
+    {
+      fprintf(f,"%s: ",input);
+      if (game.command_status == OK)
+        fprintf(f,"OK\n");
+      else
+        fprintf(f,"ERROR\n");
+    }
+
+
  	}
 
  	/* Cuando el loop termina, libera con game_destroy y graphic_engine_destroy,
  	y termina el programa. */
  	game_destroy(&game);
+  if (f != NULL)
+    fclose (f);
  	graphic_engine_destroy(gengine);
  	return 0;
  }

@@ -139,10 +139,10 @@ STATUS game_create_from_file(Game* game, char* filename)
     return ERROR;
 
   /* Carga los espacios del archivo */
-  if (game_load_spaces(game, filename) == ERROR)
+  if (game_reader_load_spaces(game, filename) == ERROR)
     return ERROR;
 
-  if (game_load_objects(game, filename) == ERROR)
+  if (game_reader_load_objects(game, filename) == ERROR)
     return ERROR;
 
   /* Coloca a jugador su casilla inicial (INI_P) */
@@ -632,6 +632,7 @@ Return:
 *******************************************************************************/
 void game_callback_unknown(Game* game)
 {
+  game->command_status = ERROR;
 }
 
 
@@ -647,6 +648,7 @@ Return:
 *******************************************************************************/
 void game_callback_exit(Game* game)
 {
+  game->command_status = OK;
 }
 
 
@@ -669,6 +671,7 @@ void game_callback_following(Game* game)
   space_id = game_get_player_location(game);
   if (space_id == NO_ID)
   {
+    game->command_status = ERROR;
     return;
   }
 
@@ -683,10 +686,17 @@ void game_callback_following(Game* game)
       if (current_id != NO_ID)
       {
 	       game_set_player_location(game, current_id);
+         game->command_status = OK;
+         return;
       }
-      return;
+      else{
+        game->command_status = ERROR;
+        return;
+      }
+
     }
   }
+  game->command_status = OK;
 }
 
 
@@ -709,6 +719,7 @@ void game_callback_previous(Game* game)
   space_id = game_get_player_location(game);
   if (NO_ID == space_id)
   {
+    game->command_status = ERROR;
     return;
   }
 
@@ -724,9 +735,11 @@ void game_callback_previous(Game* game)
       {
 	        game_set_player_location(game, current_id);
       }
+      game->command_status = OK;
       return;
     }
   }
+  game->command_status = OK;
 }
 
 
@@ -751,6 +764,7 @@ void game_callback_get(Game* game)
 
   if (NO_ID == current_id)
   {
+    game->command_status = ERROR;
     return;
   }
 
@@ -759,6 +773,7 @@ void game_callback_get(Game* game)
 
   if (current_space == NULL)
   {
+    game->command_status = ERROR;
     return;
   }
 
@@ -766,22 +781,35 @@ void game_callback_get(Game* game)
   lo coge (se le asigna) y desaparece de la casilla */
   set_aux = space_get_objects(current_space);
   if (set_aux == NULL || set_isempty(set_aux) == TRUE)
+  {
+    game->command_status = ERROR;
     return;
+  }
 
   object_id = game_object_get_id_from_name(game->param,game);
   if (object_id == NO_ID)
+  {
+    game->command_status = ERROR;
     return;
+  }
   printf("Got %ld",object_id);
 
   if (check_object (current_space, object_id) == TRUE)
   {
     if(remove_id (set_aux, object_id) == ERROR)
+    {
+      game->command_status = ERROR;
       return;
+    }
     if(player_add_object(game->player, object_id) == ERROR)
+    {
+      game->command_status = ERROR;
       return;
+    }
   }
   else
   {
+    game->command_status = OK;
     return;
   }
 
@@ -809,13 +837,17 @@ void game_callback_drop(Game* game)
 
   player_set = player_get_objects(game->player);
   if (set_isempty(player_set) == TRUE)
+  {
+    game->command_status = ERROR;
     return;
+  }
 
   /* Obtiene el id de la casilla en que se encuentra el jugador */
   current_id = game_get_player_location(game);
 
   if (NO_ID == current_id)
   {
+    game->command_status = ERROR;
     return;
   }
 
@@ -824,6 +856,7 @@ void game_callback_drop(Game* game)
 
   if (current_space == NULL)
   {
+    game->command_status = ERROR;
     return;
   }
 
@@ -834,18 +867,22 @@ void game_callback_drop(Game* game)
   set_aux = space_get_objects(current_space);
 
   if (set_aux == NULL){
+    game->command_status = ERROR;
     return;
   }
 
   if(remove_id (player_set, object_id) == ERROR)
+  {
+    game->command_status = ERROR;
     return;
-
+  }
 
   for (i=0, object = game->object[0]; i<MAX_ID && object_get_id(object) != object_id; i++, object = game->object[i]);
 
 
   /* Pone en la casilla el objeto */
   game_set_object_location(game, object ,current_id);
+  game->command_status = OK;
 
 }
 
@@ -862,6 +899,7 @@ Return:
 void game_callback_roll(Game* game)
 {
   die_roll(game->die);
+  game->command_status = OK;
 }
 
 
@@ -885,6 +923,7 @@ void game_callback_left(Game* game)
   space_id = game_get_player_location(game);
   if (space_id == NO_ID)
   {
+    game->command_status = ERROR;
     return;
   }
 
@@ -899,6 +938,11 @@ void game_callback_left(Game* game)
       if (current_id != NO_ID)
       {
 	       game_set_player_location(game, current_id);
+         game->command_status = OK;
+      }
+      else{
+        game->command_status = ERROR;
+        return;
       }
       return;
     }
@@ -926,6 +970,7 @@ void game_callback_right(Game* game)
   space_id = game_get_player_location(game);
   if (space_id == NO_ID)
   {
+    game->command_status = ERROR;
     return;
   }
 
@@ -940,8 +985,12 @@ void game_callback_right(Game* game)
       if (current_id != NO_ID)
       {
 	       game_set_player_location(game, current_id);
+         game->command_status = OK;
       }
-      return;
+      else{
+        game->command_status = ERROR;
+        return;
+      }
     }
   }
 }

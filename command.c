@@ -36,20 +36,23 @@ Argumentos:
 Return:
   Valor numérico de la enumeración T_Command que identifica a cada comando
 *******************************************************************************/
-T_Command get_user_input(char* param)
+T_Command get_user_input(char* param, char* input)
 {
   char* toks = NULL;
   /*Variable cmd tipo T_Command inicializada a -1*/
   T_Command cmd = NO_CMD;
   /*Variable input tipo cadena de caracteres, leerá el comando más adelante*/
-  char input[CMD_LENGHT] = "";
   /*Variable i tipo entero inicializada a 2*/
   int i = UNKNOWN - NO_CMD + 1;
   /* En caso de no requerir parametro, será '\0' */
   *param = '\0';
 
+
+  if (input == NULL)
+    return UNKNOWN;
+
   /*Si escanea el comando bien*/
-  if (fgets(input, sizeof(input), stdin) != NULL)
+  if (input != NULL)
   {
     input[strlen(input)-1] = '\0';
     /*cmd = 0*/
@@ -57,6 +60,9 @@ T_Command get_user_input(char* param)
 
     /* toks es la primera palabra introducida (hasta espacio) */
     toks = strtok(input, " ");
+
+    if (toks == NULL)
+      return UNKNOWN;
 
     /* Compara el comando introducido con la lista de comandos disponibles */
     while(cmd == UNKNOWN && i < N_CMD)
@@ -78,6 +84,8 @@ T_Command get_user_input(char* param)
         {
           if (cmd == GET || cmd == DROP)
           {
+            if (strcmp(toks,"O1") != 0 && strcmp(toks,"O2") != 0 && strcmp(toks,"O3") != 0 && strcmp(toks,"O4") != 0)
+              return UNKNOWN;
             strcpy(param, toks);
           }
           else
@@ -93,6 +101,7 @@ T_Command get_user_input(char* param)
       }
     }
   }
+
   /* la funcion devuelve el comando introducido */
   return cmd;
 }

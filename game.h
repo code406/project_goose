@@ -34,6 +34,7 @@ typedef struct _Game
   T_Command last_cmd;
   Die* die;
   char* param;
+  STATUS command_status;
 } Game;
 
 

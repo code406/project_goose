@@ -19,7 +19,7 @@
 
 
  /*******************************************************************************
- Funcion: game_load_spaces
+ Funcion: game_reader_load_spaces
  Autor: Arturo Morcillo
  Descripcion: Lee el archivo y carga los datos en la estructura Space de game
  Argumentos:
@@ -34,7 +34,7 @@
  En otras iteraciones habría que añadir lectores de jugadores y objetos,
  pero ahora solo necesito poner esta funcionalidad.
  */
- STATUS game_load_spaces(Game* game, char* filename)
+ STATUS game_reader_load_spaces(Game* game, char* filename)
  {
    /* Declara variables y las inicializa */
    FILE* file = NULL;
@@ -142,7 +142,7 @@
  }
 
  /*******************************************************************************
-Funcion: game_load_objects
+Funcion: game_reader_load_objects
 Autor: Arturo Morcillo
 Descripcion: Lee el archivo y carga los datos en la estructura Object de game
 Argumentos:
@@ -153,7 +153,7 @@ Return:
 /*
 Similar a la de cargar espacios
 */
-STATUS game_load_objects(Game* game, char* filename)
+STATUS game_reader_load_objects(Game* game, char* filename)
 {
   /* Declara variables y las inicializa */
   FILE* file = NULL;
