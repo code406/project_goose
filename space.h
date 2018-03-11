@@ -2,8 +2,8 @@
  * @brief Define una casilla
  * @file space.h
  * @author Arturo Morcillo, David Palomo
- * @version 1.0.E
- * @date 18/02/2018
+ * @version 2.0.E
+ * @date 11/03/2018
  * @copyright GNU Public License
  */
 
@@ -209,7 +209,6 @@ Argumentos:
 Return:
   OK o ERROR, que pertenecen al enum STATUS
 *******************************************************************************/
-
 STATUS space_add_object(Space* space, Id value);
 
 
@@ -223,7 +222,8 @@ Return:
   Una estructura tipo Set.
   En caso de error, o de que no haya objetos, devuelve NULL.
 *******************************************************************************/
-Set *space_get_objects(Space* space);
+Set* space_get_objects(Space* space);
+
 
 /*******************************************************************************
 Funcion: check_object
@@ -234,7 +234,6 @@ Argumentos:
 Return:
   Un BOOL: TRUE si se encuentra y FALSE si no
 *******************************************************************************/
-
 BOOL check_object (Space *ps, Id object_id);
 
 
@@ -250,6 +249,7 @@ Return:
 *******************************************************************************/
 STATUS space_print(Space* space);
 
+
 /*******************************************************************************
 Funcion: space_set_gdesc_0
 Autor: Arturo Morcillo
@@ -260,8 +260,9 @@ Argumentos:
 Return:
   OK o ERROR, que pertenecen al enum STATUS
 *******************************************************************************/
-
 STATUS space_set_gdesc_0(Space* space, char* cadena);
+
+
 /*******************************************************************************
 Funcion: space_set_gdesc_1
 Autor: Arturo Morcillo
@@ -272,8 +273,9 @@ Argumentos:
 Return:
   OK o ERROR, que pertenecen al enum STATUS
 *******************************************************************************/
-
 STATUS space_set_gdesc_1(Space* space, char* cadena);
+
+
 /*******************************************************************************
 Funcion: space_set_gdesc_2
 Autor: Arturo Morcillo
@@ -286,6 +288,7 @@ Return:
 *******************************************************************************/
 STATUS space_set_gdesc_2(Space* space, char* cadena);
 
+
 /*******************************************************************************
 Funcion: space_get_gdesc_0
 Autor: Arturo Morcillo
@@ -296,6 +299,7 @@ Return:
   Un puntero a char (cadena de caracteres)
 *******************************************************************************/
 char* space_get_gdesc_0(Space* space);
+
 
 /*******************************************************************************
 Funcion: space_get_gdesc_1
@@ -308,6 +312,7 @@ Return:
 *******************************************************************************/
 char* space_get_gdesc_1(Space* space);
 
+
 /*******************************************************************************
 Funcion: space_get_gdesc_2
 Autor: Arturo Morcillo
@@ -318,7 +323,6 @@ Return:
   Un puntero a char (cadena de caracteres)
 *******************************************************************************/
 char* space_get_gdesc_2(Space* space);
-
 
 
 #endif

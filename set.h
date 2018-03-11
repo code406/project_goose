@@ -2,8 +2,8 @@
  * @brief Define set.c
  * @file set.h
  * @author Arturo Morcillo, David Palomo
- * @version 1.0.E
- * @date 10-02-2018
+ * @version 2.0.E
+ * @date 11/03/2018
  * @copyright GNU Public License
 */
 #ifndef SET_H
@@ -15,8 +15,9 @@
 #include "types.h"
 
 
-
+/* Estructura de un conjunto, con una tabla de ids y la cantidad total */
 typedef struct _Set Set;
+
 
 /*******************************************************************************
 Funcion: set_create
@@ -28,8 +29,8 @@ Argumentos:
 Return:
   Un puntero a Set
 *******************************************************************************/
-
 Set *set_create();
+
 
 /*******************************************************************************
 Funcion: set_destroy
@@ -40,8 +41,8 @@ Argumentos:
 Return:
   nada (tipo void)
 *******************************************************************************/
-
 void set_destroy (Set *ps);
+
 
 /*******************************************************************************
 Funcion: set_add
@@ -53,8 +54,8 @@ Argumentos:
 Return:
   Un STATUS. Devuelve ERROR si ago falla
 *******************************************************************************/
-
 STATUS set_add (Set *ps, Id id);
+
 
 /*******************************************************************************
 Funcion: set_del
@@ -66,8 +67,8 @@ Argumentos:
 Return:
   una Id (La eliminada). Devuelve NO_ID si algo falla
 *******************************************************************************/
-
 Id set_del (Set *ps);
+
 
 /*******************************************************************************
 Funcion: set_isempty
@@ -78,8 +79,8 @@ Argumentos:
 Return:
   Un BOOL. TRUE si esta vacia, FALSE si tiene alguna ID.
 *******************************************************************************/
-
 BOOL set_isempty(Set *ps);
+
 
 /*******************************************************************************
 Funcion: set_print
@@ -91,8 +92,8 @@ Argumentos:
 Return:
   Un STATUS. Devuelve ERROR si ago falla
 *******************************************************************************/
-
 STATUS set_print(Set *ps);
+
 
 /*******************************************************************************
 Funcion: get_id_pos
@@ -103,8 +104,8 @@ Argumentos:
 Return:
   Un id o NO_ID si falla algo
 *******************************************************************************/
-
 Id get_id_pos (Set *ps, int pos);
+
 
 /*******************************************************************************
 Funcion: get_set_tope
@@ -115,8 +116,8 @@ Argumentos:
 Return:
   Un entero. si falla un 0.
 *******************************************************************************/
-
 int get_set_tope(Set *ps);
+
 
 /*******************************************************************************
 Funcion: remove_id
@@ -127,7 +128,6 @@ Argumentos:
 Return:
   Un Status
 *******************************************************************************/
-
 STATUS remove_id (Set *ps, Id id);
 
 

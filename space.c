@@ -2,8 +2,8 @@
  * @brief Implementa una casilla
  * @file space.c
  * @author Arturo Morcillo, David Palomo
- * @version 1.0.E
- * @date 18/02/2018
+ * @version 2.0.E
+ * @date 11/03/2018
  * @copyright GNU Public License
  */
 
@@ -16,7 +16,8 @@
 
 
 /* Estructura que define una casilla del juego, con un id que la identifica,
-un nombre, el id de las casillas contiguas y el id del objeto que hay en ella */
+un nombre, el id de las casillas contiguas y el id del objeto que hay en ella
+Incluye un set, y una tabla de cadena de caracteres para la descripcion ASCII */
 struct _Space
 {
   /*Id = long*/
@@ -119,7 +120,8 @@ STATUS space_set_name(Space* space, char* name)
     return ERROR;
   }
   /* Asigna a space.name el nombre introducido y lo comprueba */
-  if (!strcpy(space->name, name)) {
+  if (!strcpy(space->name, name))
+  {
     return ERROR;
   }
   /* Si todo va bien devuelve OK */
@@ -241,6 +243,7 @@ STATUS space_del_object(Space* space)
   return OK;
 }
 
+
 /*******************************************************************************
 Funcion: space_add_object
 Autor: Arturo Morcillo
@@ -251,7 +254,6 @@ Argumentos:
 Return:
   OK o ERROR, que pertenecen al enum STATUS
 *******************************************************************************/
-
 STATUS space_add_object(Space* space, Id value)
 {
   if (!space)
@@ -406,14 +408,12 @@ Return:
   Una estructura tipo Set.
   En caso de error, o de que no haya objetos, devuelve NULL.
 *******************************************************************************/
-Set *space_get_objects(Space* space)
+Set* space_get_objects(Space* space)
 {
   if (!space || space->objects == NULL)
   {
     return NULL;
   }
-
-
 
   return space->objects;
 }
@@ -441,18 +441,19 @@ BOOL check_object (Space *ps, Id object_id)
   if (aux == NULL)
     return FALSE;
 
-  for (n=0;n<MAX_ID;n++){
+  for (n=0;n<MAX_ID;n++)
+  {
     id_aux = get_id_pos (aux, n);
-    if (id_aux != NO_ID){
-      if (id_aux == object_id){
-
+    if (id_aux != NO_ID)
+    {
+      if (id_aux == object_id)
+      {
         return TRUE;
       }
     }
   }
 
   return FALSE;
-
 }
 
 
@@ -499,16 +500,22 @@ STATUS space_print(Space* space)
   }
 
   idaux = space_get_east(space);
-  if (NO_ID != idaux) {
+  if (NO_ID != idaux)
+  {
     fprintf(stdout, "---> East link: %ld.\n", idaux);
-  } else {
+  }
+  else
+  {
     fprintf(stdout, "---> No east link.\n");
   }
 
   idaux = space_get_west(space);
-  if (NO_ID != idaux) {
+  if (NO_ID != idaux)
+  {
     fprintf(stdout, "---> West link: %ld.\n", idaux);
-  } else {
+  }
+  else
+  {
     fprintf(stdout, "---> No west link.\n");
   }
 
@@ -529,6 +536,7 @@ STATUS space_print(Space* space)
   return OK;
 }
 
+
 /*******************************************************************************
 Funcion: space_set_gdesc_0
 Autor: Arturo Morcillo
@@ -539,7 +547,6 @@ Argumentos:
 Return:
   OK o ERROR, que pertenecen al enum STATUS
 *******************************************************************************/
-
 STATUS space_set_gdesc_0(Space* space, char* cadena)
 {
   /* Comprueba los argumentos */
@@ -549,12 +556,14 @@ STATUS space_set_gdesc_0(Space* space, char* cadena)
   }
 
   /* Asigna a space.name el nombre introducido y lo comprueba */
-  if (!strcpy(space->gdesc[0], cadena)) {
+  if (!strcpy(space->gdesc[0], cadena))
+  {
     return ERROR;
   }
   /* Si todo va bien devuelve OK */
   return OK;
 }
+
 
 /*******************************************************************************
 Funcion: space_set_gdesc_1
@@ -566,7 +575,6 @@ Argumentos:
 Return:
   OK o ERROR, que pertenecen al enum STATUS
 *******************************************************************************/
-
 STATUS space_set_gdesc_1(Space* space, char* cadena)
 {
   /* Comprueba los argumentos */
@@ -576,7 +584,8 @@ STATUS space_set_gdesc_1(Space* space, char* cadena)
   }
 
   /* Asigna a space.name el nombre introducido y lo comprueba */
-  if (!strcpy(space->gdesc[1], cadena)) {
+  if (!strcpy(space->gdesc[1], cadena))
+  {
     return ERROR;
   }
   /* Si todo va bien devuelve OK */
@@ -602,12 +611,14 @@ STATUS space_set_gdesc_2(Space* space, char* cadena)
   }
 
   /* Asigna a space.name el nombre introducido y lo comprueba */
-  if (!strcpy(space->gdesc[2], cadena)) {
+  if (!strcpy(space->gdesc[2], cadena))
+  {
     return ERROR;
   }
   /* Si todo va bien devuelve OK */
   return OK;
 }
+
 
 /*******************************************************************************
 Funcion: space_get_gdesc_0
@@ -618,39 +629,44 @@ Argumentos:
 Return:
   Un puntero a char (cadena de caracteres)
 *******************************************************************************/
-char* space_get_gdesc_0(Space* space){
+char* space_get_gdesc_0(Space* space)
+{
   if (space == NULL)
     return NULL;
 
   return space->gdesc[0];
 }
 
+
 /*******************************************************************************
 Funcion: space_get_gdesc_1
 Autor: Arturo Morcillo
-Descripcion: La cadena correspondiente a la primera linea del dibujo
+Descripcion: La cadena correspondiente a la segunda linea del dibujo
 Argumentos:
   space: puntero a una estructura de tipo Space (casilla)
 Return:
   Un puntero a char (cadena de caracteres)
 *******************************************************************************/
-char* space_get_gdesc_1(Space* space){
+char* space_get_gdesc_1(Space* space)
+{
   if (space == NULL)
     return NULL;
 
   return space->gdesc[1];
 }
 
+
 /*******************************************************************************
 Funcion: space_get_gdesc_2
 Autor: Arturo Morcillo
-Descripcion: La cadena correspondiente a la primera linea del dibujo
+Descripcion: La cadena correspondiente a la segunda linea del dibujo
 Argumentos:
   space: puntero a una estructura de tipo Space (casilla)
 Return:
   Un puntero a char (cadena de caracteres)
 *******************************************************************************/
-char* space_get_gdesc_2(Space* space){
+char* space_get_gdesc_2(Space* space)
+{
   if (space == NULL)
     return NULL;
 

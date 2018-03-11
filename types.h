@@ -3,8 +3,8 @@
  *
  * @file types.h
  * @author Arturo Morcillo, David Palomo
- * @version 1.0.E
- * @date 18/02/2018
+ * @version 2.0.E
+ * @date 11/03/2018
  * @copyright GNU Public License
  */
 
@@ -37,7 +37,8 @@
 
 
  /* Enumeración que define para cada dirección o coordenada un valor numérico */
- typedef enum {
+ typedef enum
+ {
    N, /* 0 */
    S, /* 1 */
    E, /* 2 */

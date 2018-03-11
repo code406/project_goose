@@ -3,8 +3,8 @@
  *
  * @file command.h
  * @author Arturo Morcillo, David Palomo
- * @version 1.0.E
- * @date 16-02-2018
+ * @version 2.0.E
+ * @date 11-03-2018
  * @copyright GNU Public License
  */
 
@@ -34,11 +34,13 @@ Autor: David Palomo
 Descripcion: Escanea el comando escrito por el usuario y lo transforma
   a un valor numérico definido en la enumeración T_Command.
 Argumentos:
-  Ninguno
+  param: Cadena de caracteres donde se copia el parámetro del comando
+         (para comandos como "get O1" o "drop O1")
+  input: Cadena de caracteres con el comando introducido
 Return:
   Valor numérico de la enumeración T_Command que identifica a cada comando
 *******************************************************************************/
-T_Command get_user_input();
+T_Command get_user_input(char* param, char* input);
 
 
 #endif

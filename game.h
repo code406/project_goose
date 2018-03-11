@@ -1,10 +1,10 @@
 /**
- * @brief Define la interfaz y las llamadas para cada comando
+ * @brief Define el modulo principal del juego
  *
  * @file game.h
  * @author Arturo Morcillo, David Palomo
- * @version 1.0.E
- * @date 17/02/2018
+ * @version 2.0.E
+ * @date 11/03/2018
  * @copyright GNU Public License
  */
 
@@ -24,7 +24,7 @@ Consta de un mapa de casillas,
 una variable que almacena el ultimo comando introducido,
 un puntero a la estructura que define al jugador y
 un conjunto de punteros a la estructura que define un objeto.
-También incluye un dado.
+También incluye un dado, y un parámetro y un STATUS para comandos.
 */
 typedef struct _Game
 {
@@ -36,8 +36,6 @@ typedef struct _Game
   char* param;
   STATUS command_status;
 } Game;
-
-
 
 
 /*******************************************************************************
@@ -72,12 +70,13 @@ Autor: David Palomo
 Descripcion: Actualiza el panel de comandos introducidos para mostrar
   el último comando introducido
 Argumentos:
-  game     : Puntero a una estructura de tipo Game
-  T_Command: Enumeración que identifica cada comando con un número
+  game : Puntero a una estructura de tipo Game
+  cmd  : Enumeración que identifica cada comando con un número
+  param: Cadena de caracteres con el parametro del comando (para get y drop)
 Return:
   OK o ERROR, que pertenecen al enum STATUS
 *******************************************************************************/
-STATUS game_update(Game* game, T_Command cmd,char *param);
+STATUS game_update(Game* game, T_Command cmd,char* param);
 
 
 /*******************************************************************************
@@ -102,7 +101,7 @@ Return:
   Variable de tipo BOOL (TRUE o FALSE)
   Por el momento siempre devuelve FALSE
 *******************************************************************************/
-BOOL   game_is_over(Game* game);
+BOOL game_is_over(Game* game);
 
 
 /*******************************************************************************
@@ -128,7 +127,7 @@ Argumentos:
 Return:
   Ninguno (void)
 *******************************************************************************/
-void   game_print_data(Game* game);
+void game_print_data(Game* game);
 
 
 /*******************************************************************************
@@ -144,14 +143,15 @@ Return:
 *******************************************************************************/
 STATUS game_add_space(Game* game, Space* space);
 
+
 /*******************************************************************************
 Funcion: game_add_object
 Autor: Arturo Morcillo
 Descripcion: Crea un objeto. Al último elemento "vacío" (= NULL) de la
   tabla de tipo Object de game se le asigna el Object introducido como argumento.
 Argumentos:
-  game : Puntero a una estructura de tipo Game
-  space: Puntero a una estructura de tipo Space (casilla)
+  game  : Puntero a una estructura de tipo Game
+  object: Puntero a una estructura de tipo Object (objeto)
 Return:
   OK o ERROR, que pertenecen al enum STATUS
 *******************************************************************************/
@@ -221,8 +221,6 @@ STATUS game_set_object_location(Game* game,Object *object ,Id space_id);
 Funcion: game_get_object_location
 Autor: David Palomo
 Descripcion: Devuelve la posición del objeto de la estructura game.
-  Posiblemente quede obsoleta en futuras iteraciones,
-  es válida porque solo hay un objeto.
 Argumentos:
   game: Puntero a una estructura de tipo Game
 Return:
@@ -256,13 +254,14 @@ Return:
 *******************************************************************************/
 T_Command game_get_last_command(Game* game);
 
+
 /*******************************************************************************
 Funcion: game_set_param
 Autor: Arturo Morcillo
 Descripcion: Fija el param de la estructura game (necesario para get y drop)
 Argumentos:
-  param: puntero a char
-  game: puntero a game.
+  game : Puntero a una estructura de tipo Game
+  param: Cadena de caracteres con el parametro del comando (para get y drop)
 Return:
   nada (tipo void)
 *******************************************************************************/

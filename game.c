@@ -1,10 +1,10 @@
 /**
- * @brief Implementa la interfaz y las llamadas para cada comando
+ * @brief Implementa el modulo principal del juego
  *
  * @file game.c
  * @author Arturo Morcillo, David Palomo
- * @version 1.0.E
- * @date 16/02/2018
+ * @version 2.0.E
+ * @date 11/03/2018
  * @copyright GNU Public License
  */
 
@@ -111,10 +111,7 @@ STATUS game_create(Game* game)
   }
 
   game->last_cmd = NO_CMD;
-
-  /* Crea el dado y fija la última tirada a NO_ID */
   game->die = die_create(ID_D);
-
   game->param = " ";
 
   return OK;
@@ -163,21 +160,29 @@ Return:
 STATUS game_destroy(Game* game)
 {
   int i = 0;
+
   /* Recorre las casillas del spaces de la estructura game, y las vacía */
   for (i = 0; (i < MAX_SPACES) && (game->spaces[i] != NULL); i++)
   {
-    /* Libera memoria y pone a NULL el puntero correspondiente a cada casilla */
+    /* Libera memoria correspondiente a cada casilla */
     space_destroy(game->spaces[i]);
+    game->spaces[i] = NULL;
   }
 
   for (i = 0; (i < MAX_ID) && (game->object[i] != NULL); i++)
   {
-    /* Libera memoria y pone a NULL el puntero correspondiente a cada casilla */
+    /* Libera memoria correspondiente a cada objeto */
     object_destroy(game->object[i]);
+    game->object[i] = NULL;
   }
 
+  /* Libera memoria correspondiente al dado */
   die_destroy(game->die);
+  game->die = NULL;
+
+  /* Libera memoria correspondiente al jugador */
   player_destroy(game->player);
+  game->player = NULL;
 
   return OK;
 }
@@ -496,8 +501,9 @@ Autor: David Palomo
 Descripcion: Actualiza el panel de comandos introducidos para mostrar
   el último comando introducido
 Argumentos:
-  game     : Puntero a una estructura de tipo Game
-  T_Command: Enumeración que identifica cada comando con un número
+  game : Puntero a una estructura de tipo Game
+  cmd  : Enumeración que identifica cada comando con un número
+  param: Cadena de caracteres con el parametro del comando (para get y drop)
 Return:
   OK o ERROR, que pertenecen al enum STATUS
 *******************************************************************************/
@@ -575,30 +581,36 @@ BOOL game_is_over(Game* game)
 {
   return FALSE;
 }
+
+
 /*******************************************************************************
 Funcion: game_set_param
 Autor: Arturo Morcillo
 Descripcion: Fija el param de la estructura game (necesario para get y drop)
 Argumentos:
-  param: puntero a char
-  game: puntero a game.
+  game: Puntero a una estructura de tipo Game
+  param: Cadena de caracteres con el parametro del comando (para get y drop)
 Return:
   nada (tipo void)
 *******************************************************************************/
-void game_set_param(Game *game,char *param){
+void game_set_param(Game *game,char *param)
+{
   game->param = param;
 }
+
+
 /*******************************************************************************
 Funcion: game_object_get_id_from_name
 Autor: Arturo Morcillo
 Descripcion: Te da el id de un objeto introduciendo su nombre.
 Argumentos:
-  param: puntero a char
-  game: puntero a game.
+  name: Cadena de caracteres con el nombre de un objeto
+  game: Puntero a una estructura de tipo Game
 Return:
   La id del objeto.
 *******************************************************************************/
-Id game_object_get_id_from_name(char* name, Game *game){
+Id game_object_get_id_from_name(char* name, Game *game)
+{
   int i;
   char *aux;
   if (!name || !game)

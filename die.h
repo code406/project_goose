@@ -3,8 +3,8 @@
  *
  * @file die.h
  * @author Arturo Morcillo, David Palomo
- * @version 1.0.E
- * @date 20/02/2018
+ * @version 2.0.E
+ * @date 11-03-2018
  * @copyright GNU Public License
  */
 

@@ -3,8 +3,8 @@
  *
  * @file graphic_engine.h
  * @author Arturo Morcillo, David Palomo
- * @version 1.0.E
- * @date 17-02-2017
+ * @version 2.0.E
+ * @date 11/03/2018
  * @copyright GNU Public License
  */
 
@@ -139,17 +139,18 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
       obj[i] = "  ";
     }
 
-    /* Dibuja la casilla anterior.
-    Tendrá un "*" si en la casilla hay un objeto */
-    /*Tengo que comprobar todos los objetos*/
-    for (i=0; i<MAX_ID && game->object[i]!= NULL; i++){
-      if (game_get_object_location(game, game->object[i]) == id_back){
+
+    /* Dibuja la casilla anterior, con los objetos y una descripcion ASCII */
+    for (i=0; i<MAX_ID && game->object[i]!= NULL; i++)
+    {
+      if (game_get_object_location(game, game->object[i]) == id_back)
+      {
         obj[i] = object_get_name(game->object[i]);
       }
     }
 
-
-    if (id_back != NO_ID) {
+    if (id_back != NO_ID)
+    {
       space_prev = game_get_space(game, id_back);
       gdesc[0] = space_get_gdesc_0(space_prev);
       gdesc[1] = space_get_gdesc_1(space_prev);
@@ -174,15 +175,18 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
       obj[i] = "  ";
     }
 
-    /* Dibuja la casilla actual.
-    Tendrá un "*" si en la casilla hay un objeto */
-    for (i=0; i<MAX_ID && game->object[i]!= NULL && !strcmp(obj[i],"  "); i++){
-      if (game_get_object_location(game,game->object[i]) == id_act){
+
+    /* Dibuja la casilla actual, con los objetos y una descripcion ASCII */
+    for (i=0; i<MAX_ID && game->object[i]!= NULL && !strcmp(obj[i],"  "); i++)
+    {
+      if (game_get_object_location(game,game->object[i]) == id_act)
+      {
         obj[i] = object_get_name(game->object[i]);
       }
     }
 
-    if (id_act != NO_ID) {
+    if (id_act != NO_ID)
+    {
       gdesc[0] = space_get_gdesc_0(space_act);
       gdesc[1] = space_get_gdesc_1(space_act);
       gdesc[2] = space_get_gdesc_2(space_act);
@@ -231,10 +235,12 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
       obj[i] = "  ";
     }
 
-    /* Dibuja la casilla siguiente.
-    Tendrá un "*" si en la casilla hay un objeto */
-    for (i=0; i<MAX_ID && game->object[i]!= NULL && !strcmp(obj[i],"  "); i++){
-      if (game_get_object_location(game,game->object[i]) == id_next){
+
+    /* Dibuja la casilla siguiente, con los objetos y una descripcion ASCII */
+    for (i=0; i<MAX_ID && game->object[i]!= NULL && !strcmp(obj[i],"  "); i++)
+    {
+      if (game_get_object_location(game,game->object[i]) == id_next)
+      {
         obj[i] = object_get_name(game->object[i]);
       }
     }
@@ -282,10 +288,8 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
       screen_area_puts(ge->descript, str);
     }
   }
-
   sprintf(str, " Last die value: %d", die_get_last_roll(game->die));
   screen_area_puts(ge->descript, str);
-
 
 
   /* Dibuja el area del banner */

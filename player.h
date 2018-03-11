@@ -1,9 +1,9 @@
 /**
- * @artiimor Define la interfaz de player.c
+ * @artiimor Define un jugador
  * @file player.h
  * @author Arturo Morcillo, David Palomo
- * @version 1.0.E
- * @date 08-02-2018
+ * @version 2.0.E
+ * @date 11/03/2018
  * @copyright GNU Public License
  */
 
@@ -28,7 +28,7 @@ Argumentos:
 Return:
   Puntero a estructura de tipo Player
 *******************************************************************************/
-Player *player_create(Id id);
+Player* player_create(Id id);
 
 
 /*******************************************************************************
@@ -68,6 +68,7 @@ Return:
 *******************************************************************************/
 STATUS player_set_location(Player* player, Id location);
 
+
 /*******************************************************************************
 Funcion: player_del_object
 Autor: Arturo Morcillo
@@ -79,6 +80,7 @@ Return:
 *******************************************************************************/
 STATUS player_del_object(Player* player);
 
+
 /*******************************************************************************
 Funcion: player_add_object
 Autor: Arturo Morcillo
@@ -89,8 +91,8 @@ Argumentos:
 Return:
   OK o ERROR, que pertenecen al enum STATUS
 *******************************************************************************/
-
 STATUS player_add_object(Player* player, Id value);
+
 
 /*******************************************************************************
 Funcion: player_set_object
@@ -152,10 +154,11 @@ Descripcion: Devuelve la estructura objects (tipo set) del jugador introducido
 Argumentos:
   player: puntero a una estructura de tipo Player (jugador)
 Return:
-  Una estructura tipo Set.
+  Un puntero a estructura de tipo Set.
   En caso de error, o de que no haya objetos, devuelve NULL.
 *******************************************************************************/
-Set *player_get_objects(Player* player);
+Set* player_get_objects(Player* player);
+
 
 /*******************************************************************************
 Funcion: player_print
@@ -169,6 +172,7 @@ Return:
 *******************************************************************************/
 STATUS player_print(Player* player);
 
+
 /*******************************************************************************
 Funcion: player_copy
 Autor: Arturo Morcillo
@@ -178,8 +182,7 @@ Argumentos:
 Return:
   Un puntero a la copia
 *******************************************************************************/
-
-Player *player_copy (Player *pc);
+Player* player_copy (Player* pc);
 
 
 #endif

@@ -1,8 +1,12 @@
 CC=gcc
 CFLAGS= -g -Wall -ansi -pedantic
-all: goose
+all: goose die_test set_test
 goose: game.o command.o game_loop.o graphic_engine.o screen.o space.o game_reader.o player.o object.o set.o die.o
 	$(CC) $(CFLAGS) game.o command.o game_loop.o graphic_engine.o screen.o space.o game_reader.o player.o object.o set.o die.o -o goose
+die_test: die_test.o die.o
+	$(CC) $(CFLAGS) die_test.o die.o -o die_test
+set_test: set_test.o set.o
+	$(CC) $(CFLAGS) set_test.o set.o -o set_test
 
 #Objetos
 game.o: game.c game.h game_reader.h player.h object.h space.h set.h die.h
@@ -27,6 +31,10 @@ set.o: set.c set.h types.h
 	$(CC) $(CFLAGS) -c set.c
 die.o: die.c die.h types.h
 	$(CC) $(CFLAGS) -c die.c
+die_test.o: die_test.c die.h types.h
+	$(CC) $(CFLAGS) -c die_test.c
+set_test.o: set_test.c set.h types.h
+	$(CC) $(CFLAGS) -c set_test.c
 
 
 #Borrar objetos
@@ -34,3 +42,6 @@ clean:
 	rm -f *.o
 tar:
 	tar -czvf goose.tar.gz *.c *.h data.dat
+runv:
+	@echo ">>>>> Running with valgrind"
+	valgrind --leak-check=full ./goose data.dat -l log.txt

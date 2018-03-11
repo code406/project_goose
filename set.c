@@ -3,8 +3,8 @@
  *
  * @file set.c
  * @author Arturo Morcillo, David Palomo
- * @version 1.0.E
- * @date 10-02-2018
+ * @version 2.0.E
+ * @date 11/03/2018
  * @copyright GNU Public License
  */
 
@@ -14,23 +14,27 @@
 #include "set.h"
 #include "types.h"
 
-struct _Set{
+
+/* Estructura de un conjunto, con una tabla de ids y la cantidad total */
+struct _Set
+{
   Id id[MAX_ID];
   int cantidad;
 };
+
 
 /*******************************************************************************
 Funcion: set_create
 Autor: Arturo Morcillo
 Descripcion: Reserva memoria para una estructura de tipo set e inicializa
-sus parametros con NO_ID y 0-
+  sus parametros con NO_ID y 0
 Argumentos:
   Ninguno
 Return:
   Un puntero a Set
 *******************************************************************************/
-
-Set *set_create(){
+Set *set_create()
+{
   Set *set;
   int n;
 
@@ -48,6 +52,7 @@ Set *set_create(){
   return set;
 }
 
+
 /*******************************************************************************
 Funcion: set_destroy
 Autor: Arturo Morcillo
@@ -57,14 +62,14 @@ Argumentos:
 Return:
   nada (tipo void)
 *******************************************************************************/
-
-void set_destroy (Set *ps){
+void set_destroy (Set *ps)
+{
   if (ps == NULL)
     return;
 
   free (ps);
-
 }
+
 
 /*******************************************************************************
 Funcion: set_add
@@ -76,9 +81,8 @@ Argumentos:
 Return:
   Un STATUS. Devuelve ERROR si ago falla
 *******************************************************************************/
-
-STATUS set_add (Set *ps, Id id){
-
+STATUS set_add (Set *ps, Id id)
+{
   if (ps == NULL || id == NO_ID)
     return ERROR;
 
@@ -88,6 +92,7 @@ STATUS set_add (Set *ps, Id id){
 
   return OK;
 }
+
 
 /*******************************************************************************
 Funcion: set_del
@@ -99,8 +104,8 @@ Argumentos:
 Return:
   una Id (La eliminada). Devuelve NO_ID si algo falla
 *******************************************************************************/
-
-Id set_del (Set *ps){
+Id set_del (Set *ps)
+{
   Id id_aux;
   if (ps == NULL)
     return NO_ID;
@@ -112,8 +117,8 @@ Id set_del (Set *ps){
   ps->cantidad--;
 
   return id_aux;
-
 }
+
 
 /*******************************************************************************
 Funcion: set_print
@@ -125,8 +130,8 @@ Argumentos:
 Return:
   Un STATUS. Devuelve ERROR si ago falla
 *******************************************************************************/
-
-STATUS set_print(Set *ps){
+STATUS set_print(Set *ps)
+{
   int n;
 
   if (ps == NULL)
@@ -138,8 +143,8 @@ STATUS set_print(Set *ps){
   fprintf(stdout,"Cantidad de elementos total: %d",n);
 
   return OK;
+}
 
-  }
 
 /*******************************************************************************
 Funcion: set_isempty
@@ -150,7 +155,6 @@ Argumentos:
 Return:
   Un BOOL. TRUE si esta vacia, FALSE si tiene alguna ID.
 *******************************************************************************/
-
 BOOL set_isempty(Set *ps)
 {
   if (ps == NULL)
@@ -161,6 +165,7 @@ BOOL set_isempty(Set *ps)
   return FALSE;
 }
 
+
 /*******************************************************************************
 Funcion: get_id_pos
 Autor: Arturo Morcillo
@@ -170,8 +175,8 @@ Argumentos:
 Return:
   Un id o NO_ID si falla algo
 *******************************************************************************/
-
-Id get_id_pos (Set *ps, int pos){
+Id get_id_pos (Set *ps, int pos)
+{
   Id id_aux;
 
   if (ps == NULL || pos < 0 || pos > ps->cantidad || set_isempty (ps) == TRUE)
@@ -182,6 +187,7 @@ Id get_id_pos (Set *ps, int pos){
   return id_aux;
 }
 
+
 /*******************************************************************************
 Funcion: get_set_tope
 Autor: Arturo Morcillo
@@ -191,8 +197,8 @@ Argumentos:
 Return:
   Un entero. si falla un 0.
 *******************************************************************************/
-
-int get_set_tope(Set *ps){
+int get_set_tope(Set *ps)
+{
   int pos;
 
   if (ps == NULL)
@@ -200,9 +206,9 @@ int get_set_tope(Set *ps){
 
   pos = ps->cantidad;
 
-
   return pos;
 }
+
 
 /*******************************************************************************
 Funcion: remove_id
@@ -213,8 +219,8 @@ Argumentos:
 Return:
   Un Status
 *******************************************************************************/
-
-STATUS remove_id (Set *ps, Id id){
+STATUS remove_id (Set *ps, Id id)
+{
   int i,n;
   STATUS encontrado = ERROR;
   Id id_aux;
@@ -222,18 +228,18 @@ STATUS remove_id (Set *ps, Id id){
   if (ps == NULL || id == NO_ID)
     return ERROR;
 
-  for (i=0; i<ps->cantidad;i++){
+  for (i=0; i<ps->cantidad;i++)
+  {
     id_aux = get_id_pos (ps, i);
     if(id == id_aux){
-      for (n=i;n+1<MAX_ID && ps->id[n] != NO_ID;n++){
+      for (n=i;n+1<MAX_ID && ps->id[n] != NO_ID;n++)
+      {
         ps->id[n] = ps->id[n+1];
       }
       encontrado = OK;
       ps->cantidad--;
     }
   }
-
-
 
   return encontrado;
 }

@@ -1,10 +1,10 @@
 /**
- * @artiimor Se encarga de definir a un jugador y las
- *funciones asociadas a los jugadores.
+ * @artiimor Define un jugador y las funciones asociadas al jugador
+ *
  * @file player.c
  * @author Arturo Morcillo, David Palomo
- * @version 1.0.E
- * @date 08-02-2018
+ * @version 2.0.E
+ * @date 11/03/2018
  * @copyright GNU Public License
  */
 
@@ -128,6 +128,7 @@ STATUS player_set_location(Player* player, Id location)
   return OK;
 }
 
+
 /*******************************************************************************
 Funcion: player_del_object
 Autor: Arturo Morcillo
@@ -150,6 +151,7 @@ STATUS player_del_object(Player* player)
   return OK;
 }
 
+
 /*******************************************************************************
 Funcion: player_add_object
 Autor: Arturo Morcillo
@@ -160,7 +162,6 @@ Argumentos:
 Return:
   OK o ERROR, que pertenecen al enum STATUS
 *******************************************************************************/
-
 STATUS player_add_object(Player* player, Id value)
 {
   if (!player)
@@ -173,9 +174,6 @@ STATUS player_add_object(Player* player, Id value)
 
   return OK;
 }
-
-
-
 
 
 /*******************************************************************************
@@ -246,17 +244,15 @@ Descripcion: Devuelve la estructura objects (tipo set) del jugador introducido
 Argumentos:
   player: puntero a una estructura de tipo Player (jugador)
 Return:
-  Una estructura tipo Set.
+  Un puntero a estructura de tipo Set.
   En caso de error, o de que no haya objetos, devuelve NULL.
 *******************************************************************************/
-Set *player_get_objects(Player* player)
+Set* player_get_objects(Player* player)
 {
   if (!player || player->objects == NULL)
   {
     return NULL;
   }
-
-
 
   return player->objects;
 }
@@ -299,6 +295,7 @@ STATUS player_print(Player* player)
   return OK;
 }
 
+
 /*******************************************************************************
 Funcion: player_copy
 Autor: Arturo Morcillo
@@ -308,8 +305,8 @@ Argumentos:
 Return:
   Un puntero a la copia
 *******************************************************************************/
-
-Player *player_copy (Player *pc){
+Player* player_copy (Player* pc)
+{
   Player *aux;
   Set *set_aux;
   Id id_aux;
@@ -332,7 +329,6 @@ Player *player_copy (Player *pc){
     return NULL;
 
   id_aux = NO_ID;
-
 
   set_aux = player_get_objects(pc);
   aux->objects = set_aux;
