@@ -18,16 +18,15 @@
 #include "set.h"
 
 
-/*******************************************************************************
-Funcion: game_reader_load_spaces
-Autor: Arturo Morcillo
-Descripcion: Lee el archivo y carga los datos en la estructura Space de game
-Argumentos:
-  game: Puntero a una estructura de tipo Game
-  filename: Cadena de caracteres con el nombre del archivo del que se lee
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
+/**
+* @brief game_reader_load_spaces
+* @author Arturo Morcillo
+* Lee el archivo y carga los datos en la estructura Space de game
+* @fie game_reader.c
+* @param game Puntero a una estructura de tipo Game
+* @param filename cadena de caracteres con el nombre del archivo del que se lee
+* @return OK o ERROR, que pertenecen al enum STATUS
+*/
 /*
 La puedo poner sin problema porque no utiliza la estructura game como tal,
 solo la utiliza en otras funciones. De esta forma cojo la funcionalidad de
@@ -109,19 +108,19 @@ STATUS game_reader_load_spaces(Game* game, char* filename)
         space_set_west(space, west);
 
         if (cadena0 == NULL)
-          space_set_gdesc_0(space, cadena_aux);
+          space_set_gdesc(space, cadena_aux, 0);
         else
-          space_set_gdesc_0(space, cadena0);
+          space_set_gdesc(space, cadena0, 0);
 
         if (cadena1 == NULL)
-          space_set_gdesc_1(space, cadena_aux);
+          space_set_gdesc(space, cadena_aux,1);
         else
-          space_set_gdesc_1(space, cadena1);
+          space_set_gdesc(space, cadena1,1);
 
         if (cadena2 == NULL)
-          space_set_gdesc_2(space, cadena_aux);
+          space_set_gdesc(space, cadena_aux,2);
         else
-          space_set_gdesc_2(space, cadena2);
+          space_set_gdesc(space, cadena2,2);
 
         /*Tras eso añade ese espacio a game*/
         game_add_space(game, space);
@@ -142,16 +141,17 @@ STATUS game_reader_load_spaces(Game* game, char* filename)
 }
 
 
-/*******************************************************************************
-Funcion: game_reader_load_objects
-Autor: Arturo Morcillo
-Descripcion: Lee el archivo y carga los datos en la estructura Object de game
-Argumentos:
-  game: Puntero a una estructura de tipo Game
-  filename: Cadena de caracteres con el nombre del archivo del que se lee
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
+/**
+* @brief game_reader_load_objects
+* @author Arturo Morcillo
+* Lee el archivo y carga los datos en la estructura Object de game
+* @fie game_reader.c
+* @param game Puntero a una estructura de tipo Game
+* @param filename cadena de caracteres con el nombre del archivo del que se lee
+* @return OK o ERROR, que pertenecen al enum STATUS
+*/
+
+
 /* Similar a la de cargar espacios */
 STATUS game_reader_load_objects(Game* game, char* filename)
 {

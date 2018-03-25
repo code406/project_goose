@@ -79,28 +79,25 @@ Return:
 STATUS game_update(Game* game, T_Command cmd,char* param);
 
 
-/*******************************************************************************
-Funcion: game_destroy
-Autor: Arturo Morcillo
-Descripcion: Elimina todas las casillas del Game, y libera la memoria reservada
-Argumentos:
-  game: Puntero a una estructura de tipo Game
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
+/**
+* @brief game_destroy
+* @author Arturo Morcillo
+* Elimina todas las casillas del Game, y libera la memoria reservada
+* @fie game.h
+* @param game Puntero a una estructura de tipo Game
+* @return OK o ERROR, que pertenecen al enum STATUS
+*/
 STATUS game_destroy(Game* game);
 
 
-/*******************************************************************************
-Funcion: game_is_over
-Autor: Arturo Morcillo
-Descripcion: Termina el juego. De momento sin funcionalidad
-Argumentos:
-  game: Puntero a una estructura de tipo Game
-Return:
-  Variable de tipo BOOL (TRUE o FALSE)
-  Por el momento siempre devuelve FALSE
-*******************************************************************************/
+/**
+* @brief game_is_over
+* @author Arturo Morcillo
+* Termina el juego. De momento sin funcionalidad
+* @fie game.h
+* @param game Puntero a una estructura de tipo Game
+* @return Variable de tipo BOOL (TRUE o FALSE) Por el momento siempre devuelve FALSE
+*/
 BOOL game_is_over(Game* game);
 
 
@@ -130,90 +127,76 @@ Return:
 void game_print_data(Game* game);
 
 
-/*******************************************************************************
-Funcion: game_add_space
-Autor: Arturo Morcillo
-Descripcion: Crea una casilla. Al último elemento "vacío" (= NULL) de la
-  tabla de tipo Space de game se le asigna el Space introducido como argumento.
-Argumentos:
-  game : Puntero a una estructura de tipo Game
-  space: Puntero a una estructura de tipo Space (casilla)
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
+/**
+* @brief game_add_space
+* @author Arturo Morcillo
+* Crea una casilla. Al último elemento "vacío" (= NULL) de la
+* tabla de tipo Space de game se le asigna el Space introducido como argumento.
+* @fie game.c
+* @param game Puntero a una estructura de tipo Game
+* @param space Puntero a una estructura de tipo Space (casilla)
+* @return OK o ERROR, que pertenecen al enum STATUS
+*/
 STATUS game_add_space(Game* game, Space* space);
 
 
-/*******************************************************************************
-Funcion: game_add_object
-Autor: Arturo Morcillo
-Descripcion: Crea un objeto. Al último elemento "vacío" (= NULL) de la
-  tabla de tipo Object de game se le asigna el Object introducido como argumento.
-Argumentos:
-  game  : Puntero a una estructura de tipo Game
-  object: Puntero a una estructura de tipo Object (objeto)
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
+/**
+* @brief game_add_object
+* @author Arturo Morcillo
+* Crea un objeto. Al último elemento "vacío" (= NULL) de la
+* tabla de tipo Object de game se le asigna el Object introducido como argumento.
+* @fie game.c
+* @param game Puntero a una estructura de tipo Game
+* @param space Puntero a una estructura de tipo Space (casilla)
+* @return OK o ERROR, que pertenecen al enum STATUS
+*/
 STATUS game_add_object(Game* game, Object* object);
 
 
-/*******************************************************************************
-Funcion: game_get_space
-Autor: Arturo Morcillo
-Descripcion: Devuelve la casilla de game que coincide con el id introducido
-Argumentos:
-  game: Puntero a una estructura de tipo Game
-  id  : Entero de tipo Id (long)
-Return:
-  Puntero a la estructura de tipo Space (casilla)
-  Si no se introduce un id, o no encuentra una casilla que corresponda
-  al id, devuelve NULL
-*******************************************************************************/
+/**
+* @brief game_get_space
+* @author Arturo Morcillo
+* Devuelve la casilla de game que coincide con el id introducido
+* @fie game.c
+* @param game Puntero a una estructura de tipo Game
+* @param id Entero de tipo Id (long)
+* @return Puntero a la estructura de tipo Space (casilla) Si no se introduce un id, o no encuentra una casilla que corresponda al id, devuelve NULL
+*/
 Space* game_get_space(Game* game, Id id);
 
 
-/*******************************************************************************
-Funcion: game_get_player_location
-Autor: Arturo Morcillo
-Descripcion: Devuelve la posición del jugador de la estructura game.
-  Posiblemente quede obsoleta en futuras iteraciones,
-  es válida porque solo hay un jugador.
-Argumentos:
-  game: Puntero a una estructura de tipo Game
-Return:
-  Entero de tipo Id (long) que identifica una casilla
-*******************************************************************************/
+/**
+* @brief game_get_player_location
+* @author Arturo Morcillo
+* Devuelve la posición del jugador de la estructura game.
+* @fie game.c
+* @param game Puntero a una estructura de tipo Game
+* @return Entero de tipo Id (long) que identifica una casilla
+*/
 Id game_get_player_location(Game* game);
 
 
-/*******************************************************************************
-Funcion: game_set_player_location
-Autor: Arturo Morcillo
-Descripcion: Fija la posición del jugador en la id introducida.
-  Posiblemente quede obsoleta en futuras iteraciones,
-  es válida porque solo hay un jugador.
-Argumentos:
-  game: Puntero a una estructura de tipo Game
-  id  : Entero de tipo Id (long)
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
+/**
+* @brief game_set_player_location
+* @author Arturo Morcillo
+* Fija la posición del jugador en la id introducida.
+* @fie game.c
+* @param game Puntero a una estructura de tipo Game
+* @param id Entero de tipo Id (long)
+* @return OK o ERROR, que pertenecen al enum STATUS
+*/
 STATUS game_set_player_location(Game* game, Id id);
 
 
-/*******************************************************************************
-Funcion: game_set_object_location
-Autor: Arturo Morcillo
-Descripcion: Fija la posición del objeto en la id introducida.
-  Posiblemente quede obsoleta en futuras iteraciones,
-  es válida porque solo hay un objeto.
-Argumentos:
-  object: Puntero a una estructura de tipo Object
-  name  : Cadena de caracteres que se guardará en object->name
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
+/**
+* @brief game_set_object_location
+* @author Arturo Morcillo
+* Fija la posición del objeto en la id introducida.
+* @fie game.c
+* @param object Puntero a una estructura de tipo Object
+* @param name Cadena de caracteres que se guardará en object->name
+* @return Entero de tipo Id (long) que identifica una casilla
+*/
 STATUS game_set_object_location(Game* game,Object *object ,Id space_id);
 
 
@@ -255,16 +238,15 @@ Return:
 T_Command game_get_last_command(Game* game);
 
 
-/*******************************************************************************
-Funcion: game_set_param
-Autor: Arturo Morcillo
-Descripcion: Fija el param de la estructura game (necesario para get y drop)
-Argumentos:
-  game : Puntero a una estructura de tipo Game
-  param: Cadena de caracteres con el parametro del comando (para get y drop)
-Return:
-  nada (tipo void)
-*******************************************************************************/
+/**
+* @brief game_set_param
+* @author Arturo Morcillo
+* Fija el param de la estructura game (necesario para get y drop)
+* @fie game.c
+* @param game Puntero a una estructura de tipo Game
+* @param param Cadena de caracteres con el parametro del comando (para get y drop)
+* @return nada (tipo void)
+*/
 void game_set_param(Game *game,char *param);
 
 

@@ -13,7 +13,11 @@
 
 #define SCREEN_MAX_STR 80
 
-/* Estructura que define una zona de pantalla */
+/**
+^ @brief estructura Area
+* Estructura que define una zona de pantalla
+*/
+
 typedef struct _Area Area;
 
 
@@ -30,28 +34,25 @@ Return:
 void  screen_init();
 
 
-/*******************************************************************************
-Funcion: screen_destroy
-Autor: Arturo Morcillo
-Descripcion: Libera la memoria reservada para __data
-Argumentos:
-  Ninguno
-Return:
-  Ninguno (void)
-*******************************************************************************/
+/**
+* @brief screen_destroy
+* @author Arturo Morcillo
+* Libera la memoria reservada para __data
+* @file screen.c
+* @return Ninguno (void)
+*/
+
 void  screen_destroy();
 
 
-/*******************************************************************************
-Funcion: screen_paint
-Autor: Arturo Morcillo
-Descripcion: Se encarga de limpiar la terminal y volver a dibujar la pantalla.
-  Si la terminal tiene el tamaño correcto da la sensacion de que se actualiza
-Argumentos:
-  Ninguno
-Return:
-  Ninguno (void)
-*******************************************************************************/
+/**
+* @brief screen_paint
+* @author Arturo Morcillo
+* Se encarga de limpiar la terminal y volver a dibujar la pantalla.
+* Si la terminal tiene el tamaño correcto da la sensacion de que se actualiza
+* @file player.c
+* @return Ninguno (void)
+*/
 void  screen_paint();
 
 
@@ -68,69 +69,64 @@ Return:
 void  screen_gets(char *str);
 
 
-/*******************************************************************************
-Funcion: screen_area_init
-Autor: Arturo Morcillo
-Descripcion: Reserva memoria para un area y le asigna los valores argumento.
-  area.cursor tendra tantos ceros como indique el valor de area.height
-Argumentos:
-  x     : Variable de tipo entero (int)
-  y     : Variable de tipo entero (int)
-  width : Variable de tipo entero (int)
-  height: Variable de tipo entero (int)
-Return:
-  Puntero a estructura de tipo Area
-*******************************************************************************/
+/**
+* @brief screen_area_init
+* @author Arturo Morcillo
+* Reserva memoria para un area y le asigna los valores argumento.
+* area.cursor tendra tantos ceros como indique el valor de area.height
+* @file screen.c
+* @param x Variable de tipo entero (int)
+* @param y Variable de tipo entero (int)
+* @param width Variable de tipo entero (int)
+* @param height Variable de tipo entero (int)
+* @return Puntero a estructura de tipo Area
+*/
 Area* screen_area_init(int x, int y, int width, int height);
 
 
-/*******************************************************************************
-Funcion: screen_area_destroy
-Autor: Arturo Morcillo
-Descripcion: Libera la memoria del area introducida como argumento
-Argumentos:
-  area: Puntero a estructura de tipo Area
-Return:
-  Ninguno (void)
-*******************************************************************************/
+/**
+* @brief screen_area_destroy
+* @author Arturo Morcillo
+* Libera la memoria del area introducida como argumento
+* @file screen.c
+* @param area Puntero a estructura de tipo Area
+* @return Ninguno (void)
+*/
 void  screen_area_destroy(Area* area);
 
 
-/*******************************************************************************
-Funcion: screen_area_clear
-Autor: Arturo Morcillo
-Descripcion: Resetea el valor del area con screen_area_reset_cursor
-  Tambien pone tantos ceros a area.cursor como indique area.height
-Argumentos:
-  area: Puntero a estructura de tipo Area
-Return:
-  Ninguno (void)
-*******************************************************************************/
+/**
+* @brief screen_area_clear
+* @author Arturo Morcillo
+* Resetea el valor del area con screen_area_reset_cursor
+* Tambien pone tantos ceros a area.cursor como indique area.height
+* @file screen.c
+* @param area Puntero a estructura de tipo Area
+* @return Ninguno (void)
+*/
 void  screen_area_clear(Area* area);
 
 
-/*******************************************************************************
-Funcion: screen_area_reset_cursor
-Autor: Arturo Morcillo
-Descripcion: Resetea el valor del cursor al origen empleando la macro ACCESS
-Argumentos:
-  area: Puntero a estructura de tipo Area
-Return:
-  Ninguno (void)
-*******************************************************************************/
+/**
+* @brief screen_area_reset_cursor
+* @author Arturo Morcillo
+* Resetea el valor del cursor al origen empleando la macro ACCESS
+* @file screen.c
+* @param area Puntero a estructura de tipo Area
+* @return Ninguno (void)
+*/
 void  screen_area_reset_cursor(Area* area);
 
 
-/*******************************************************************************
-Funcion: screen_area_puts
-Autor: Arturo Morcillo
-Descripcion: Copia en el area pasada como argumento los datos pasados en str.
-Argumentos:
-  area: Puntero a estructura de tipo Area
-  str : Cadena de caracteres
-Return:
-  Ninguno (void)
-*******************************************************************************/
+/**
+* @brief screen_area_puts
+* @author Arturo Morcillo
+* Copia en el area pasada como argumento los datos pasados en str.
+* @file screen.c
+* @param area Puntero a estructura de tipo Area
+* @param str Cadena de caracteres
+* @return Ninguno (void)
+*/
 void  screen_area_puts(Area* area, char *str);
 
 #endif

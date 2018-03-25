@@ -15,9 +15,12 @@
 #include "set.h"
 
 
-/* Estructura que define una casilla del juego, con un id que la identifica,
-un nombre, el id de las casillas contiguas y el id del objeto que hay en ella
-Incluye un set, y una tabla de cadena de caracteres para la descripcion ASCII */
+/**
+* @brief estructura Space
+* Estructura que define una casilla del juego, con un id que la identifica,
+* un nombre, el id de las casillas contiguas y el id del objeto que hay en ella
+* Incluye un set, y una tabla de cadena de caracteres para la descripcion ASCII
+*/
 struct _Space
 {
   /*Id = long*/
@@ -101,17 +104,16 @@ STATUS space_destroy(Space* space)
   return OK;
 }
 
+/**
+* @brief space_set_name
+* @author Arturo Morcillo
+* Asigna a la casilla especificada el nombre introducido
+* @file space.c
+* @param space puntero a una estructura de tipo Space (casilla)
+* @param name cadena de caracteres
+* @return OK o ERROR que pertenecen al enum STATUS
+*/
 
-/*******************************************************************************
-Funcion: space_set_name
-Autor: Arturo Morcillo
-Descripcion: Asigna a la casilla especificada el nombre introducido.
-Argumentos:
-  space: puntero a una estructura de tipo Space (casilla)
-  name : cadena de caracteres
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
 STATUS space_set_name(Space* space, char* name)
 {
   /* Comprueba los argumentos */
@@ -220,16 +222,15 @@ STATUS space_set_west(Space* space, Id id)
   return OK;
 }
 
+/**
+* @brief space_del_object
+* @author Arturo Morcillo
+* Quita el ultimo objeto de una casilla
+* @file space.c
+* @param space puntero a una estructura de tipo Space (casilla)
+* @return OK o ERROR que pertenecen al enum STATUS
+*/
 
-/*******************************************************************************
-Funcion: space_del_object
-Autor: Arturo Morcillo
-Descripcion: Quita el ultimo objeto de una casilla
-Argumentos:
-  space: puntero a una estructura de tipo Space (casilla)
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
 STATUS space_del_object(Space* space)
 {
   if (!space)
@@ -243,17 +244,16 @@ STATUS space_del_object(Space* space)
   return OK;
 }
 
+/**
+* @brief space_add_object
+* @author Arturo Morcillo
+* Coloca en la casilla especificada un objeto
+* @file space.c
+* @param space puntero a una estructura de tipo Space (casilla)
+* @param value Entero de tipo id (long) que identifica un objeto
+* @return OK o ERROR que pertenecen al enum STATUS
+*/
 
-/*******************************************************************************
-Funcion: space_add_object
-Autor: Arturo Morcillo
-Descripcion: Coloca en la casilla especificada un objeto.
-Argumentos:
-  space: puntero a una estructura de tipo Space (casilla)
-  value: Entero de tipo id (long) que identifica un objeto
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
 STATUS space_add_object(Space* space, Id value)
 {
   if (!space)
@@ -267,17 +267,15 @@ STATUS space_add_object(Space* space, Id value)
   return OK;
 }
 
+/**
+* @brief space_get_name
+* @author Arturo Morcillo
+* Devuelve el nombre asignado a la casilla especificada
+* @file space.c
+* @param space puntero a una estructura de tipo Space (casilla)
+* @return OK o Cadena de caracteres (nombre de la casilla) En caso de error, devuelve NULL.
+*/
 
-/*******************************************************************************
-Funcion: space_get_name
-Autor: Arturo Morcillo
-Descripcion: Devuelve el nombre asignado a la casilla especificada.
-Argumentos:
-  space: puntero a una estructura de tipo Space (casilla)
-Return:
-  Cadena de caracteres (nombre de la casilla)
-  En caso de error, devuelve NULL.
-*******************************************************************************/
 char * space_get_name(Space* space)
 {
   if (!space)
@@ -288,17 +286,15 @@ char * space_get_name(Space* space)
   return space->name;
 }
 
+/**
+* @brief space_get_id
+* @author Arturo Morcillo
+* Obtiene el id que identifica una casilla del juego.
+* @file space.c
+* @param space puntero a una estructura de tipo Space (casilla)
+* @return Variable de tipo Id (entero long). En caso de error, devuelve NO_ID.
+*/
 
-/*******************************************************************************
-Funcion: space_get_id
-Autor: Arturo Morcillo
-Descripcion: Obtiene el id que identifica una casilla del juego.
-Argumentos:
-  space: puntero a una estructura de tipo Space (casilla)
-Return:
-  Variable de tipo Id (entero long).
-  En caso de error, devuelve NO_ID.
-*******************************************************************************/
 Id space_get_id(Space* space)
 {
   if (!space)
@@ -397,17 +393,15 @@ Id space_get_west(Space* space)
   return space->west;
 }
 
+/**
+* @brief space_get_objects
+* @author Arturo Morcillo
+* Devuelve la estructura objects (tipo set) del espacio introducido
+* @file space.c
+* @param space puntero a una estructura de tipo Space (casilla)
+* @return Una estructura tipo Set. En caso de error, o de que no haya objetos, devuelve NULL.
+*/
 
-/*******************************************************************************
-Funcion: space_get_objects
-Autor: Arturo Morcillo
-Descripcion: Devuelve la estructura objects (tipo set) del espacio introducido
-Argumentos:
-  space: puntero a una estructura de tipo Space (casilla)
-Return:
-  Una estructura tipo Set.
-  En caso de error, o de que no haya objetos, devuelve NULL.
-*******************************************************************************/
 Set* space_get_objects(Space* space)
 {
   if (!space || space->objects == NULL)
@@ -418,17 +412,17 @@ Set* space_get_objects(Space* space)
   return space->objects;
 }
 
+/**
+* @brief space_check_object
+* @author Arturo Morcillo
+* comprueba si un objeto se encuentra en el Space introducido
+* @file space.c
+* @param space puntero a una estructura de tipo Space (casilla)
+* @param object_id Entero de tipo id (long) que identifica un objeto
+* @return Un BOOL: TRUE si se encuentra y FALSE si no
+*/
 
-/*******************************************************************************
-Funcion: check_object
-Autor: Arturo Morcillo
-Descripcion:  comprueba si un objeto se encuentra en el Space introducido
-Argumentos:
-  Un puntero a Space (ps) y el id del objeto (object_id)
-Return:
-  Un BOOL: TRUE si se encuentra y FALSE si no
-*******************************************************************************/
-BOOL check_object (Space *ps, Id object_id)
+BOOL space_check_object (Space *ps, Id object_id)
 {
   Set *aux;
   Id id_aux;
@@ -536,27 +530,27 @@ STATUS space_print(Space* space)
   return OK;
 }
 
+/**
+* @brief space_set_gdesc_0
+* @author Arturo Morcillo
+* Asigna a la casilla especificada la linea n+1 del dibujo o una serie de 7 espacios.
+* @file space.c
+* @param space puntero a una estructura de tipo Space (casilla)
+* @param cadena cadena de caracteres
+* @param n gdesc que se cogera (de 0 a 2)
+* @return OK o ERROR, que pertenecen al enum STATUS
+*/
 
-/*******************************************************************************
-Funcion: space_set_gdesc_0
-Autor: Arturo Morcillo
-Descripcion: Asigna a la casilla especificada la primera linea del dibujo o una serie de 7 espacios.
-Argumentos:
-  space: puntero a una estructura de tipo Space (casilla)
-  cadena : cadena de caracteres
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
-STATUS space_set_gdesc_0(Space* space, char* cadena)
+STATUS space_set_gdesc(Space* space, char* cadena, int n)
 {
   /* Comprueba los argumentos */
-  if (!space || !cadena)
+  if (!space || !cadena || n<0 || n>2)
   {
     return ERROR;
   }
 
   /* Asigna a space.name el nombre introducido y lo comprueba */
-  if (!strcpy(space->gdesc[0], cadena))
+  if (!strcpy(space->gdesc[n], cadena))
   {
     return ERROR;
   }
@@ -565,110 +559,20 @@ STATUS space_set_gdesc_0(Space* space, char* cadena)
 }
 
 
-/*******************************************************************************
-Funcion: space_set_gdesc_1
-Autor: Arturo Morcillo
-Descripcion: Asigna a la casilla especificada la segunda linea del dibujo o una serie de 7 espacios.
-Argumentos:
-  space: puntero a una estructura de tipo Space (casilla)
-  cadena : cadena de caracteres
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
-STATUS space_set_gdesc_1(Space* space, char* cadena)
+/**
+* @brief space_get_gdesc
+* @author Arturo Morcillo
+* La cadena correspondiente a la linea n+1 del dibujo
+* @file space.c
+* @param space puntero a una estructura de tipo Space (casilla)
+* @param n gdesc que se cogera (de 0 a 2)
+* @return Un puntero a char (cadena de caracteres)
+*/
+
+char* space_get_gdesc(Space* space, int n)
 {
-  /* Comprueba los argumentos */
-  if (!space || !cadena)
-  {
-    return ERROR;
-  }
-
-  /* Asigna a space.name el nombre introducido y lo comprueba */
-  if (!strcpy(space->gdesc[1], cadena))
-  {
-    return ERROR;
-  }
-  /* Si todo va bien devuelve OK */
-  return OK;
-}
-
-/*******************************************************************************
-Funcion: space_set_gdesc_2
-Autor: Arturo Morcillo
-Descripcion: Asigna a la casilla especificada la tercera linea del dibujo o una serie de 7 espacios.
-Argumentos:
-  space: puntero a una estructura de tipo Space (casilla)
-  cadena : cadena de caracteres
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
-STATUS space_set_gdesc_2(Space* space, char* cadena)
-{
-  /* Comprueba los argumentos */
-  if (!space || !cadena)
-  {
-    return ERROR;
-  }
-
-  /* Asigna a space.name el nombre introducido y lo comprueba */
-  if (!strcpy(space->gdesc[2], cadena))
-  {
-    return ERROR;
-  }
-  /* Si todo va bien devuelve OK */
-  return OK;
-}
-
-
-/*******************************************************************************
-Funcion: space_get_gdesc_0
-Autor: Arturo Morcillo
-Descripcion: La cadena correspondiente a la primera linea del dibujo
-Argumentos:
-  space: puntero a una estructura de tipo Space (casilla)
-Return:
-  Un puntero a char (cadena de caracteres)
-*******************************************************************************/
-char* space_get_gdesc_0(Space* space)
-{
-  if (space == NULL)
+  if (space == NULL || n<0 || n>2)
     return NULL;
 
-  return space->gdesc[0];
-}
-
-
-/*******************************************************************************
-Funcion: space_get_gdesc_1
-Autor: Arturo Morcillo
-Descripcion: La cadena correspondiente a la segunda linea del dibujo
-Argumentos:
-  space: puntero a una estructura de tipo Space (casilla)
-Return:
-  Un puntero a char (cadena de caracteres)
-*******************************************************************************/
-char* space_get_gdesc_1(Space* space)
-{
-  if (space == NULL)
-    return NULL;
-
-  return space->gdesc[1];
-}
-
-
-/*******************************************************************************
-Funcion: space_get_gdesc_2
-Autor: Arturo Morcillo
-Descripcion: La cadena correspondiente a la segunda linea del dibujo
-Argumentos:
-  space: puntero a una estructura de tipo Space (casilla)
-Return:
-  Un puntero a char (cadena de caracteres)
-*******************************************************************************/
-char* space_get_gdesc_2(Space* space)
-{
-  if (space == NULL)
-    return NULL;
-
-  return space->gdesc[2];
+  return space->gdesc[n];
 }

@@ -67,17 +67,16 @@ static callback_fn game_callback_fn_list[N_CALLBACK] =
 
 
 /*------------------------  Funciones privadas  ------------------------------*/
+/**
+* @brief game_get_space_id_at
+* @author Arturo Morcillo
+* Devuelve la id de la casilla asociada a una posicion
+* @fie game.c
+* @param game Puntero a una estructura de tipo Game
+* @param position  Entero (int)
+* @return Entero de tipo Id (long) que identifica la casilla asociada a una posicion
+*/
 
-/*******************************************************************************
-Funcion: game_get_space_id_at
-Autor: Arturo Morcillo
-Descripcion: Devuelve la id de la casilla asociada a una posicion
-Argumentos:
-  game    : Puntero a una estructura de tipo Game
-  position: Entero (int)
-Return:
-  Entero de tipo Id (long) que identifica la casilla asociada a una posicion
-*******************************************************************************/
 Id game_get_space_id_at(Game* game, int position);
 
 /*----------------------  Fin de funciones privadas  -------------------------*/
@@ -147,16 +146,15 @@ STATUS game_create_from_file(Game* game, char* filename)
   return OK;
 }
 
+/**
+* @brief game_destroy
+* @author Arturo Morcillo
+* Elimina todas las casillas del Game, y libera la memoria reservada
+* @fie game.c
+* @param game Puntero a una estructura de tipo Game
+* @return OK o ERROR, que pertenecen al enum STATUS
+*/
 
-/*******************************************************************************
-Funcion: game_destroy
-Autor: Arturo Morcillo
-Descripcion: Elimina todas las casillas del Game, y libera la memoria reservada
-Argumentos:
-  game: Puntero a una estructura de tipo Game
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
 STATUS game_destroy(Game* game)
 {
   int i = 0;
@@ -187,18 +185,17 @@ STATUS game_destroy(Game* game)
   return OK;
 }
 
+/**
+* @brief game_add_space
+* @author Arturo Morcillo
+* Crea una casilla. Al último elemento "vacío" (= NULL) de la
+* tabla de tipo Space de game se le asigna el Space introducido como argumento.
+* @fie game.c
+* @param game Puntero a una estructura de tipo Game
+* @param space Puntero a una estructura de tipo Space (casilla)
+* @return OK o ERROR, que pertenecen al enum STATUS
+*/
 
-/*******************************************************************************
-Funcion: game_add_space
-Autor: Arturo Morcillo
-Descripcion: Crea una casilla. Al último elemento "vacío" (= NULL) de la
-  tabla de tipo Space de game se le asigna el Space introducido como argumento.
-Argumentos:
-  game : Puntero a una estructura de tipo Game
-  space: Puntero a una estructura de tipo Space (casilla)
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
 STATUS game_add_space(Game* game, Space* space)
 {
   int i = 0;
@@ -223,18 +220,17 @@ STATUS game_add_space(Game* game, Space* space)
   return OK;
 }
 
+/**
+* @brief game_add_object
+* @author Arturo Morcillo
+* Crea un objeto. Al último elemento "vacío" (= NULL) de la
+* tabla de tipo Object de game se le asigna el Object introducido como argumento.
+* @fie game.c
+* @param game Puntero a una estructura de tipo Game
+* @param space Puntero a una estructura de tipo Space (casilla)
+* @return OK o ERROR, que pertenecen al enum STATUS
+*/
 
-/*******************************************************************************
-Funcion: game_add_object
-Autor: Arturo Morcillo
-Descripcion: Crea un objeto. Al último elemento "vacío" (= NULL) de la
-  tabla de tipo Object de game se le asigna el Object introducido como argumento.
-Argumentos:
-  game : Puntero a una estructura de tipo Game
-  space: Puntero a una estructura de tipo Space (casilla)
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
 STATUS game_add_object(Game* game, Object* object)
 {
   int i = 0;
@@ -259,17 +255,16 @@ STATUS game_add_object(Game* game, Object* object)
   return OK;
 }
 
+/**
+* @brief game_get_space_id_at
+* @author Arturo Morcillo
+* Devuelve la id de la casilla asociada a una posicion
+* @fie game.c
+* @param game Puntero a una estructura de tipo Game
+* @param position entero (int)
+* @return Entero de tipo Id (long) que identifica la casilla asociada a una posicion
+*/
 
-/*******************************************************************************
-Funcion: game_get_space_id_at
-Autor: Arturo Morcillo
-Descripcion: Devuelve la id de la casilla asociada a una posicion
-Argumentos:
-  game    : Puntero a una estructura de tipo Game
-  position: Entero (int)
-Return:
-  Entero de tipo Id (long) que identifica la casilla asociada a una posicion
-*******************************************************************************/
 Id game_get_space_id_at(Game* game, int position)
 {
   /* Comprueba que la posicion sea correcta */
@@ -281,19 +276,15 @@ Id game_get_space_id_at(Game* game, int position)
   return space_get_id(game->spaces[position]);
 }
 
-
-/*******************************************************************************
-Funcion: game_get_space
-Autor: Arturo Morcillo
-Descripcion: Devuelve la casilla de game que coincide con el id introducido
-Argumentos:
-  game: Puntero a una estructura de tipo Game
-  id  : Entero de tipo Id (long)
-Return:
-  Puntero a la estructura de tipo Space (casilla)
-  Si no se introduce un id, o no encuentra una casilla que corresponda
-  al id, devuelve NULL
-*******************************************************************************/
+/**
+* @brief game_get_space
+* @author Arturo Morcillo
+* Devuelve la casilla de game que coincide con el id introducido
+* @fie game.c
+* @param game Puntero a una estructura de tipo Game
+* @param id Entero de tipo Id (long)
+* @return Puntero a la estructura de tipo Space (casilla) Si no se introduce un id, o no encuentra una casilla que corresponda al id, devuelve NULL
+*/
 Space* game_get_space(Game* game, Id id)
 {
   int i = 0;
@@ -314,19 +305,16 @@ Space* game_get_space(Game* game, Id id)
   return NULL;
 }
 
+/**
+* @brief game_set_player_location
+* @author Arturo Morcillo
+* Fija la posición del jugador en la id introducida.
+* @fie game.c
+* @param game Puntero a una estructura de tipo Game
+* @param id Entero de tipo Id (long)
+* @return OK o ERROR, que pertenecen al enum STATUS
+*/
 
-/*******************************************************************************
-Funcion: game_set_player_location
-Autor: Arturo Morcillo
-Descripcion: Fija la posición del jugador en la id introducida.
-  Posiblemente quede obsoleta en futuras iteraciones,
-  es válida porque solo hay un jugador.
-Argumentos:
-  game: Puntero a una estructura de tipo Game
-  id  : Entero de tipo Id (long)
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
 STATUS game_set_player_location(Game* game, Id id)
 {
   if (id == NO_ID)
@@ -343,36 +331,30 @@ STATUS game_set_player_location(Game* game, Id id)
   return OK;
 }
 
+/**
+* @brief game_get_player_location
+* @author Arturo Morcillo
+* Devuelve la posición del jugador de la estructura game.
+* @fie game.c
+* @param game Puntero a una estructura de tipo Game
+* @return Entero de tipo Id (long) que identifica una casilla
+*/
 
-/*******************************************************************************
-Funcion: game_get_player_location
-Autor: Arturo Morcillo
-Descripcion: Devuelve la posición del jugador de la estructura game.
-  Posiblemente quede obsoleta en futuras iteraciones,
-  es válida porque solo hay un jugador.
-Argumentos:
-  game: Puntero a una estructura de tipo Game
-Return:
-  Entero de tipo Id (long) que identifica una casilla
-*******************************************************************************/
 Id game_get_player_location(Game* game)
 {
   return (player_get_location(game->player));
 }
 
+/**
+* @brief game_set_object_location
+* @author Arturo Morcillo
+* Fija la posición del objeto en la id introducida.
+* @fie game.c
+* @param object Puntero a una estructura de tipo Object
+* @param name Cadena de caracteres que se guardará en object->name
+* @return Entero de tipo Id (long) que identifica una casilla
+*/
 
-/*******************************************************************************
-Funcion: game_set_object_location
-Autor: Arturo Morcillo
-Descripcion: Fija la posición del objeto en la id introducida.
-  Posiblemente quede obsoleta en futuras iteraciones,
-  es válida porque solo hay un objeto.
-Argumentos:
-  object: Puntero a una estructura de tipo Object
-  name  : Cadena de caracteres que se guardará en object->name
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
 STATUS game_set_object_location(Game* game,Object *object ,Id space_id)
 {
   int i;
@@ -566,49 +548,45 @@ void game_print_data(Game* game)
   printf("prompt:> ");
 }
 
+/**
+* @brief game_is_over
+* @author Arturo Morcillo
+* Termina el juego. De momento sin funcionalidad
+* @fie game.c
+* @param game Puntero a una estructura de tipo Game
+* @return Variable de tipo BOOL (TRUE o FALSE) Por el momento siempre devuelve FALSE
+*/
 
-/*******************************************************************************
-Funcion: game_is_over
-Autor: Arturo Morcillo
-Descripcion: Termina el juego. De momento sin funcionalidad
-Argumentos:
-  game: Puntero a una estructura de tipo Game
-Return:
-  Variable de tipo BOOL (TRUE o FALSE)
-  Por el momento siempre devuelve FALSE
-*******************************************************************************/
 BOOL game_is_over(Game* game)
 {
   return FALSE;
 }
 
+/**
+* @brief game_set_param
+* @author Arturo Morcillo
+* Fija el param de la estructura game (necesario para get y drop)
+* @fie game.c
+* @param game Puntero a una estructura de tipo Game
+* @param param Cadena de caracteres con el parametro del comando (para get y drop)
+* @return nada (tipo void)
+*/
 
-/*******************************************************************************
-Funcion: game_set_param
-Autor: Arturo Morcillo
-Descripcion: Fija el param de la estructura game (necesario para get y drop)
-Argumentos:
-  game: Puntero a una estructura de tipo Game
-  param: Cadena de caracteres con el parametro del comando (para get y drop)
-Return:
-  nada (tipo void)
-*******************************************************************************/
 void game_set_param(Game *game,char *param)
 {
   game->param = param;
 }
 
+/**
+* @brief game_object_get_id_from_name
+* @author Arturo Morcillo
+* Te da el id de un objeto introduciendo su nombre.
+* @file game.c
+* @param name Cadena de caracteres con el nombre de un objeto
+* @param game Puntero a una estructura de tipo Game
+* @return nada (tipo void)
+*/
 
-/*******************************************************************************
-Funcion: game_object_get_id_from_name
-Autor: Arturo Morcillo
-Descripcion: Te da el id de un objeto introduciendo su nombre.
-Argumentos:
-  name: Cadena de caracteres con el nombre de un objeto
-  game: Puntero a una estructura de tipo Game
-Return:
-  La id del objeto.
-*******************************************************************************/
 Id game_object_get_id_from_name(char* name, Game *game)
 {
   int i;
@@ -663,16 +641,15 @@ void game_callback_exit(Game* game)
   game->command_status = OK;
 }
 
+/**
+* @brief game_callback_following
+* @author Arturo Morcillo
+* Implementa la funcionalidad del comando following (avanzar)
+* @file game.c
+* @param game Puntero a una estructura de tipo Game
+* @return nada (tipo void)
+*/
 
-/*******************************************************************************
-Funcion: game_callback_following
-Autor: Arturo Morcillo
-Descripcion: Implementa la funcionalidad del comando following (avanzar)
-Argumentos:
-  game: Puntero a una estructura de tipo Game
-Return:
-  Ninguno (void)
-*******************************************************************************/
 void game_callback_following(Game* game)
 {
   int i = 0;
@@ -711,16 +688,15 @@ void game_callback_following(Game* game)
   game->command_status = OK;
 }
 
+/**
+* @brief game_callback_previous
+* @author Arturo Morcillo
+* Implementa la funcionalidad del comando previous (retroceder)
+* @file game.c
+* @param game Puntero a una estructura de tipo Game
+* @return nada (tipo void)
+*/
 
-/*******************************************************************************
-Funcion: game_callback_previous
-Autor: Arturo Morcillo
-Descripcion: Implementa la funcionalidad del comando previous (retroceder)
-Argumentos:
-  game: Puntero a una estructura de tipo Game
-Return:
-  Ninguno (void)
-*******************************************************************************/
 void game_callback_previous(Game* game)
 {
   int i = 0;
@@ -806,7 +782,7 @@ void game_callback_get(Game* game)
   }
   printf("Got %ld",object_id);
 
-  if (check_object (current_space, object_id) == TRUE)
+  if (space_check_object (current_space, object_id) == TRUE)
   {
     if(remove_id (set_aux, object_id) == ERROR)
     {

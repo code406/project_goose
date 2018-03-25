@@ -152,9 +152,9 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     if (id_back != NO_ID)
     {
       space_prev = game_get_space(game, id_back);
-      gdesc[0] = space_get_gdesc_0(space_prev);
-      gdesc[1] = space_get_gdesc_1(space_prev);
-      gdesc[2] = space_get_gdesc_2(space_prev);
+      gdesc[0] = space_get_gdesc(space_prev,0);
+      gdesc[1] = space_get_gdesc(space_prev,1);
+      gdesc[2] = space_get_gdesc(space_prev,2);
       sprintf(str, "  | %s%2d|",gdesc[0],(int) id_back);
       screen_area_puts(ge->map, str);
       sprintf(str, "  |  %s |",gdesc[1]);
@@ -187,9 +187,9 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
     if (id_act != NO_ID)
     {
-      gdesc[0] = space_get_gdesc_0(space_act);
-      gdesc[1] = space_get_gdesc_1(space_act);
-      gdesc[2] = space_get_gdesc_2(space_act);
+      gdesc[0] = space_get_gdesc(space_act,0);
+      gdesc[1] = space_get_gdesc(space_act,1);
+      gdesc[2] = space_get_gdesc(space_act,2);
       sprintf(str, "  +--------------------+");
       screen_area_puts(ge->map, str);
       if (id_act != NO_ID && id_left != NO_ID && id_right != NO_ID)
@@ -247,9 +247,9 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
     if (id_next != NO_ID) {
       space_next = game_get_space(game, id_next);
-      gdesc[0] = space_get_gdesc_0(space_next);
-      gdesc[1] = space_get_gdesc_1(space_next);
-      gdesc[2] = space_get_gdesc_2(space_next);
+      gdesc[0] = space_get_gdesc(space_next,0);
+      gdesc[1] = space_get_gdesc(space_next,1);
+      gdesc[2] = space_get_gdesc(space_next,2);
       sprintf(str, "        v");
       screen_area_puts(ge->map, str);
       sprintf(str, "  +--------------------+");
