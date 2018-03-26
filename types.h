@@ -16,11 +16,17 @@
  #define MAX_ID 20
 
 
- /* Define el tipo Id (identificador numérico de una casilla). Es entero long */
+ /**
+ * @brief Id (entero tipo long)
+ * Define el tipo Id (identificador numérico de una casilla).
+ */
  typedef long Id;
 
 
- /* Enumeración para crear un boolean */
+ /**
+ *@brief Enumeracion BOOL 
+ * Enumeración para crear un boolean
+ */
  typedef enum
  {
    FALSE,  /* 0 */
@@ -28,7 +34,10 @@
  } BOOL;
 
 
- /* Enumeración que define para los estados ERROR y OK un valor numérico */
+ /**
+ * @brief Enumeracion STATUS
+ *Enumeración que define para los estados ERROR y OK un valor numérico
+ */
  typedef enum
  {
    ERROR, /* 0 */
@@ -36,7 +45,10 @@
  } STATUS;
 
 
- /* Enumeración que define para cada dirección o coordenada un valor numérico */
+ /**
+ * @brief enumeracion DIRECTION
+ * Enumeración que define para cada dirección o coordenada un valor numérico
+ */
  typedef enum
  {
    N, /* 0 */

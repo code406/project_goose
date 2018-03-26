@@ -17,9 +17,9 @@
 
 
 /**
-* @brief game_reader_load_spaces
+* @name game_reader_load_spaces
 * @author Arturo Morcillo
-* Lee el archivo y carga los datos en la estructura Space de game
+* @brief Lee el archivo y carga los datos en la estructura Space de game
 * @fie game_reader.h
 * @param game Puntero a una estructura de tipo Game
 * @param filename cadena de caracteres con el nombre del archivo del que se lee
@@ -29,9 +29,9 @@ STATUS game_reader_load_spaces(Game* game, char* filename);
 
 
 /**
-* @brief game_reader_load_objects
+* @name game_reader_load_objects
 * @author Arturo Morcillo
-* Lee el archivo y carga los datos en la estructura Object de game
+* @brief Lee el archivo y carga los datos en la estructura Object de game
 * @fie game_reader.h
 * @param game Puntero a una estructura de tipo Game
 * @param filename cadena de caracteres con el nombre del archivo del que se lee

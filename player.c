@@ -31,9 +31,9 @@ struct _Player
 };
 
 /**
-* @brief player_create
+* @name player_create
 * @author Arturo Morcillo
-* Reserva memoria (vacía por calloc) para un nuevo jugador, e inicializa su id al especificado como argumento
+* @brief Reserva memoria (vacía por calloc) para un nuevo jugador, e inicializa su id al especificado como argumento
 * @file player.c
 * @param id Entero de tipo Id (long)
 * @return Puntero a estructura de tipo Player
@@ -57,9 +57,9 @@ Player* player_create(Id id)
 }
 
 /**
-* @brief player_destroy
+* @name player_destroy
 * @author Arturo Morcillo
-* Libera la memoria reservada para un jugador y pone el puntero a NULL
+* @brief Libera la memoria reservada para un jugador y pone el puntero a NULL
 * @file player.c
 * @param player Puntero a una estructura de tipo Player
 * @return OK o ERROR, que pertenecen al enum STATUS
@@ -78,9 +78,9 @@ STATUS player_destroy (Player *player)
 }
 
 /**
-* @brief player_set_name
+* @name player_set_name
 * @author Arturo Morcillo
-* Asigna un nombre a un jugador
+* @brief Asigna un nombre a un jugador
 * @file player.c
 * @param player Puntero a una estructura de tipo Player
 * @param name Cadena de caracteres que se guardará en player->name
@@ -106,9 +106,9 @@ STATUS player_set_name(Player* player, char* name)
 }
 
 /**
-* @brief player_set_location
+* @name player_set_location
 * @author Arturo Morcillo
-* Asigna una posicion a un jugador
+* @brief Asigna una posicion a un jugador
 * @file player.c
 * @param player Puntero a una estructura de tipo Player
 * @param id Entero de tipo Id (long), con la posicion en que colocar al jugador
@@ -127,9 +127,9 @@ STATUS player_set_location(Player* player, Id location)
 }
 
 /**
-* @brief player_del_object
+* @name player_del_object
 * @author Arturo Morcillo
-* Quita el ultimo objeto de un jugador
+* @brief Quita el ultimo objeto de un jugador
 * @file player.c
 * @param player Puntero a una estructura de tipo Player
 * @param id Entero de tipo Id (long), con la posicion en que colocar al jugador
@@ -150,9 +150,9 @@ STATUS player_del_object(Player* player)
 }
 
 /**
-* @brief player_add_object
+* @name player_add_object
 * @author Arturo Morcillo
-* Coloca en el player especificado un objeto.
+* @brief Coloca en el player especificado un objeto.
 * @file player.c
 * @param player Puntero a una estructura de tipo Player
 * @param value Entero de tipo id (long) que identifica un objeto
@@ -173,9 +173,9 @@ STATUS player_add_object(Player* player, Id value)
 }
 
 /**
-* @brief player_get_name
+* @name player_get_name
 * @author Arturo Morcillo
-* Devuelve el nombre asignado a un jugador.
+* @brief Devuelve el nombre asignado a un jugador.
 * @file player.c
 * @param player Puntero a una estructura de tipo Player
 * @return Cadena de caracteres con el nombre del jugador (player->name). Si el argumento introducido no es correcto, devuelve NULL
@@ -191,9 +191,9 @@ char * player_get_name(Player* player)
 }
 
 /**
-* @brief player_get_id
+* @name player_get_id
 * @author Arturo Morcillo
-* Devuelve el id asignado a un jugador.
+* @brief Devuelve el id asignado a un jugador.
 * @file player.c
 * @param player Puntero a una estructura de tipo Player
 * @return Entero de tipo Id (long) que identifica al jugador. Si el argumento introducido no es correcto, devuelve NO_ID
@@ -209,9 +209,9 @@ Id player_get_id(Player* player)
 }
 
 /**
-* @brief player_get_location
+* @name player_get_location
 * @author Arturo Morcillo
-* Devuelve la posicion o casilla en que se encuentra un jugador.
+* @brief Devuelve la posicion o casilla en que se encuentra un jugador.
 * @file player.c
 * @param player Puntero a una estructura de tipo Player
 * @return Entero de tipo Id (long) que identifica la casilla en que se encuentra el jugador (player->space_id). Si el argumento introducido no es correcto, devuelve NO_ID
@@ -227,9 +227,47 @@ Id player_get_location(Player* player)
 }
 
 /**
-* @brief player_get_objects
+* @name player_check_object
 * @author Arturo Morcillo
-* Devuelve la estructura objects (tipo set) del jugador introducido
+* @brief comprueba si un objeto se encuentra en el Player introducido
+* @file space.c
+* @param ps puntero a una estructura de tipo Space (casilla)
+* @param object_id Entero de tipo id (long) que identifica un objeto
+* @return Un BOOL: TRUE si se encuentra y FALSE si no
+*/
+
+BOOL player_check_object (Player *ps, Id object_id)
+{
+  Set *aux;
+  Id id_aux;
+  int n;
+
+  if (ps == NULL || object_id == NO_ID)
+    return FALSE;
+
+  aux = player_get_objects (ps);
+  if (aux == NULL)
+    return FALSE;
+
+  for (n=0;n<MAX_ID;n++)
+  {
+    id_aux = get_id_pos (aux, n);
+    if (id_aux != NO_ID)
+    {
+      if (id_aux == object_id)
+      {
+        return TRUE;
+      }
+    }
+  }
+
+  return FALSE;
+}
+
+/**
+* @name player_get_objects
+* @author Arturo Morcillo
+* @brief Devuelve la estructura objects (tipo set) del jugador introducido
 * @file player.c
 * @param player Puntero a una estructura de tipo Player
 * @return Un puntero a estructura de tipo Set. En caso de error, o de que no haya objetos, devuelve NULL.
@@ -246,9 +284,9 @@ Set* player_get_objects(Player* player)
 }
 
 /**
-* @brief player_print
+* @name player_print
 * @author Arturo Morcillo
-* Muestra por pantalla el nombre e id del jugador, y si porta o no un objeto
+* @brief Muestra por pantalla el nombre e id del jugador, y si porta o no un objeto
 * @file player.c
 * @param player Puntero a una estructura de tipo Player
 * @return OK o ERROR, que pertenecen al enum STATUS
@@ -282,9 +320,9 @@ STATUS player_print(Player* player)
 }
 
 /**
-* @brief player_copy
+* @name player_copy
 * @author Arturo Morcillo
-* Devuelve una copia del puntero introducido como argumento
+* @brief Devuelve una copia del puntero introducido como argumento
 * @file player.c
 * @param pc Puntero a una estructura de tipo Player
 * @return Un puntero a la copia

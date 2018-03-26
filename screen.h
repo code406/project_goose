@@ -21,24 +21,24 @@
 typedef struct _Area Area;
 
 
-/*******************************************************************************
-Funcion: screen_init
-Autor: David Palomo
-Descripcion: Inicializa la zona de memoria de la pantalla y la rellena con
-  color de fondo (rellena con un caracter que luego se detecta en screen_paint)
-Argumentos:
-  Ninguno
-Return:
-  Ninguno (void)
-*******************************************************************************/
+/**
+* @name screen_init
+* @author David Palomo
+* @brief Inicializa la zona de memoria de la pantalla y la rellena con
+* color de fondo (rellena con un caracter que luego se detecta en screen_paint)
+* @file screen.h
+* @param Ninguno
+* @return Ninguno (void)
+*/
 void  screen_init();
 
 
 /**
-* @brief screen_destroy
+* @name screen_destroy
 * @author Arturo Morcillo
-* Libera la memoria reservada para __data
-* @file screen.c
+* @brief Libera la memoria reservada para __data
+* @file screen.h
+* @param ninguno
 * @return Ninguno (void)
 */
 
@@ -46,35 +46,34 @@ void  screen_destroy();
 
 
 /**
-* @brief screen_paint
+* @name screen_paint
 * @author Arturo Morcillo
-* Se encarga de limpiar la terminal y volver a dibujar la pantalla.
+* @brief Se encarga de limpiar la terminal y volver a dibujar la pantalla.
 * Si la terminal tiene el tamaño correcto da la sensacion de que se actualiza
-* @file player.c
+* @file player.h
+* @param ninguno
 * @return Ninguno (void)
 */
 void  screen_paint();
 
 
-/*******************************************************************************
-Funcion: screen_gets
-Autor: David Palomo
-Descripcion: Imprime "prompt:>" en terminal y escanea la introducción de comando.
-  Por el momento, no se utiliza.
-Argumentos:
-  str: Cadena de caracteres
-Return:
-  Ninguno (void)
-*******************************************************************************/
+/**
+* @name screen_gets
+* @author David Palomo
+* @brief Imprime "prompt:>" en terminal y escanea la introducción de comando.
+* Por el momento, no se utiliza.* @file screen.h
+* @param str cadena de caracteres
+* @return Ninguno (void)
+*/
 void  screen_gets(char *str);
 
 
 /**
-* @brief screen_area_init
+* @name screen_area_init
 * @author Arturo Morcillo
-* Reserva memoria para un area y le asigna los valores argumento.
-* area.cursor tendra tantos ceros como indique el valor de area.height
-* @file screen.c
+* @brief Reserva memoria para un area y le asigna los valores argumento.
+* area.hursor tendra tantos ceros como indique el valor de area.height
+* @file screen.h
 * @param x Variable de tipo entero (int)
 * @param y Variable de tipo entero (int)
 * @param width Variable de tipo entero (int)
@@ -85,10 +84,10 @@ Area* screen_area_init(int x, int y, int width, int height);
 
 
 /**
-* @brief screen_area_destroy
+* @name screen_area_destroy
 * @author Arturo Morcillo
-* Libera la memoria del area introducida como argumento
-* @file screen.c
+* @brief Libera la memoria del area introducida como argumento
+* @file screen.h
 * @param area Puntero a estructura de tipo Area
 * @return Ninguno (void)
 */
@@ -96,11 +95,11 @@ void  screen_area_destroy(Area* area);
 
 
 /**
-* @brief screen_area_clear
+* @name screen_area_clear
 * @author Arturo Morcillo
-* Resetea el valor del area con screen_area_reset_cursor
-* Tambien pone tantos ceros a area.cursor como indique area.height
-* @file screen.c
+* @brief Resetea el valor del area con screen_area_reset_cursor
+* Tambien pone tantos ceros a area.hursor como indique area.height
+* @file screen.h
 * @param area Puntero a estructura de tipo Area
 * @return Ninguno (void)
 */
@@ -108,10 +107,10 @@ void  screen_area_clear(Area* area);
 
 
 /**
-* @brief screen_area_reset_cursor
+* @name screen_area_reset_cursor
 * @author Arturo Morcillo
-* Resetea el valor del cursor al origen empleando la macro ACCESS
-* @file screen.c
+* @brief Resetea el valor del cursor al origen empleando la macro ACCESS
+* @file screen.h
 * @param area Puntero a estructura de tipo Area
 * @return Ninguno (void)
 */
@@ -119,10 +118,10 @@ void  screen_area_reset_cursor(Area* area);
 
 
 /**
-* @brief screen_area_puts
+* @name screen_area_puts
 * @author Arturo Morcillo
-* Copia en el area pasada como argumento los datos pasados en str.
-* @file screen.c
+* @brief Copia en el area pasada como argumento los datos pasados en str.
+* @file screen.h
 * @param area Puntero a estructura de tipo Area
 * @param str Cadena de caracteres
 * @return Ninguno (void)

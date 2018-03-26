@@ -16,24 +16,26 @@
 #include "space.h"
 
 
-/* Estructura que define un objeto, con un identificador (id) y un nombre */
+/**
+* @brief Estructura _Object
+* Estructura que define un objeto, con un identificador (id) y un nombre
+*/
 struct _Object
 {
   Id id;
   char name[WORD_SIZE+1];
 };
 
+/**
+* @name object_create
+* @author David Palomo
+* @brief Reserva memoria (vacía por calloc) para un nuevo objeto,
+*e inicializa su id al especificado como argumento
+* @file object.c
+* @param id Entero de tipo Id (long)
+* @return Puntero a estructura de tipo Object, que tiene un id y un nombre
+*/
 
-/*******************************************************************************
-Funcion: object_create
-Autor: David Palomo
-Descripcion: Reserva memoria (vacía por calloc) para un nuevo objeto,
-  e inicializa su id al especificado como argumento
-Argumentos:
-  id: Entero de tipo Id (long)
-Return:
-  Puntero a estructura de tipo Object, que tiene un id y un nombre
-*******************************************************************************/
 Object * object_create(Id id)
 {
   Object * newObject = NULL;
@@ -49,16 +51,15 @@ Object * object_create(Id id)
   return newObject;
 }
 
+/**
+* @name object_destroy
+* @author David Palomo
+* @brief Libera la memoria reservada para un objeto y pone el puntero a NULL
+* @file object.c
+* @param object Puntero a una estructura de tipo Object
+* @return OK o ERROR, que pertenecen al enum STATUS
+*/
 
-/*******************************************************************************
-Funcion: object_destroy
-Autor: David Palomo
-Descripcion: Libera la memoria reservada para un objeto y pone el puntero a NULL
-Argumentos:
-  object: Puntero a una estructura de tipo Object
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
 STATUS object_destroy (Object * object)
 {
   if (!object)
@@ -69,17 +70,16 @@ STATUS object_destroy (Object * object)
   return OK;
 }
 
+/**
+* @name object_set_name
+* @author David Palomo
+* @brief Asigna un nombre a un objeto
+* @file object.c
+* @param object Puntero a una estructura de tipo Object
+* @param name Cadena de caracteres que se guardará en object->name
+* @return OK o ERROR, que pertenecen al enum STATUS
+*/
 
-/*******************************************************************************
-Funcion: object_set_name
-Autor: David Palomo
-Descripcion: Asigna un nombre a un objeto
-Argumentos:
-  object: Puntero a una estructura de tipo Object
-  name  : Cadena de caracteres que se guardará en object->name
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
 STATUS object_set_name(Object * object, char * name)
 {
   /* Comprueba los argumentos */
@@ -98,17 +98,16 @@ STATUS object_set_name(Object * object, char * name)
   return OK;
 }
 
+/**
+* @name object_get_name
+* @author David Palomo
+* @brief Devuelve el nombre asignado a un objeto
+* @file object.c
+* @param object Puntero a una estructura de tipo Object
+* @return Cadena de caracteres con el nombre del objeto (object->name)
+* Si el argumento introducido no es correcto, devuelve NULL
+*/
 
-/*******************************************************************************
-Funcion: object_get_name
-Autor: David Palomo
-Descripcion: Devuelve el nombre asignado a un objeto
-Argumentos:
-  object: Puntero a una estructura de tipo Object
-Return:
-  Cadena de caracteres con el nombre del objeto (object->name)
-  Si el argumento introducido no es correcto, devuelve NULL
-*******************************************************************************/
 char * object_get_name(Object * object)
 {
   if (!object)
@@ -118,17 +117,16 @@ char * object_get_name(Object * object)
   return object->name;
 }
 
+/**
+* @name object_get_id
+* @author David Palomo
+* @brief Devuelve el id asignado a un objeto
+* @file object.c
+* @param object Puntero a una estructura de tipo Object
+* @return Variable de tipo Id (long) que identifica al objeto (object->id)
+* Si el argumento introducido no es correcto, devuelve NULL
+*/
 
-/*******************************************************************************
-Funcion: object_get_id
-Descripcion: Devuelve el id asignado a un objeto
-Autor: David Palomo
-Argumentos:
-  object: Puntero a una estructura de tipo Object
-Return:
-  Variable de tipo Id (long) que identifica al objeto (object->id)
-  Si el argumento introducido no es correcto, devuelve NULL
-*******************************************************************************/
 Id object_get_id(Object * object)
 {
   if (!object)
@@ -138,16 +136,15 @@ Id object_get_id(Object * object)
   return object->id;
 }
 
+/**
+* @name object_print
+* @author David Palomo
+* @brief Muestra por pantalla el id y el nombre del objeto
+* @file object.c
+* @param object Puntero a una estructura de tipo Object
+* @return OK o ERROR, que pertenecen al enum STATUS
+*/
 
-/*******************************************************************************
-Funcion: object_print
-Autor: David Palomo
-Descripcion: Muestra por pantalla el id y el nombre del objeto
-Argumentos:
-  object: Puntero a una estructura de tipo Object
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
 STATUS object_print(Object * object)
 {
   if (!object)

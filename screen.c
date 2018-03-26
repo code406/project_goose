@@ -64,17 +64,16 @@ void screen_area_scroll_up(Area* area);
 void screen_utils_replaces_special_chars(char* str);
 /******************************************************************************/
 
+/**
+* @name screen_init
+* @author David Palomo
+* @brief Inicializa la zona de memoria de la pantalla y la rellena con
+* color de fondo (rellena con un caracter que luego se detecta en screen_paint)
+* @file screen.c
+* @param Ninguno
+* @return Ninguno (void)
+*/
 
-/*******************************************************************************
-Funcion: screen_init
-Autor: David Palomo
-Descripcion: Inicializa la zona de memoria de la pantalla y la rellena con
-  color de fondo (rellena con un caracter que luego se detecta en screen_paint)
-Argumentos:
-  Ninguno
-Return:
-  Ninguno (void)
-*******************************************************************************/
 void screen_init()
 {
   /*libera la memoria de __data*/
@@ -90,10 +89,11 @@ void screen_init()
 }
 
 /**
-* @brief screen_destroy
+* @name screen_destroy
 * @author Arturo Morcillo
-* Libera la memoria reservada para __data
+* @brief Libera la memoria reservada para __data
 * @file screen.c
+* @param ninguno
 * @return Ninguno (void)
 */
 
@@ -104,11 +104,12 @@ void screen_destroy()
 }
 
 /**
-* @brief screen_paint
+* @name screen_paint
 * @author Arturo Morcillo
-* Se encarga de limpiar la terminal y volver a dibujar la pantalla.
+* @brief Se encarga de limpiar la terminal y volver a dibujar la pantalla.
 * Si la terminal tiene el tamaño correcto da la sensacion de que se actualiza
 * @file player.c
+* @param ninguno
 * @return Ninguno (void)
 */
 
@@ -148,17 +149,15 @@ void screen_paint()
   }
 }
 
+/**
+* @name screen_gets
+* @author David Palomo
+* @brief Imprime "prompt:>" en terminal y escanea la introducción de comando.
+* Por el momento, no se utiliza.* @file screen.c
+* @param str cadena de caracteres
+* @return Ninguno (void)
+*/
 
-/*******************************************************************************
-Funcion: screen_gets
-Autor: David Palomo
-Descripcion: Imprime "prompt:>" en terminal y escanea la introducción de comando.
-  Por el momento, no se utiliza.
-Argumentos:
-  str: Cadena de caracteres
-Return:
-  Ninguno (void)
-*******************************************************************************/
 void screen_gets(char *str)
 {
   fprintf(stdout, PROMPT);
@@ -170,9 +169,9 @@ void screen_gets(char *str)
 }
 
 /**
-* @brief screen_area_init
+* @name screen_area_init
 * @author Arturo Morcillo
-* Reserva memoria para un area y le asigna los valores argumento.
+* @brief Reserva memoria para un area y le asigna los valores argumento.
 * area.cursor tendra tantos ceros como indique el valor de area.height
 * @file screen.c
 * @param x Variable de tipo entero (int)
@@ -201,9 +200,9 @@ Area* screen_area_init(int x, int y, int width, int height)
 }
 
 /**
-* @brief screen_area_destroy
+* @name screen_area_destroy
 * @author Arturo Morcillo
-* Libera la memoria del area introducida como argumento
+* @brief Libera la memoria del area introducida como argumento
 * @file screen.c
 * @param area Puntero a estructura de tipo Area
 * @return Ninguno (void)
@@ -216,9 +215,9 @@ void screen_area_destroy(Area* area)
 }
 
 /**
-* @brief screen_area_clear
+* @name screen_area_clear
 * @author Arturo Morcillo
-* Resetea el valor del area con screen_area_reset_cursor
+* @brief Resetea el valor del area con screen_area_reset_cursor
 * Tambien pone tantos ceros a area.cursor como indique area.height
 * @file screen.c
 * @param area Puntero a estructura de tipo Area
@@ -241,9 +240,9 @@ void screen_area_clear(Area* area)
 }
 
 /**
-* @brief screen_area_reset_cursor
+* @name screen_area_reset_cursor
 * @author Arturo Morcillo
-* Resetea el valor del cursor al origen empleando la macro ACCESS
+* @brief Resetea el valor del cursor al origen empleando la macro ACCESS
 * @file screen.c
 * @param area Puntero a estructura de tipo Area
 * @return Ninguno (void)
@@ -256,9 +255,9 @@ void screen_area_reset_cursor(Area* area)
 }
 
 /**
-* @brief screen_area_puts
+* @name screen_area_puts
 * @author Arturo Morcillo
-* Copia en el area pasada como argumento los datos pasados en str.
+* @brief Copia en el area pasada como argumento los datos pasados en str.
 * @file screen.c
 * @param area Puntero a estructura de tipo Area
 * @param str Cadena de caracteres
@@ -288,9 +287,9 @@ void screen_area_puts(Area* area, char *str)
 }
 
 /**
-* @brief screen_area_cursor_is_out_of_bounds
+* @name screen_area_cursor_is_out_of_bounds
 * @author Arturo Morcillo
-* Indica si el cursor está fuera de limites
+* @briefIndica si el cursor está fuera de limites
 * @file screen.c
 * @param area Puntero a estructura de tipo Area
 * @return 1 si el cursor está fuera de límites, y 0 si no.
@@ -301,17 +300,15 @@ int screen_area_cursor_is_out_of_bounds(Area* area)
   return area->cursor > ACCESS(__data, area->x + area->width, area->y + area->height - 1);
 }
 
+/**
+* @name screen_area_scroll_up
+* @author David Palomo
+* @brief Hace scroll de un area una fila hacia arriba, sobreescribiendo
+* cada fila con la siguiente
+* @param area Puntero a estructura de tipo Area
+* @return Ninguno (void)
+*/
 
-/*******************************************************************************
-Funcion: screen_area_scroll_up
-Autor: David Palomo
-Descripcion: Hace scroll de un area una fila hacia arriba, sobreescribiendo
-  cada fila con la siguiente
-Argumentos:
-  area: Puntero a estructura de tipo Area
-Return:
-  Ninguno (void)
-*******************************************************************************/
 void screen_area_scroll_up(Area* area)
 {
   for(area->cursor = ACCESS(__data, area->x, area->y);
@@ -326,9 +323,9 @@ void screen_area_scroll_up(Area* area)
 }
 
 /**
-* @brief screen_utils_replaces_special_chars
+* @name screen_utils_replaces_special_chars
 * @author Arturo Morcillo
-* Reemplaza los caracteres especiales para que no haya problemas
+* @brief Reemplaza los caracteres especiales para que no haya problemas
 * @file screen.c
 * @param str Cadena de caracteres
 * @return Ninguno (void)

@@ -26,9 +26,9 @@ struct _Set
 };
 
 /**
-* @brief set_create
+* @name set_create
 * @author Arturo Morcillo
-* Reserva memoria para una estructura de tipo set e inicializa
+* @brief Reserva memoria para una estructura de tipo set e inicializa
 * sus parametros con NO_ID y 0
 * @file set.c
 * @param Ninguno
@@ -55,9 +55,9 @@ Set *set_create()
 }
 
 /**
-* @brief set_destroy
+* @name set_destroy
 * @author Arturo Morcillo
-* Libera la memoria de una estructura set
+* @brief Libera la memoria de una estructura set
 * @file set.c
 * @param ps Un puntero a Set
 * @return nada (tipo void)
@@ -72,9 +72,9 @@ void set_destroy (Set *ps)
 }
 
 /**
-* @brief set_add
+* @name set_add
 * @author Arturo Morcillo
-* Añade una Id al array de la estructura tipo Set introducida y
+* @brief Añade una Id al array de la estructura tipo Set introducida y
 * le suma uno a la cantidad de Ids almacenadas
 * @file set.c
 * @param ps Un puntero a Set
@@ -95,9 +95,9 @@ STATUS set_add (Set *ps, Id id)
 }
 
 /**
-* @brief set_del
+* @name set_del
 * @author Arturo Morcillo
-* Elimina una Id de la estructura Set introducida y le resta uno a
+* @brief Elimina una Id de la estructura Set introducida y le resta uno a
 * la cantidad de Ids que hay almacenadas. Donde estaba la eliminada ahora hay NO_ID
 * @file set.c
 * @param ps Un puntero a Set
@@ -119,9 +119,9 @@ Id set_del (Set *ps)
 }
 
 /**
-* @brief set_print
+* @name set_print
 * @author Arturo Morcillo
-* Muestra por pantalla todos los Ids de la estructura set introducida
+* @brief Muestra por pantalla todos los Ids de la estructura set introducida
 * como argumento y la cantidad total de estos.
 * @file set.c
 * @param ps Un puntero a Set
@@ -144,9 +144,9 @@ STATUS set_print(Set *ps)
 }
 
 /**
-* @brief set_isempty
+* @name set_isempty
 * @author Arturo Morcillo
-* Comprueba si el Set introducido no tiene ninguna id almacenada
+* @brief Comprueba si el Set introducido no tiene ninguna id almacenada
 * como argumento y la cantidad total de estos.
 * @file set.c
 * @param ps Un puntero a Set
@@ -164,9 +164,9 @@ BOOL set_isempty(Set *ps)
 }
 
 /**
-* @brief get_id_pos
+* @name get_id_pos
 * @author Arturo Morcillo
-* Te devuelve el id de Set en la posicion introducida
+* @brief Te devuelve el id de Set en la posicion introducida
 * @file set.c
 * @param ps Un puntero a Set
 * @return Un id o NO_ID si falla algo.
@@ -185,9 +185,9 @@ Id get_id_pos (Set *ps, int pos)
 }
 
 /**
-* @brief get_set_tope
+* @name get_set_tope
 * @author Arturo Morcillo
-* Devuelve la cantidad de ids que hay en un set
+* @brief Devuelve la cantidad de ids que hay en un set
 * @file set.c
 * @param ps Un puntero a Set
 * @return Un entero. si falla un 0..
@@ -205,9 +205,9 @@ int get_set_tope(Set *ps)
 }
 
 /**
-* @brief remove_id
+* @name remove_id
 * @author Arturo Morcillo
-* Devuelve Elimina del set la Id introducida
+* @brief Devuelve Elimina del set la Id introducida
 * @file set.c
 * @param ps Un puntero a Set
 * @param id La Id introducida

@@ -18,10 +18,11 @@
 #define N_OBJ 4
 
 
-/*
-Estructura que define el Graphic_engine, con punteros a las areas de la interfaz.
-Cada parametro es un puntero a estructura de tipo Area, que contiene
-posiciones y tamaños de areas de la interfaz.
+/**
+* @brief Estructura _Graphic_engine
+* Estructura que define el Graphic_engine, con punteros a las areas de la interfaz.
+* Cada parametro es un puntero a estructura de tipo Area, que contiene
+* posiciones y tamaños de areas de la interfaz.
 */
 struct _Graphic_engine
 {
@@ -32,17 +33,16 @@ struct _Graphic_engine
        *feedback;
 };
 
+/**
+* @name graphic_engine_create
+* @author David Palomo
+* @brief Genera y define cada area de la interfaz de juego
+* @file graphic_engine.c
+* @param Ninguno
+* @return Puntero a la estructura de tipo Graphic_engine inicializada,
+* que contiene a su vez punteros a estructura de tipo Area
+*/
 
-/*******************************************************************************
-Funcion: graphic_engine_create
-Autor: David Palomo
-Descripcion: Genera y define cada area de la interfaz de juego
-Argumentos:
-  Ninguno
-Return:
-  Puntero a la estructura de tipo Graphic_engine inicializada,
-  que contiene a su vez punteros a estructura de tipo Area
-*******************************************************************************/
 Graphic_engine *graphic_engine_create()
 {
   /* Al ser static, conservará el ultimo valor asignado.
@@ -66,17 +66,16 @@ Graphic_engine *graphic_engine_create()
   return ge;
 }
 
+/**
+* @name graphic_engine_destroy
+* @author David Palomo
+* @brief Destruye (libera memoria) cada area de la interfaz de juego
+* @file graphic_engine.c
+* @param ge Puntero a una estructura de tipo Graphic_engine,
+* que contiene a su vez punteros a estructura de tipo Area
+* @return Ninguno (void)
+*/
 
-/*******************************************************************************
-Funcion: graphic_engine_destroy
-Autor: David Palomo
-Descripcion: Destruye (libera memoria) cada area de la interfaz de juego
-Argumentos:
-  ge: Puntero a una estructura de tipo Graphic_engine,
-      que contiene a su vez punteros a estructura de tipo Area
-Return:
-  Ninguno (void)
-*******************************************************************************/
 void graphic_engine_destroy(Graphic_engine *ge)
 {
   /* Si no hace falta destruirlo, return */
@@ -95,18 +94,17 @@ void graphic_engine_destroy(Graphic_engine *ge)
   free(ge);
 }
 
+/**
+* @name graphic_engine_paint_game
+* @author David Palomo
+* @brief Dibuja cada area de la interfaz del juego
+* @file graphic_engine.c
+* @param ge Puntero a una estructura de tipo Graphic_engine,
+* que contiene a su vez punteros a estructura de tipo Area
+* @param game: Puntero a una estructura de tipo Game
+* @return Ninguno (void)
+*/
 
-/*******************************************************************************
-Funcion: graphic_engine_paint_game
-Autor: David Palomo
-Descripcion: Dibuja cada area de la interfaz del juego
-Argumentos:
-  ge  : Puntero a una estructura de tipo Graphic_engine,
-        que contiene a su vez punteros a estructura de tipo Area
-  game: Puntero a una estructura de tipo Game
-Return:
-  Ninguno (void)
-*******************************************************************************/
 void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 {
   Id id_act = NO_ID, id_back = NO_ID, id_next = NO_ID, id_left = NO_ID, id_right = NO_ID, obj_loc = NO_ID;
@@ -119,6 +117,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   extern char *cmd_to_str[];
   int i;
   char *gdesc[3];
+  const char* status;
 
 
   /* Resetea el mapa y dibuja el area interior del mapa */
@@ -304,7 +303,8 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
   /* Dibuja el area de feedback */
   last_cmd = game_get_last_command(game);
-  sprintf(str, " %s %s", cmd_to_str[last_cmd-NO_CMD],game->param);
+  status = game_get_status_command(game);
+  sprintf(str, " %s: %s", cmd_to_str[last_cmd-NO_CMD], status);
   screen_area_puts(ge->feedback, str);
 
   /* Pasa a la terminal */

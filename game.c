@@ -42,16 +42,17 @@ void game_callback_roll(Game* game);
 void game_callback_left(Game* game);
 void game_callback_right(Game* game);
 
+/**
+* @name game_callback_fn_list
+* @Autor David Palomo
+* @brief Tabla con las funciones de llamada de cada comando.
+* @file game.c
+* @Util Si el usuario introduce un comando, invoco a la función de este, que
+* tiene un índice en la tabla. Así, se puede reducir el código con bucles.
+* @Elementos tipo callback_fn. Cada uno apunta a una función game_callback_<cmd>
+* static hace que solo se pueda utilizar la tabla en este .c
+*/
 
-/*******************************************************************************
-Tabla: game_callback_fn_list
-Autor: David Palomo
-Descripcion: Tabla con las funciones de llamada de cada comando.
-Util: Si el usuario introduce un comando, invoco a la función de este, que
-  tiene un índice en la tabla. Así, se puede reducir el código con bucles.
-Elementos: tipo callback_fn. Cada uno apunta a una función game_callback_<cmd>
-static hace que solo se pueda utilizar la tabla en este .c
-*******************************************************************************/
 static callback_fn game_callback_fn_list[N_CALLBACK] =
 {
   game_callback_unknown,
@@ -68,9 +69,9 @@ static callback_fn game_callback_fn_list[N_CALLBACK] =
 
 /*------------------------  Funciones privadas  ------------------------------*/
 /**
-* @brief game_get_space_id_at
+* @name game_get_space_id_at
 * @author Arturo Morcillo
-* Devuelve la id de la casilla asociada a una posicion
+* @brief Devuelve la id de la casilla asociada a una posicion
 * @fie game.c
 * @param game Puntero a una estructura de tipo Game
 * @param position  Entero (int)
@@ -82,16 +83,15 @@ Id game_get_space_id_at(Game* game, int position);
 /*----------------------  Fin de funciones privadas  -------------------------*/
 
 
+/**
+* @name game_create
+* @Autor David Palomo
+* @brief Inicializa la estructura de tipo Game
+* @file game.c
+* @arguments game Puntero a una estructura de tipo Game
+* @return OK o ERROR, que pertenecen al enum STATUS
+*/
 
-/*******************************************************************************
-Funcion: game_create
-Autor: David Palomo
-Descripcion: Inicializa la estructura de tipo Game
-Argumentos:
-  game: Puntero a una estructura de tipo Game
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
 STATUS game_create(Game* game)
 {
   int i;
@@ -109,25 +109,23 @@ STATUS game_create(Game* game)
     game->object[i] = NULL;
   }
 
-  game->last_cmd = NO_CMD;
+  game->last_cmd = command_create();
   game->die = die_create(ID_D);
-  game->param = " ";
 
   return OK;
 }
 
+/**
+* @name game_create_from_file
+* @Autor David Palomo
+* @brief Crea el game, carga las casillas del archivo y coloca player
+*y object en posicion inicial
+* @file die.c
+* @argument game Puntero a una estructura de tipo Game
+* @argument filename Archivo del que se lee la disposicion de las casillas
+* @return OK o ERROR, que pertenecen al enum STATUS
+*/
 
-/*******************************************************************************
-Funcion: game_create_from_file
-Autor: David Palomo
-Descripcion: Crea el game, carga las casillas del archivo y coloca player
-  y object en posicion inicial
-Argumentos:
-  game    : Puntero a una estructura de tipo Game
-  filename: Archivo del que se lee la disposicion de las casillas
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
 STATUS game_create_from_file(Game* game, char* filename)
 {
   /* Crea el game y lo comprueba */
@@ -147,10 +145,10 @@ STATUS game_create_from_file(Game* game, char* filename)
 }
 
 /**
-* @brief game_destroy
+* @name game_destroy
 * @author Arturo Morcillo
-* Elimina todas las casillas del Game, y libera la memoria reservada
-* @fie game.c
+* @brief Elimina todas las casillas del Game, y libera la memoria reservada
+* @file game.c
 * @param game Puntero a una estructura de tipo Game
 * @return OK o ERROR, que pertenecen al enum STATUS
 */
@@ -182,15 +180,18 @@ STATUS game_destroy(Game* game)
   player_destroy(game->player);
   game->player = NULL;
 
+  command_destroy(game->last_cmd);
+  game->last_cmd = NULL;
+
   return OK;
 }
 
 /**
-* @brief game_add_space
+* @name game_add_space
 * @author Arturo Morcillo
-* Crea una casilla. Al último elemento "vacío" (= NULL) de la
+* @briefCrea una casilla. Al último elemento "vacío" (= NULL) de la
 * tabla de tipo Space de game se le asigna el Space introducido como argumento.
-* @fie game.c
+* @file game.c
 * @param game Puntero a una estructura de tipo Game
 * @param space Puntero a una estructura de tipo Space (casilla)
 * @return OK o ERROR, que pertenecen al enum STATUS
@@ -221,11 +222,11 @@ STATUS game_add_space(Game* game, Space* space)
 }
 
 /**
-* @brief game_add_object
+* @name game_add_object
 * @author Arturo Morcillo
-* Crea un objeto. Al último elemento "vacío" (= NULL) de la
+* @brief Crea un objeto. Al último elemento "vacío" (= NULL) de la
 * tabla de tipo Object de game se le asigna el Object introducido como argumento.
-* @fie game.c
+* @file game.c
 * @param game Puntero a una estructura de tipo Game
 * @param space Puntero a una estructura de tipo Space (casilla)
 * @return OK o ERROR, que pertenecen al enum STATUS
@@ -256,10 +257,10 @@ STATUS game_add_object(Game* game, Object* object)
 }
 
 /**
-* @brief game_get_space_id_at
+* @name game_get_space_id_at
 * @author Arturo Morcillo
-* Devuelve la id de la casilla asociada a una posicion
-* @fie game.c
+* @brief Devuelve la id de la casilla asociada a una posicion
+* @file game.c
 * @param game Puntero a una estructura de tipo Game
 * @param position entero (int)
 * @return Entero de tipo Id (long) que identifica la casilla asociada a una posicion
@@ -277,10 +278,10 @@ Id game_get_space_id_at(Game* game, int position)
 }
 
 /**
-* @brief game_get_space
+* @name game_get_space
 * @author Arturo Morcillo
-* Devuelve la casilla de game que coincide con el id introducido
-* @fie game.c
+* @brief Devuelve la casilla de game que coincide con el id introducido
+* @file game.c
 * @param game Puntero a una estructura de tipo Game
 * @param id Entero de tipo Id (long)
 * @return Puntero a la estructura de tipo Space (casilla) Si no se introduce un id, o no encuentra una casilla que corresponda al id, devuelve NULL
@@ -306,10 +307,24 @@ Space* game_get_space(Game* game, Id id)
 }
 
 /**
-* @brief game_set_player_location
+@name   game_get_status_command
+@date   03-03-2018
+@author   Javier Mateos
+@brief   Devuelve el ultimo comando realizado.
+@arguments   game: juego del que se obtiene el estado del comando.
+@return   Devuelve una cadena de caracteres que contiene el estado del comando.
+          o NULL si se produce algun error.
+*/
+const char* game_get_status_command(Game* game){
+
+  return command_get_status(game->last_cmd);
+}
+
+/**
+* @name game_set_player_location
 * @author Arturo Morcillo
-* Fija la posición del jugador en la id introducida.
-* @fie game.c
+* @brief Fija la posición del jugador en la id introducida.
+* @file game.c
 * @param game Puntero a una estructura de tipo Game
 * @param id Entero de tipo Id (long)
 * @return OK o ERROR, que pertenecen al enum STATUS
@@ -332,10 +347,10 @@ STATUS game_set_player_location(Game* game, Id id)
 }
 
 /**
-* @brief game_get_player_location
+* @name game_get_player_location
 * @author Arturo Morcillo
-* Devuelve la posición del jugador de la estructura game.
-* @fie game.c
+* @briefDevuelve la posición del jugador de la estructura game.
+* @file game.c
 * @param game Puntero a una estructura de tipo Game
 * @return Entero de tipo Id (long) que identifica una casilla
 */
@@ -346,10 +361,10 @@ Id game_get_player_location(Game* game)
 }
 
 /**
-* @brief game_set_object_location
+* @name game_set_object_location
 * @author Arturo Morcillo
-* Fija la posición del objeto en la id introducida.
-* @fie game.c
+* @brief Fija la posición del objeto en la id introducida.
+* @file game.c
 * @param object Puntero a una estructura de tipo Object
 * @param name Cadena de caracteres que se guardará en object->name
 * @return Entero de tipo Id (long) que identifica una casilla
@@ -383,19 +398,16 @@ STATUS game_set_object_location(Game* game,Object *object ,Id space_id)
   return ERROR;
 }
 
+/**
+* @name game_get_object_location
+* @author David Palomo
+* @brief Devuelve la posición del objeto de la estructura game.
+* @file game.c
+* @param game Puntero a una estructura de tipo Game
+* @param object Puntero a estructura de tipo Object
+* @return Entero de tipo Id (long) que identifica una casilla
+*/
 
-/*******************************************************************************
-Funcion: game_get_object_location
-Autor: David Palomo
-Descripcion: Devuelve la posición del objeto de la estructura game.
-  Posiblemente quede obsoleta en futuras iteraciones,
-  es válida porque solo hay un objeto.
-Argumentos:
-  game  : Puntero a una estructura de tipo Game
-  object: Puntero a estructura de tipo Object
-Return:
-  Entero de tipo Id (long) que identifica una casilla
-*******************************************************************************/
 Id game_get_object_location(Game* game, Object *object)
 {
   int n,i;
@@ -433,18 +445,15 @@ Id game_get_object_location(Game* game, Object *object)
   return NO_ID;
 }
 
+/**
+* @name game_get_object_player
+* @author David Palomo
+* @brief Devuelve si el objeto es portado por un jugador.
+* @file game.c
+* @param game Puntero a una estructura de tipo Game
+* @return BOOL, es decir, TRUE o FALSE
+*/
 
-/*******************************************************************************
-Funcion: game_get_object_player
-Autor: David Palomo
-Descripcion: Devuelve si el objeto es portado por un jugador.
-  Posiblemente quede obsoleta en futuras iteraciones,
-  es válida porque solo hay un jugador.
-Argumentos:
-  game: Puntero a una estructura de tipo Game
-Return:
-  BOOL, es decir, TRUE o FALSE
-*******************************************************************************/
 BOOL game_get_object_player(Game* game, Object *object)
 {
   int i;
@@ -476,55 +485,49 @@ BOOL game_get_object_player(Game* game, Object *object)
   return FALSE;
 }
 
+/**
+* @name game_update
+* @author David Palomo
+* @brief Actualiza el panel de comandos introducidos para mostrar
+* el último comando introducido.
+* @file game.c
+* @param game Puntero a una estructura de tipo Game
+* @param cmd Enumeración que identifica cada comando con un número
+* @return OK o ERROR, que pertenecen al enum STATUS
+*/
 
-/*******************************************************************************
-Funcion: game_update
-Autor: David Palomo
-Descripcion: Actualiza el panel de comandos introducidos para mostrar
-  el último comando introducido
-Argumentos:
-  game : Puntero a una estructura de tipo Game
-  cmd  : Enumeración que identifica cada comando con un número
-  param: Cadena de caracteres con el parametro del comando (para get y drop)
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
-STATUS game_update(Game* game, T_Command cmd,char* param)
-{
-  /* fija game->last_cmd al cmd introducido */
-  game->last_cmd = cmd;
-  game->param = param;
+STATUS game_update(Game* game, T_Command cmd) {
+  if(command_set_t_cmd(game->last_cmd, cmd) == ERROR){
+    return ERROR;
+  }
   (*game_callback_fn_list[cmd])(game);
   return OK;
 }
 
+/**
+* @name game_get_last_command
+* @author David Palomo
+* @brief Devuelve el último comando introducido
+* @file game.c
+* @param game Puntero a una estructura de tipo Game
+* @return Valor numérico de la enumeración T_Command que identifica a cada comando
+*/
 
-/*******************************************************************************
-Funcion: game_get_last_command
-Autor: David Palomo
-Descripcion: Devuelve el último comando introducido
-Argumentos:
-  game: Puntero a una estructura de tipo Game
-Return:
-  Valor numérico de la enumeración T_Command que identifica a cada comando
-*******************************************************************************/
 T_Command game_get_last_command(Game* game)
 {
-  return game->last_cmd;
+  return command_get_t_cmd(game->last_cmd);
 }
 
+/**
+* @name game_print_data
+* @author David Palomo
+* @brief Imprime informacion de cada casilla, y la posicion del jugador
+* y del objeto
+* @file game.c
+* @param game Puntero a una estructura de tipo Game
+* @return Ninguno (void)
+*/
 
-/*******************************************************************************
-Funcion: game_print_data
-Autor: David Palomo
-Descripcion: Imprime informacion de cada casilla, y la posicion del jugador
-  y del objeto. Posiblemente quede obsoleta en futuras iteraciones.
-  Por el momento es válida porque solo hay un jugador y un objeto.
-Argumentos:
-  game: Puntero a una estructura de tipo Game
-Return:
-  Ninguno (void)
-*******************************************************************************/
 void game_print_data(Game* game)
 {
   int i = 0;
@@ -549,10 +552,10 @@ void game_print_data(Game* game)
 }
 
 /**
-* @brief game_is_over
+* @name game_is_over
 * @author Arturo Morcillo
-* Termina el juego. De momento sin funcionalidad
-* @fie game.c
+* @brief Termina el juego. De momento sin funcionalidad
+* @file game.c
 * @param game Puntero a una estructura de tipo Game
 * @return Variable de tipo BOOL (TRUE o FALSE) Por el momento siempre devuelve FALSE
 */
@@ -562,25 +565,11 @@ BOOL game_is_over(Game* game)
   return FALSE;
 }
 
-/**
-* @brief game_set_param
-* @author Arturo Morcillo
-* Fija el param de la estructura game (necesario para get y drop)
-* @fie game.c
-* @param game Puntero a una estructura de tipo Game
-* @param param Cadena de caracteres con el parametro del comando (para get y drop)
-* @return nada (tipo void)
-*/
-
-void game_set_param(Game *game,char *param)
-{
-  game->param = param;
-}
 
 /**
-* @brief game_object_get_id_from_name
+* @name game_object_get_id_from_name
 * @author Arturo Morcillo
-* Te da el id de un objeto introduciendo su nombre.
+* @brief Te da el id de un objeto introduciendo su nombre.
 * @file game.c
 * @param name Cadena de caracteres con el nombre de un objeto
 * @param game Puntero a una estructura de tipo Game
@@ -610,375 +599,261 @@ Id game_object_get_id_from_name(char* name, Game *game)
 
 /*------- Implementación de las Funciones de llamada para cada comando -------*/
 
-/*******************************************************************************
-Funcion: game_callback_unknown
-Autor: David Palomo
-Descripcion: Implementa la funcionalidad del comando unknown (introducir un
-  comando no contemplado en la lista). No ocurre nada.
-Argumentos:
-  game: Puntero a una estructura de tipo Game
-Return:
-  Ninguno (void)
-*******************************************************************************/
-void game_callback_unknown(Game* game)
-{
-  game->command_status = ERROR;
+void game_callback_unknown(Game* game) {
+  /*En caso de que se desconozca el comando devolvemos ERROR para indicar que
+  esa accion no es posible*/
+  command_set_status(game->last_cmd, "ERROR");
 }
 
+void game_callback_exit(Game* game) {
 
-/*******************************************************************************
-Funcion: game_callback_exit
-Autor: David Palomo
-Descripcion: Implementa la funcionalidad del comando exit (salir del juego).
-  No ocurre nada.
-Argumentos:
-  game: Puntero a una estructura de tipo Game
-Return:
-  Ninguno (void)
-*******************************************************************************/
-void game_callback_exit(Game* game)
-{
-  game->command_status = OK;
+  command_set_status(game->last_cmd, "OK");
 }
 
-/**
-* @brief game_callback_following
-* @author Arturo Morcillo
-* Implementa la funcionalidad del comando following (avanzar)
-* @file game.c
-* @param game Puntero a una estructura de tipo Game
-* @return nada (tipo void)
-*/
+/**-----------------------------------------------------------------------------
+Modifica el estado del juego avanzando en una casilla la
+posicion del jugador.
+------------------------------------------------------------------------------*/
+void game_callback_following(Game* game) {
 
-void game_callback_following(Game* game)
-{
-  int i = 0;
+  /*Variable auxiliares empleadas en el bucle*/
   Id current_id = NO_ID;
-  Id space_id = NO_ID;
+  Space* current_space;
 
-  /* Asigna la posicion del jugador a space_id, y realiza la comprobacion */
-  space_id = game_get_player_location(game);
-  if (space_id == NO_ID)
-  {
-    game->command_status = ERROR;
-    return;
-  }
-
-  /* Recorre las casillas */
-  for (i = 0; i < MAX_SPACES && game->spaces[i] != NULL; i++)
-  {
-    current_id = space_get_id(game->spaces[i]);
-    if (current_id == space_id)
-    {
-      /* Mueve al jugador hacia el sur (la siguiente casilla) */
-      current_id = space_get_south(game->spaces[i]);
-      if (current_id != NO_ID)
-      {
-	       game_set_player_location(game, current_id);
-         game->command_status = OK;
-         return;
-      }
-      else{
-        game->command_status = ERROR;
-        return;
-      }
-
-    }
-  }
-  game->command_status = OK;
-}
-
-/**
-* @brief game_callback_previous
-* @author Arturo Morcillo
-* Implementa la funcionalidad del comando previous (retroceder)
-* @file game.c
-* @param game Puntero a una estructura de tipo Game
-* @return nada (tipo void)
-*/
-
-void game_callback_previous(Game* game)
-{
-  int i = 0;
-  Id current_id = NO_ID;
-  Id space_id = NO_ID;
-
-  /* Asigna la posicion del jugador a space_id, y realiza la comprobacion */
-  space_id = game_get_player_location(game);
-  if (NO_ID == space_id)
-  {
-    game->command_status = ERROR;
-    return;
-  }
-
-  /* Recorre las casillas */
-  for (i = 0; i < MAX_SPACES && game->spaces[i] != NULL; i++)
-  {
-    current_id = space_get_id(game->spaces[i]);
-    if (current_id == space_id)
-    {
-      /* Mueve al jugador hacia el norte (la casilla anterior) */
-      current_id = space_get_north(game->spaces[i]);
-      if (current_id != NO_ID)
-      {
-	        game_set_player_location(game, current_id);
-      }
-      game->command_status = OK;
-      return;
-    }
-  }
-  game->command_status = OK;
-}
-
-
-/*******************************************************************************
-Funcion: game_callback_get
-Autor: David Palomo
-Descripcion: Implementa la funcionalidad del comando get (coger un objeto)
-Argumentos:
-  game: Puntero a una estructura de tipo Game
-Return:
-  Ninguno (void)
-*******************************************************************************/
-void game_callback_get(Game* game)
-{
-  Id current_id = NO_ID;
-  Space * current_space = NULL;
-  Id object_id = NO_ID;
-  Set *set_aux = NULL;
-
-  /* Obtiene el id de la casilla en que se encuentra el jugador */
+  /*Obtenemos el espacio en el que se encuentra el jugador*/
   current_id = game_get_player_location(game);
-
-  if (NO_ID == current_id)
-  {
-    game->command_status = ERROR;
+  if (NO_ID == current_id) {
+    command_set_status(game->last_cmd, "ERROR");
     return;
   }
-
-  /* Obtiene la casilla identificada por el id obtenido */
   current_space = game_get_space(game, current_id);
-
-  if (current_space == NULL)
-  {
-    game->command_status = ERROR;
+  if(current_space == NULL){
+    command_set_status(game->last_cmd, "ERROR");
     return;
   }
 
-  /* Si el jugador está en la casilla en la que se encuentra ese objeto,
-  lo coge (se le asigna) y desaparece de la casilla */
-  set_aux = space_get_objects(current_space);
-  if (set_aux == NULL || set_isempty(set_aux) == TRUE)
-  {
-    game->command_status = ERROR;
-    return;
+  /*Obtenemos el identificador del espacio situado al sur del jugador*/
+  current_id = space_get_south(current_space);
+  if (current_id != NO_ID) {
+    /*Movemos el jugador al espacio situado al sur*/
+	  game_set_player_location(game, current_id);
   }
 
-  object_id = game_object_get_id_from_name(game->param,game);
-  if (object_id == NO_ID)
-  {
-    game->command_status = ERROR;
-    return;
-  }
-  printf("Got %ld",object_id);
-
-  if (space_check_object (current_space, object_id) == TRUE)
-  {
-    if(remove_id (set_aux, object_id) == ERROR)
-    {
-      game->command_status = ERROR;
-      return;
-    }
-    if(player_add_object(game->player, object_id) == ERROR)
-    {
-      game->command_status = ERROR;
-      return;
-    }
-  }
-  else
-  {
-    game->command_status = OK;
-    return;
-  }
-
+  command_set_status(game->last_cmd, "OK");
+  return;
 }
 
+/**-----------------------------------------------------------------------------
+Modifica el estado del juego retrocediendo en una casilla la
+posicion del jugador.
+------------------------------------------------------------------------------*/
+void game_callback_previous(Game* game) {
 
-/*******************************************************************************
-Funcion: game_callback_drop
-Autor: David Palomo
-Descripcion: Implementa la funcionalidad del comando drop (soltar un objeto)
-Argumentos:
-  game: Puntero a una estructura de tipo Game
-Return:
-  Ninguno (void)
-*******************************************************************************/
-void game_callback_drop(Game* game)
-{
-  int i;
+  /*Variable auxiliares empleadas en el bucle*/
   Id current_id = NO_ID;
-  Space * current_space = NULL;
-  Set *set_aux = NULL;
-  Set *player_set = NULL;
-  Id object_id = NO_ID;
-  Object *object;
+  Space* current_space;
 
-  player_set = player_get_objects(game->player);
-  if (set_isempty(player_set) == TRUE)
-  {
-    game->command_status = ERROR;
-    return;
-  }
-
-  /* Obtiene el id de la casilla en que se encuentra el jugador */
+  /*Obtenemos el espacio en el que se encuentra el jugador*/
   current_id = game_get_player_location(game);
-
-  if (NO_ID == current_id)
-  {
-    game->command_status = ERROR;
+  if (NO_ID == current_id) {
+    command_set_status(game->last_cmd, "ERROR");
     return;
   }
-
-  /* Obtiene la casilla identificada por el id obtenido */
   current_space = game_get_space(game, current_id);
-
-  if (current_space == NULL)
-  {
-    game->command_status = ERROR;
+  if(current_space == NULL){
+    command_set_status(game->last_cmd, "ERROR");
     return;
   }
 
-  object_id = game_object_get_id_from_name(game->param,game);
-  printf("Got %ld",object_id);
+  /*Obtenemos el identificador del espacio situado al norte del jugador*/
+  current_id = space_get_north(current_space);
+  if (current_id != NO_ID) {
+    /*Movemos el jugador al espacio situado al norte*/
+	  game_set_player_location(game, current_id);
+  }
 
-  /* El jugador deja de llevar objeto y aparece en la casilla */
-  set_aux = space_get_objects(current_space);
+  command_set_status(game->last_cmd, "OK");
+  return;
+}
 
-  if (set_aux == NULL){
-    game->command_status = ERROR;
+/**-----------------------------------------------------------------------------
+Permite al jugador coger un objeto que esta en la misma casilla.
+------------------------------------------------------------------------------*/
+void game_callback_get(Game* game){
+
+  Space* current_space = NULL;
+  Id current_space_id = NO_ID;
+  Id current_object_id = NO_ID;
+
+  /*Obtenemos el espacio en el que se encuentra el jugador*/
+  current_space_id = game_get_player_location(game);
+  if (NO_ID == current_space_id) {
+    command_set_status(game->last_cmd, "ERROR");
+    return;
+  }
+  current_space = game_get_space(game, current_space_id);
+  if(current_space == NULL){
+    command_set_status(game->last_cmd, "ERROR");
+    return;
+  }
+  /*Obtenemos el identificador del objeto que quiere coger el jugador*/
+  current_object_id = atol(command_get_id_obj(game->last_cmd));
+  if(current_object_id == NO_ID){
+    command_set_status(game->last_cmd, "ERROR");
+    return;
+  }
+  /*Comprobamos que el objeto se encuentra en el espacio actual*/
+  if(space_check_object(current_space, current_object_id) == TRUE){
+    /*Borramos el identificador del objeto del conjunto de identificadores del
+    espacio*/
+    remove_id (space_get_objects(current_space), current_object_id);
+    /*Asiganamos el id del objeto al jugador*/
+    player_add_object(game->player, current_object_id);
+    /*Cambiamos el estado del comando*/
+    command_set_status(game->last_cmd, "OK");
+    return;
+  }
+  /*Si el objeto no se encuentra en el espacio cambiamos el estado del comando
+  a error*/
+  command_set_status(game->last_cmd, "ERROR");
+
+  return;
+}
+
+/**-----------------------------------------------------------------------------
+Permite al jugador soltar un objeto en la casilla actual.
+------------------------------------------------------------------------------*/
+void game_callback_drop(Game* game){
+
+  Space* current_space = NULL;
+  Id current_space_id = NO_ID;
+  Id current_object_id = NO_ID;
+
+  /* TODO innecesario
+  Comprobamos si el jugador tiene asociado un objeto
+  if(player_get_object(game->player) == NO_ID){
+    command_set_status(game->last_cmd, "ERROR");
+    return;
+  }
+  */
+
+ /*Obtenemos el espacio en el que se encuentra el jugador*/
+  current_space_id = game_get_player_location(game);
+  if (NO_ID == current_space_id) {
+    return;
+  }
+  current_space = game_get_space(game, current_space_id);
+  if(current_space == NULL){
     return;
   }
 
-  if(remove_id (player_set, object_id) == ERROR)
-  {
-    game->command_status = ERROR;
+  /*Obtenemos el identificador del objeto que quiere soltar el jugador*/
+  current_object_id = atol(command_get_id_obj(game->last_cmd));
+  if(current_object_id == NO_ID){
+    command_set_status(game->last_cmd, "ERROR");
     return;
   }
 
-  for (i=0, object = game->object[0]; i<MAX_ID && object_get_id(object) != object_id; i++, object = game->object[i]);
+  /*Comprobamos que el objeto se lo porta el jugador*/
+  if(player_check_object(game->player, current_object_id) == TRUE){
+    /*Borramos el identificador del objeto del conjunto de identificadores del
+    espacio*/
+    remove_id (player_get_objects(game->player), current_object_id);
+    /*Asiganamos el id del objeto al jugador*/
+    space_add_object(current_space, current_object_id);
+    /*Cambiamos el estado del comando*/
+    command_set_status(game->last_cmd, "OK");
+    return;
+  }
 
 
-  /* Pone en la casilla el objeto */
-  game_set_object_location(game, object ,current_id);
-  game->command_status = OK;
 
+  command_set_status(game->last_cmd, "OK");
+  return;
+}
+
+/**-----------------------------------------------------------------------------
+Permite al jugador lanzar el dado.
+------------------------------------------------------------------------------*/
+void game_callback_roll(Game* game){
+
+  if(die_roll(game->die) == ERROR){
+    command_set_status(game->last_cmd, "ERROR");
+    return;
+  }
+
+  command_set_status(game->last_cmd, "OK");
+  return;
 }
 
 
-/*******************************************************************************
-Funcion: game_callback_roll
-Autor: David Palomo
-Descripcion: Implementa la funcionalidad del comando roll (tirar el dado)
-Argumentos:
-  game: Puntero a una estructura de tipo Game
-Return:
-  Ninguno (void)
-*******************************************************************************/
-void game_callback_roll(Game* game)
-{
-  die_roll(game->die);
-  game->command_status = OK;
-}
+/**-----------------------------------------------------------------------------
+Permite al jugador ir hacia la izquierda en aquellas casillas que estan
+conectadas por el oeste.
+------------------------------------------------------------------------------*/
+void game_callback_left(Game* game){
 
-
-/*******************************************************************************
-Funcion: game_callback_left
-Autor: David Palomo
-Descripcion: Implementa la funcionalidad del comando left (moverse hacia izquierda)
-  Se utiliza "west".
-Argumentos:
-  game: Puntero a una estructura de tipo Game
-Return:
-  Ninguno (void)
-*******************************************************************************/
-void game_callback_left(Game* game)
-{
-  int i = 0;
+  /*Variable auxiliares empleadas en el bucle*/
   Id current_id = NO_ID;
-  Id space_id = NO_ID;
+  Space* current_space;
 
-  /* Asigna la posicion del jugador a space_id, y realiza la comprobacion */
-  space_id = game_get_player_location(game);
-  if (space_id == NO_ID)
-  {
-    game->command_status = ERROR;
+  /*Obtenemos el espacio en el que se encuentra el jugador*/
+  current_id = game_get_player_location(game);
+  if (NO_ID == current_id) {
+    return;
+  }
+  current_space = game_get_space(game, current_id);
+  if(current_space == NULL){
     return;
   }
 
-  /* Recorre las casillas */
-  for (i = 0; i < MAX_SPACES && game->spaces[i] != NULL; i++)
-  {
-    current_id = space_get_id(game->spaces[i]);
-    if (current_id == space_id)
-    {
-      /* Mueve al jugador hacia el oeste (la casilla a la izquierda) */
-      current_id = space_get_west(game->spaces[i]);
-      if (current_id != NO_ID)
-      {
-	       game_set_player_location(game, current_id);
-         game->command_status = OK;
-      }
-      else{
-        game->command_status = ERROR;
-        return;
-      }
-      return;
-    }
+  /*Obtenemos el identificador del espacio situado al oeste del jugador*/
+  current_id = space_get_west(current_space);
+  if (current_id != NO_ID) {
+    /*Movemos el jugador al espacio situado al oeste*/
+	  game_set_player_location(game, current_id);
   }
+  else{
+    command_set_status(game->last_cmd, "ERROR");
+    return;
+  }
+
+  command_set_status(game->last_cmd, "OK");
+  return;
 }
 
 
-/*******************************************************************************
-Funcion: game_callback_right
-Autor: David Palomo
-Descripcion: Implementa la funcionalidad del comando right (moverse hacia derecha)
-  Se utiliza "east".
-Argumentos:
-  game: Puntero a una estructura de tipo Game
-Return:
-  Ninguno (void)
-*******************************************************************************/
-void game_callback_right(Game* game)
-{
-  int i = 0;
-  Id current_id = NO_ID;
-  Id space_id = NO_ID;
+/**-----------------------------------------------------------------------------
+Permite al jugador ir hacia la derecha en aquellas casillas conectadas por
+el este.
+------------------------------------------------------------------------------*/
+void game_callback_right(Game* game){
 
-  /* Asigna la posicion del jugador a space_id, y realiza la comprobacion */
-  space_id = game_get_player_location(game);
-  if (space_id == NO_ID)
-  {
-    game->command_status = ERROR;
+  /*Variable auxiliares empleadas en el bucle*/
+  Id current_id = NO_ID;
+  Space* current_space;
+
+  /*Obtenemos el espacio en el que se encuentra el jugador*/
+  current_id = game_get_player_location(game);
+  if (NO_ID == current_id) {
+    return;
+  }
+  current_space = game_get_space(game, current_id);
+  if(current_space == NULL){
     return;
   }
 
-  /* Recorre las casillas */
-  for (i = 0; i < MAX_SPACES && game->spaces[i] != NULL; i++)
-  {
-    current_id = space_get_id(game->spaces[i]);
-    if (current_id == space_id)
-    {
-      /* Mueve al jugador hacia el este (la casilla a la derecha) */
-      current_id = space_get_east(game->spaces[i]);
-      if (current_id != NO_ID)
-      {
-	       game_set_player_location(game, current_id);
-         game->command_status = OK;
-      }
-      else{
-        game->command_status = ERROR;
-        return;
-      }
-    }
+  /*Obtenemos el identificador del espacio situado al este del jugador*/
+  current_id = space_get_east(current_space);
+  if (current_id != NO_ID) {
+    /*Movemos el jugador al espacio situado al este*/
+	  game_set_player_location(game, current_id);
   }
+  else{
+    command_set_status(game->last_cmd, "ERROR");
+    return;
+  }
+
+   command_set_status(game->last_cmd, "OK");
+  return;
 }

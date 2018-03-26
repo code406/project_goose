@@ -34,17 +34,16 @@ struct _Space
   char gdesc[3][21];
 };
 
+/**
+* @name space_create
+* @author David Palomo
+* @brief Reserva memoria para una estructura de tipo Space,
+* que representa una casilla del juego
+* @file space.c
+* @param id variable de tipo Id (entero long) que identifica la casilla
+* @return Puntero a una estructura de tipo Space (casilla)
+*/
 
-/*******************************************************************************
-Funcion: space_create
-Autor: David Palomo
-Descripcion: Reserva memoria para una estructura de tipo Space,
-  que representa una casilla del juego.
-Argumentos:
-  id: variable de tipo Id (entero long) que identifica la casilla
-Return:
-  Puntero a una estructura de tipo Space (casilla)
-*******************************************************************************/
 Space* space_create(Id id)
 {
   /* Crea un puntero a Space */
@@ -78,18 +77,17 @@ Space* space_create(Id id)
   return newSpace;
 }
 
+/**
+* @name space_destroy
+* @author David Palomo
+* @brief Libera la memoria reservada previamente para una estructura
+* de tipo Space (que representa una casilla del juego) y asigna NULL al
+* puntero a Space pasado como argumento.
+* @file space.c
+* @param space puntero a una estructura de tipo Space (casilla)
+* @return OK o ERROR, que pertenecen al enum STATUS
+*/
 
-/*******************************************************************************
-Funcion: space_destroy
-Autor: David Palomo
-Descripcion: Libera la memoria reservada previamente para una estructura
-  de tipo Space (que representa una casilla del juego) y asigna NULL al
-  puntero a Space pasado como argumento.
-Argumentos:
-  space: puntero a una estructura de tipo Space (casilla)
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
 STATUS space_destroy(Space* space)
 {
   if (!space)
@@ -105,9 +103,9 @@ STATUS space_destroy(Space* space)
 }
 
 /**
-* @brief space_set_name
+* @name space_set_name
 * @author Arturo Morcillo
-* Asigna a la casilla especificada el nombre introducido
+* @brief Asigna a la casilla especificada el nombre introducido
 * @file space.c
 * @param space puntero a una estructura de tipo Space (casilla)
 * @param name cadena de caracteres
@@ -130,18 +128,17 @@ STATUS space_set_name(Space* space, char* name)
   return OK;
 }
 
+/**
+* @name space_set_north
+* @author David Palomo
+* @brief Asigna a la casilla que se encuentra al norte de la introducida
+* un id que la identifica.
+* @file space.c
+* @param space puntero a una estructura de tipo Space (casilla)
+* @param id variable de tipo Id (entero long)
+* @return OK o ERROR, que pertenecen al enum STATUS
+*/
 
-/*******************************************************************************
-Funcion: space_set_north
-Autor: David Palomo
-Descripcion: Asigna a la casilla que se encuentra al norte de la introducida
-  un id que la identifica.
-Argumentos:
-  space: puntero a una estructura de tipo Space (casilla)
-  id   : variable de tipo Id (entero long)
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
 STATUS space_set_north(Space* space, Id id)
 {
   if (!space || id == NO_ID)
@@ -153,18 +150,16 @@ STATUS space_set_north(Space* space, Id id)
   return OK;
 }
 
-
-/*******************************************************************************
-Funcion: space_set_south
-Autor: David Palomo
-Descripcion: Asigna a la casilla que se encuentra al sur de la introducida
-  un id que la identifica.
-Argumentos:
-  space: puntero a una estructura de tipo Space (casilla)
-  id   : variable de tipo Id (entero long)
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
+/**
+* @name space_set_south
+* @author David Palomo
+* @brief Asigna a la casilla que se encuentra al sur de la introducida
+* un id que la identifica.
+* @file space.c
+* @param space puntero a una estructura de tipo Space (casilla)
+* @param id variable de tipo Id (entero long)
+* @return OK o ERROR, que pertenecen al enum STATUS
+*/
 STATUS space_set_south(Space* space, Id id)
 {
   if (!space || id == NO_ID)
@@ -176,18 +171,17 @@ STATUS space_set_south(Space* space, Id id)
   return OK;
 }
 
+/**
+* @name space_set_east
+* @author David Palomo
+* @brief Asigna a la casilla que se encuentra al este de la introducida
+* un id que la identifica.
+* @file space.c
+* @param space puntero a una estructura de tipo Space (casilla)
+* @param id variable de tipo Id (entero long)
+* @return OK o ERROR, que pertenecen al enum STATUS
+*/
 
-/*******************************************************************************
-Funcion: space_set_east
-Autor: David Palomo
-Descripcion: Asigna a la casilla que se encuentra al este de la introducida
-  un id que la identifica.
-Argumentos:
-  space: puntero a una estructura de tipo Space (casilla)
-  id   : variable de tipo Id (entero long)
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
 STATUS space_set_east(Space* space, Id id)
 {
   if (!space || id == NO_ID)
@@ -199,18 +193,17 @@ STATUS space_set_east(Space* space, Id id)
   return OK;
 }
 
+/**
+* @name space_set_west
+* @author David Palomo
+* @brief Asigna a la casilla que se encuentra al oeste de la introducida
+* un id que la identifica.
+* @file space.c
+* @param space puntero a una estructura de tipo Space (casilla)
+* @param id variable de tipo Id (entero long)
+* @return OK o ERROR, que pertenecen al enum STATUS
+*/
 
-/*******************************************************************************
-Funcion: space_set_west
-Autor: David Palomo
-Descripcion: Asigna a la casilla que se encuentra al oeste de la introducida
-  un id que la identifica.
-Argumentos:
-  space: puntero a una estructura de tipo Space (casilla)
-  id   : variable de tipo Id (entero long)
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
 STATUS space_set_west(Space* space, Id id)
 {
   if (!space || id == NO_ID)
@@ -223,9 +216,9 @@ STATUS space_set_west(Space* space, Id id)
 }
 
 /**
-* @brief space_del_object
+* @name space_del_object
 * @author Arturo Morcillo
-* Quita el ultimo objeto de una casilla
+* @brief Quita el ultimo objeto de una casilla
 * @file space.c
 * @param space puntero a una estructura de tipo Space (casilla)
 * @return OK o ERROR que pertenecen al enum STATUS
@@ -245,9 +238,9 @@ STATUS space_del_object(Space* space)
 }
 
 /**
-* @brief space_add_object
+* @name space_add_object
 * @author Arturo Morcillo
-* Coloca en la casilla especificada un objeto
+* @brief Coloca en la casilla especificada un objeto
 * @file space.c
 * @param space puntero a una estructura de tipo Space (casilla)
 * @param value Entero de tipo id (long) que identifica un objeto
@@ -268,9 +261,9 @@ STATUS space_add_object(Space* space, Id value)
 }
 
 /**
-* @brief space_get_name
+* @name space_get_name
 * @author Arturo Morcillo
-* Devuelve el nombre asignado a la casilla especificada
+* @brief Devuelve el nombre asignado a la casilla especificada
 * @file space.c
 * @param space puntero a una estructura de tipo Space (casilla)
 * @return OK o Cadena de caracteres (nombre de la casilla) En caso de error, devuelve NULL.
@@ -287,9 +280,9 @@ char * space_get_name(Space* space)
 }
 
 /**
-* @brief space_get_id
+* @name space_get_id
 * @author Arturo Morcillo
-* Obtiene el id que identifica una casilla del juego.
+* @brief Obtiene el id que identifica una casilla del juego.
 * @file space.c
 * @param space puntero a una estructura de tipo Space (casilla)
 * @return Variable de tipo Id (entero long). En caso de error, devuelve NO_ID.
@@ -305,18 +298,17 @@ Id space_get_id(Space* space)
   return space->id;
 }
 
+/**
+* @name space_get_north
+* @author David Palomo
+* @brief Devuelve el id de la casilla que se encuentra al norte
+* de la introducida
+* @file space.c
+* @param space puntero a una estructura de tipo Space (casilla)
+* @return Id (entero long) de la casilla al norte de la introducida
+* En caso de error, devuelve NO_ID.
+*/
 
-/*******************************************************************************
-Funcion: space_get_north
-Autor: David Palomo
-Descripcion: Devuelve el id de la casilla que se encuentra al norte
-  de la introducida
-Argumentos:
-  space: puntero a una estructura de tipo Space (casilla)
-Return:
-  Id (entero long) de la casilla al norte de la introducida
-  En caso de error, devuelve NO_ID.
-*******************************************************************************/
 Id space_get_north(Space* space)
 {
   if (!space)
@@ -328,17 +320,16 @@ Id space_get_north(Space* space)
 }
 
 
-/*******************************************************************************
-Funcion: space_get_south
-Autor: David Palomo
-Descripcion: Devuelve el id de la casilla que se encuentra al sur
-  de la introducida
-Argumentos:
-  space: puntero a una estructura de tipo Space (casilla)
-Return:
-  Id (entero long) de la casilla al sur de la introducida
-  En caso de error, devuelve NO_ID.
-*******************************************************************************/
+/**
+* @name space_get_south
+* @author David Palomo
+* @brief Devuelve el id de la casilla que se encuentra al sur
+* de la introducida
+* @file space.c
+* @param space puntero a una estructura de tipo Space (casilla)
+* @return Id (entero long) de la casilla al norte de la introducida
+* En caso de error, devuelve NO_ID.
+*/
 Id space_get_south(Space* space)
 {
   if (!space)
@@ -350,17 +341,16 @@ Id space_get_south(Space* space)
 }
 
 
-/*******************************************************************************
-Funcion: space_get_east
-Autor: David Palomo
-Descripcion: Devuelve el id de la casilla que se encuentra al este
-  de la introducida
-Argumentos:
-  space: puntero a una estructura de tipo Space (casilla)
-Return:
-  Id (entero long) de la casilla al este de la introducida
-  En caso de error, devuelve NO_ID.
-*******************************************************************************/
+/**
+* @name space_get_east
+* @author David Palomo
+* @brief Devuelve el id de la casilla que se encuentra al este
+* de la introducida
+* @file space.c
+* @param space puntero a una estructura de tipo Space (casilla)
+* @return Id (entero long) de la casilla al norte de la introducida
+* En caso de error, devuelve NO_ID.
+*/
 Id space_get_east(Space* space)
 {
   if (!space)
@@ -372,17 +362,16 @@ Id space_get_east(Space* space)
 }
 
 
-/*******************************************************************************
-Funcion: space_get_west
-Autor: David Palomo
-Descripcion: Devuelve el id de la casilla que se encuentra al oeste
-  de la introducida
-Argumentos:
-  space: puntero a una estructura de tipo Space (casilla)
-Return:
-  Id (entero long) de la casilla al oeste de la introducida
-  En caso de error, devuelve NO_ID.
-*******************************************************************************/
+/**
+* @name space_get_west
+* @author David Palomo
+* @brief Devuelve el id de la casilla que se encuentra al oeste
+* de la introducida
+* @file space.c
+* @param space puntero a una estructura de tipo Space (casilla)
+* @return Id (entero long) de la casilla al norte de la introducida
+* En caso de error, devuelve NO_ID.
+*/
 Id space_get_west(Space* space)
 {
   if (!space)
@@ -394,9 +383,9 @@ Id space_get_west(Space* space)
 }
 
 /**
-* @brief space_get_objects
+* @name space_get_objects
 * @author Arturo Morcillo
-* Devuelve la estructura objects (tipo set) del espacio introducido
+* @brief Devuelve la estructura objects (tipo set) del espacio introducido
 * @file space.c
 * @param space puntero a una estructura de tipo Space (casilla)
 * @return Una estructura tipo Set. En caso de error, o de que no haya objetos, devuelve NULL.
@@ -413,9 +402,9 @@ Set* space_get_objects(Space* space)
 }
 
 /**
-* @brief space_check_object
+* @name space_check_object
 * @author Arturo Morcillo
-* comprueba si un objeto se encuentra en el Space introducido
+* @brief comprueba si un objeto se encuentra en el Space introducido
 * @file space.c
 * @param space puntero a una estructura de tipo Space (casilla)
 * @param object_id Entero de tipo id (long) que identifica un objeto
@@ -450,17 +439,17 @@ BOOL space_check_object (Space *ps, Id object_id)
   return FALSE;
 }
 
+/**
+* @name space_print
+* @author David Palomo
+* @brief Muestra por pantalla la informacion de la casilla especificada:
+* su id y nombre, los id de las casillas contiguas, y qué objeto hay en ella.
+* @file space.c
+* @param space puntero a una estructura de tipo Space (casilla)
+* @return Id (entero long) de la casilla al norte de la introducida
+* En caso de error, devuelve NO_ID.
+*/
 
-/*******************************************************************************
-Funcion: space_print
-Autor: David Palomo
-Descripcion: Muestra por pantalla la informacion de la casilla especificada:
-  su id y nombre, los id de las casillas contiguas, y qué objeto hay en ella.
-Argumentos:
-  space: puntero a una estructura de tipo Space (casilla)
-Return:
-  OK o ERROR, que pertenecen al enum STATUS
-*******************************************************************************/
 STATUS space_print(Space* space)
 {
   Set *aux;
@@ -531,9 +520,9 @@ STATUS space_print(Space* space)
 }
 
 /**
-* @brief space_set_gdesc_0
+* @name space_set_gdesc_0
 * @author Arturo Morcillo
-* Asigna a la casilla especificada la linea n+1 del dibujo o una serie de 7 espacios.
+* @brief Asigna a la casilla especificada la linea n+1 del dibujo o una serie de 7 espacios.
 * @file space.c
 * @param space puntero a una estructura de tipo Space (casilla)
 * @param cadena cadena de caracteres
@@ -560,9 +549,9 @@ STATUS space_set_gdesc(Space* space, char* cadena, int n)
 
 
 /**
-* @brief space_get_gdesc
+* @name space_get_gdesc
 * @author Arturo Morcillo
-* La cadena correspondiente a la linea n+1 del dibujo
+* @brief La cadena correspondiente a la linea n+1 del dibujo
 * @file space.c
 * @param space puntero a una estructura de tipo Space (casilla)
 * @param n gdesc que se cogera (de 0 a 2)
