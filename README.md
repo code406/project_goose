@@ -1,5 +1,5 @@
 # Project Goose
-Task for PPROG in UAM. A simple conversational-adventure game to play in Linux terminal.
+Task for PPROG in UAM. A simple conversational-adventure game built in C to play in Linux terminal.
 
 ## Developers
 
