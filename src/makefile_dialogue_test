@@ -1,0 +1,30 @@
+TOPDIR   := ../
+SRCDIR   := ./
+OBJDIR   := $(TOPDIR)obj/
+EXEDIR   := $(TOPDIR)/
+NAME     := dialogue_test
+C_NAMES  := dialogue_test.c dialogue.c command.c die.c game_management.c game.c graphic_engine.c inventory.c link.c object.c player.c screen.c set.c space.c
+EXE      := $(EXEDIR)$(NAME)
+all: exe
+
+
+
+SFILES   := c
+OFILES   := o
+CC       := gcc
+CFLAGS   := -c -Wall -g -ansi -pedantic -I$(TOPDIR)/include
+
+SOURCES := $(foreach sname, $(C_NAMES), $(SRCDIR)$(sname))
+OBJECTS := $(patsubst $(SRCDIR)%.$(SFILES), $(OBJDIR)%.$(OFILES), $(SOURCES))
+
+ALLFILES := $(SOURCES)
+
+.PHONY: all exe
+
+exe:    $(EXE)
+
+$(EXE): $(OBJECTS)
+	        $(CC) $^ -o $@
+
+$(OBJDIR)%$(OFILES):    $(SRCDIR)%$(SFILES)
+	        $(CC) $(CFLAGS) $< -o $@

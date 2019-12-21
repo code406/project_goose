@@ -1,0 +1,40 @@
+move south
+move south
+roll
+move south
+move south
+move east
+move north
+move east
+move west
+move south
+move north
+move south
+move north
+move north
+move north
+move north
+move east
+move east
+move north
+roll
+move north
+move north
+move north
+move north
+Get o4
+check o4
+move north
+move north
+move north
+Get o3
+move north
+move north
+move north
+Get o1
+check o3
+check o1
+Drop o4
+move south
+Drop o3
+Exit

@@ -1,31 +1,91 @@
-#s:1|Casilla 1|-1|-1|2|-1
-#s:2|Casilla 2|1|-1|3|-1
-#s:3|Casilla 3|2|-1|4|-1
-#s:4|Casilla 4|3|-1|5|-1
-#s:5|Casilla 5|4|9|6|-1|                 |      <O)__/     |        \_-/     |
-#s:6|Casilla 6|5|-1|7|-1
-#s:7|Casilla 7|6|-1|8|-1
-#s:8|Casilla 8|7|16|9|-1|        ___      |      / _ \      |     / / \ \     |
-#s:9|Casilla 9|8|13|10|5|                 |      <O)__/     |        \_-/     |
-#s:10|Casilla 10|9|-1|11|-1
-#s:11|Casilla 11|10|-1|12|-1
-#s:12|Casilla 12|11|-1|13|-1
-#s:13|Casilla 13|12|17|14|9|                 |      <O)__/     |        \_-/     |
-#s:14|Casilla 14|13|-1|15|-1
-#s:15|Casilla 15|14|-1|16|-1
-#s:16|Casilla 16|15|-1|17|8|        ___      |      / _ \      |     / / \ \     |
-#s:17|Casilla 17|16|21|18|13|                 |      <O)__/     |        \_-/     |
-#s:18|Casilla 18|17|-1|19|-1
-#s:19|Casilla 19|18|-1|20|-1
-#s:20|Casilla 20|19|-1|21|-1
-#s:21|Casilla 21|20|25|22|17|                 |      <O)__/     |        \_-/     |
-#s:22|Casilla 22|21|-1|23|1|        ___      |      (o o)      |       \m/       |
-#s:23|Casilla 23|22|-1|24|-1
-#s:24|Casilla 24|23|-1|25|-1
-#s:25|Casilla 25|24|-1|-1|21|                 |      <O)__/     |        \_-/     |
-#s:26|Casilla 26|-1|-1|-1|-1
+piso 0
+#s:1|Reception|The hotel receptionist is quite charming, always smiling and         greeting people. There's a lift that goes to all five floors,        and a door that leads to the cafeteria.|Reception|12|-1|1|-1|0|0|1|0|      ___0___                    [****]|     !   !   !              /O\|     !   !   !            __/Y\_____|_____!   !   !___________/_________/_____|     !___!___!           [________]/|
+#s:2|Cafeteria|Bloody hell! This cafeteria is always busy! There's the bartender,   and a couple of elegant men wearing a suit. They drink Boticolas,    which seems to be the only beverage they serve here. Shall we order  some steamed hams for lunch? They only cost 3 Bitcoins!|Cafeteria|1|-1|-1|-1|0|0|1|0|         D      O|      __/T\____/T\__        _____ o|_____/  /o     /o  /_______/    /_!______|    /_____________/       /____//_/|    !            !        !    !  !   |
+#s:14|Lift (Ground Floor) |The background music in this lift is remarkably relaxing.|lift|-1|-1|12|-1|15|-1|1|0|                           Balcony: 4[ ]|                          Cleaning: 3[ ]|                            Suites: 2[ ]|                             Rooms: 1[ ]|                         Hall/Cafe: 0[x]|
 
-#o:1|O1|2
-#o:2|O2|3
-#o:3|O3|5
-#o:4|O4|8
+Piso 1
+#s:3|Corridor (First Floor)|There's a door to either side, and a couple more over there...       A white card hangs by door 102: "Do not disturb"|Corridor|13|3|2|5|0|0|1|0
+#s:4|Corridor (First Floor)|There's a door to either side, and a couple more over there...       A white card hangs by door 104: "Do not disturb"|Corridor|2|7|4|8|0|0|1|0
+#s:5|Room 101 |This is my room. Nothing too fancy, but it will be enough to sleep   comfortably. The window looks out on the back side of the hotel. |My room|4|-1|-1|3|0|0||1|0|     .        ___             _________|    /_\      /   )________   (/___!___\)|   __!__    /__ /        /!   !___!___!|___!  l!___(___)________/ !______________|   !___!    !___!_!_!_!_!/   \x/     |
+#s:6|Room 102 |Oh... This room is occupied. I guess I shouldn't have got in here.|Room 2|-1|5|-1|-1|0|0|1|1|     .        _ERROR:DEV_FOUND_________|    /_\      /   )________   (/___!___\)|   __!__    /__ /        /!   !___!___!|___!  l!___(___)________/ !______________|   !___!    !___!_!_!_!_!/   \x/     |
+#s:7|Room 103 |The door was left wide open, but it seems this room belongs to       someone else. There's a top-hat over there. This client must be      a true gentleman.|Room 3|6|-1|-1|7|0|0|1|1|     .        ___             _________|    /_\      /   )________   (/___!___\)|   __!__    /__ /        /!   !___!___!|___!  l!___(___)________/ !______________|   !___!    !___!_!_!_!_!/   \x/     |
+#s:8|Room 104 |Oh... This room is occupied. I guess I shouldn't have got in here.|Room 4|-1|8|-1|-1|0|0|1|1|     .        _ERROR:DEV_FOUND_________|    /_\      /   )________   (/___!___\)|   __!__    /__ /        /!   !___!___!|___!  l!___(___)________/ !______________|   !___!    !___!_!_!_!_!/   \x/     |
+#s:9|Bathroom |This is my bathroom. It looks clean and tidy.|Tu baño|-1|-1|4|-1|0|0|1|0| | |         _|        [_] |        (o)|
+#s:10|Bathroom|This is another client's bathroom. |baño habitacion 2|-1|-1|6|-1|0|0|1|0| | |         _|        [_] |        (o)|
+#s:15|Lift (First Floor) |The background music in this lift is remarkably relaxing.|lift|-1|-1|13|-1|16|15|1|0|                           Balcony: 4[ ]|                          Cleaning: 3[ ]|                            Suites: 2[ ]|                             Rooms: 1[x]|                         Hall/Cafe: 0[ ]|
+
+Piso 2
+#s:16|Lift (Second Floor) |The background music in this lift is remarkably relaxing.|lift|-1|-1|19|-1|17|16|1|0|                           Balcony: 4[ ]|                          Cleaning: 3[ ]|                            Suites: 2[x]|                             Rooms: 1[ ]|                         Hall/Cafe: 0[ ]|
+#s:19|Corridor (Second Floor)|There are two doors, one to either side. I think they lead to the   best rooms, the suites! They must be very expensive...|Corridor|19|20|-1|21|-1|-1|1|0
+#s:20|Room 201 (Suite 1)|Oh... This room is occupied. I guess I shouldn't have got in here.|Suite 1|-1|-1|-1|20|-1|-1|1|1|     .  ERROR:DEV_FOUND        _______|    /_\   !____  ____!         !__*__!|   __!__  {____}{____}        !__*__!!|___!  l!__%%%%%%%%%%%%_________!__*__!___|   !___! %%%%%%%%%%%%%%  \x/   !/   \!|
+#s:21|Room 202 (Suite 2)|Let's have a look around. This room is huge, quite opposite to the   ones in Floor 1. The only thing that seems to be the same is that    little minibar.|Suite 2|-1|21|-1|-1|-1|-1|1|1|     .    !__________!         _______|    /_\   !____  ____!         !__*__!|   __!__  {____}{____}        !__*__!!|___!  l!__%%%%%%%%%%%%_________!__*__!___|   !___! %%%%%%%%%%%%%%  \x/   !/   \!|
+
+Piso 3
+#s:11|Cleaning Room|This must be the cleaning room. There are towels and bottles all over the place... Why would there be Boticolas in this room? Maybe they use it for storage.|Cleaning_Room|22|9|-1|-1|0|0|0|0|                                 _____|     !   \          /   ___     !  !  !|     !    \        /   (===)    ! .!. !|     !     \   ___/_  (===)     !  !  !|___xxxxx__xxxx_!___!___(===)____!__!__!__|
+#s:12|Mysterious room (?)|There's a hidden room behind the wardrobe! Narnia comes to mind!     Let's see... There are a lot of computers in this room. I think      we're onto something.|?|-1|-1|-1|9|0|0|1|0|   ____   _      ____   _      ____   _  |  [(__)] !=!    [(__)] !=!    [(__)] !=! |____!!___!_!______!!___!_!______!!___!_!_|__/mmm/__/______/mmm/__/______/mmm/__/___|________!_____________!______________!___|
+#s:17|Lift (Third Floor) |The background music in this lift is remarkably relaxing.|lift|-1|-1|22|-1|18|17|1|0|                           Balcony: 4[ ]|                          Cleaning: 3[x]|                            Suites: 2[ ]|                             Rooms: 1[ ]|                         Hall/Cafe: 0[ ]|
+
+Piso 4
+#s:22|Balcony (P4)|It's very quiet and peaceful up here. That door leads to             Mr. Comstock's office. I bet he really enjoys the views.|Balcony|14|10|-1|-1|0|0|1|0|    _       _                          !\|   (X)     (X)                         ! |i_(XXX)_i__(X)_i___i___i___i___i___i___!.|!__(X)__!__(X)_!___!___!___!___!___!___! |   \_/     \_/                          \|
+#s:23|Mr. Comstock's Office|This is Zackary James Comstock's office. He seems to be a man of      culture as well. He seems busy now, maybe I can come back later|Office|-1|-1|11|10|0|0|1|0|                ____              ___|               !    !   .---.    !___!|    _O_      _ !   '!___!   !____!_._!|___/(_)\____! !!    !__/!   !\___!   !___|    / \     !_!!____!  `\___/'   !___!| |
+#s:24|Comstock's mini-cricket|Mr. Comstock has invited me to play cricket, but I can't get         distracted from my duty! Maybe I'll find something useful here...|Well, that's enough cricket for the day, let's head back downstairs.|11|-1|-1|-1|0|0|1|0||                                   !>1>>|     O   _                         !|   /(_)-!                          !|    / \ !                          !|^^^^^^^^^^`^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^|
+#s:18|Lift (Fourth Floor) |The background music in this lift is remarkably relaxing.|lift|-1|-1|14|-1|-1|18|1|0|                           Balcony: 4[x]|                          Cleaning: 3[ ]|                            Suites: 2[ ]|                             Rooms: 1[ ]|                         Hall/Cafe: 0[ ]|
+#s:13| | | |-1|-1|-1|-1|-1|-1|-1|-1
+
+Objetos:
+Fijos:
+#o:1|Minibar|5|This minibar is full of Boticola bottles. "Boti Inc." must make a    fortune with this hotel alone.|0|0|0|0|0|0|It's time to try one of these Boticolas. But the label is badly stuck...|
+#o:2|CleaningCart|3|This cart has towels, a couple Boticola bottles and set of keys.|0|0|0|0|0|0|It's time to try one of these Boticolas. But the label is badly stuck...|
+#o:3|Minibar3|21|This minibar is full of Boticola bottles. Some of them don't have a label on them.|0|0|0|0|0|0|This minibar is full of Boticola bottles. Some of them don't have a label on them.|
+#o:4|Bed|5|This bed is so comfortable I could sleep here forever, but I must go on with the case!|0|0|0|0|0|0|My bed is clean and ready-made, thanks to the cleaning service|
+#o:5|Bed7|7|This bed is ready-made. I bet the cleaning staff have just been      over this room.|0|0|0|0|0|0|This bed is ready-made. I bet the cleaning staff have just been      over this room.|
+#o:6|Cama21|21|Holy smokes! This bed looks like Harambe had a feast in here!       It's completely un-made!|0|0|0|0|0|0|Holy smokes! This bed looks like Harambe had a feast in here!        It's completely un-made!|
+#o:7|RubbishBin5|5|A gentleman must even check rubbish-bins for evidence! This one is empty though...|0|0|0|0|0|0|A gentleman must even check rubbish-bins for evidence! This one is empty though...|
+#o:8|RubbishBin7|7|This bin is full of notes! It seems there's a lighter in there as   well... It may come in handy later on.|0|0|0|0|0|0|This bin is full of notes! |
+#o:9|Notepad|7|This notepad belongs to a man by the name of Hershel L.             I don't think it will be useful for our case, though...|0|0|0|0|0|0|This notepad belongs to a man by the name of Hershel L.|
+#o:10|RubbishBin|21|Oh! There's a note in the rubbish-bin! Let's see what it says.|0|0|0|0|0|0|There's a note in the rubbish-bin!|
+#o:11|Portrait|7|This picture shows a gentleman wearing a top-hat and a kid wearing   a blue jacket.|0|0|0|0|0|0|This picture shows a gentleman wearing a top-hat and a kid wearing   a blue jacket.|
+#o:12|WC|9|I don't quite need to use the toilet right now.|0|0|0|0|0|0|I don't quite need to use the toilet right now.|
+Portables:
+#o:13|CricketStick|24|It looks like a regular cricket stick, but I'd rather have a closer look at it, just in case...|1|0|0|0|0|0|Hmm... This stick feels extremely sticky! No pun intended...|
+#o:14|Map|1|A hotel map! I should keep it with me so I don't get lost.|1|0|0|0|0|0|The map includes a sketch of each floor in the hotel. It can be     opened with the command "showmap" (or "sm")|
+#o:15|Key|3|If only I could get the key that opens every room... That would be useful for the investigation.|1|0|1|21|1|0|It doesn't seem to open every room, but I'm sure we'll find out     soon which door this key opens.|
+
+#o:16|Notebook|1|Having a notebook is very important for a private detective!       Let's pick this one up.|1|1|0|0|0|0|Having a notebook is very important for a private detective!         I'll write down notes, deductions and guessings here.|
+
+#o:17|Lighter|7|This lighter looks pretty ordinary. It may be useful later on.|1|0|1|0|0|0|Ordinary lighter|
+#o:18|Note|21|To read the note, I'll have to get it out of the rubbish-bin|1|0|1|0|1|0|The note says "hay que barrer hacia dentro". If only I knew how to   speak Spanish...|
+#o:19|Wardrobe|11|The wardrobe is closed but I bet there's just a couple more brooms in there.|0|0|0|0|1|0|The cleaning staff left the wardrobe open. What a coincidence,      indeed. Should I check what's inside?|
+#o:20|Window|5|The window looks out on the backyard.|0|0|0|0|0|0| - THOSE COMPUTERS ARE TOO SLOW! I NEED MORE MINING TIME, FERNANDO!"  - Do whatever you need, I want the money tonight, Zackary James.|
+
+
+
+links:
+piso 0
+#l:1|CafeteriaDoor|1|2|1|
+#l:12|LiftDoor0|1|14|1|
+piso 1
+#l:2|Corridor|3|4|1|
+#l:3|D101|3|5|1|
+#l:4|BathroomDoor1|5|9|1|
+#l:5|D102|3|6|1|
+#l:6|BathroomDoor2|7|10|1|
+#l:7|D103|4|7|1|
+#l:8|D104|4|8|1|
+#l:13|LiftDoor1|3|15|1|
+piso 2
+#l:19|LiftDoor2|16|19|1|
+#l:20|D201|20|19|1|
+#l:21|D202|21|19|1|
+piso 3
+#l:9|Wardrobe|11|12|1|
+#l:22|LiftDoor3|17|11|1|
+piso 4
+#l:10|D401|22|23|1|
+#l:11|HiddenCricket|23|24|0|
+#l:14|LiftDoor4|18|22|1|
+ascensor:
+#l:15|piso0-piso1|14|15|1|
+#l:16|piso1-piso2|15|16|1|
+#l:17|piso2-piso3|16|17|1|
+#l:18|piso3-piso4|17|18|1|

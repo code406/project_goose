@@ -1,5 +1,0 @@
-Following: OK
-Following: OK
-Following: OK
-Get: ERROR
-Exit: OK

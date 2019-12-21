@@ -1,0 +1,41 @@
+Forma de cargar los achivos: #cmd|status|mensaje1|mensaje2
+para Unknown:
+#u:|The command you entered is unknown.|Please try again.|
+
+Para Get:
+#ge|You can't get the|because|
+#go|You got the|succesfully. Now it's in your bag|
+
+Para Drop:
+#de|You can't drop the|because|
+#do|You dropped the|succesfully. Now you aren't carrying it anymore|
+
+
+Para Move:
+#me|You can't move|because|
+#mo|You moved|succesfully|
+
+Para Check:
+#ce|You can't check|because|
+#co|You checked the|succesfully|
+
+
+##e de encender
+
+Para Turnon:
+#ee|You can't turn on the|because|
+#eo|You turned on the|succesfully. Now you can see things that were hidden...|
+
+
+##a de apagar
+
+Para Turnoff:
+#ae|You can't turn off the|because|
+#ao|You turned off the|succesfully|
+
+Para Open:
+#oe|You can't open the|because|
+#oo|You opened the door with the|succesfully|
+Para Save:
+#se|An error ocurred while saving your progress| |
+#so|Your progress was saved succesfully| |
